@@ -37,9 +37,4 @@ public class LoginCommand {
         }
     }
 
-    @ShellMethod(value = "Describe account", key = "describe account")
-    public void describeAccount() {
-
-    }
-
 }
