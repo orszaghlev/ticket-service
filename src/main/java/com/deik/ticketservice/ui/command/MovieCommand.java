@@ -1,17 +1,20 @@
 package com.deik.ticketservice.ui.command;
 
+import com.deik.ticketservice.entity.Movie;
 import com.deik.ticketservice.service.MovieService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.shell.standard.ShellComponent;
 import org.springframework.shell.standard.ShellMethod;
 
+import java.util.List;
+
 @Slf4j
 @ShellComponent
 public class MovieCommand {
 
     @Autowired
-    MovieService movieService;
+    private MovieService movieService;
 
     /*@ShellMethod(value = "Create movie", key = "create movie")
     public String createMovie(@ShellOption String title, @ShellOption String genre, @ShellOption int runtime) {
@@ -24,15 +27,43 @@ public class MovieCommand {
         return "";
     }*/
 
-    @ShellMethod(value = "List movies", key = "list movies")
-    public String listMovies() {
+    /*@ShellMethod(value = "Update movie", key = "update movie")
+    public String updateMovie(@ShellOption String title, @ShellOption String genre, @ShellOption int runtime) {
         try {
-            movieService.listMovies();
+            movieService.updateMovie(title, genre, runtime);
         } catch (Exception e) {
-            log.error("Failed to list movies", e);
-            return "Failed to list movies";
+            log.error("Failed to update movie", e);
+            return "Failed to update movie";
         }
         return "";
+    }*/
+
+    /*@ShellMethod(value = "Delete movie", key = "delete movie")
+    public String deleteMovie(@ShellOption String title) {
+        try {
+            movieService.deleteMovie(title);
+        } catch (Exception e) {
+            log.error("Failed to delete movie", e);
+            return "Failed to delete movie";
+        }
+        return "";
+    }*/
+
+    @ShellMethod(value = "List movies", key = "list movies")
+    public void listMovies() {
+        try {
+            List<Movie> movies = movieService.listMovies();
+            if (movies.isEmpty()) {
+                System.out.println("There are no movies at the moment");
+            }
+            else {
+                for (Movie movie : movies) {
+                    System.out.println(String.format("%s (%s, %d)", movie.getTitle(), movie.getGenre(), movie.getRuntime()));
+                }
+            }
+        } catch (Exception e) {
+            log.error("Failed to list movies", e);
+        }
     }
 
 }

@@ -13,7 +13,7 @@ import java.util.List;
 public class MovieServiceImpl implements MovieService {
 
     @Autowired
-    MovieRepository movieRepository;
+    private MovieRepository movieRepository;
 
     public List<Movie> listMovies() {
         List<Movie> movies = new ArrayList<>();

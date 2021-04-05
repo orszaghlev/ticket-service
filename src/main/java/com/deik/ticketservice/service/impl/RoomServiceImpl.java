@@ -13,7 +13,7 @@ import java.util.List;
 public class RoomServiceImpl implements RoomService {
 
     @Autowired
-    RoomRepository roomRepository;
+    private RoomRepository roomRepository;
 
     public List<Room> listRooms() {
         List<Room> rooms = new ArrayList<>();

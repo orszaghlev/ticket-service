@@ -1,21 +1,19 @@
 package com.deik.ticketservice.entity;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Entity
-@Table
+@Table(name = "movie")
 public class Movie {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
-    @Column
+    @Column(name = "title")
     private String title;
-    @Column
+    @Column(name = "genre")
     private String genre;
-    @Column
+    @Column(name = "runtime")
     private int runtime;
 
     public Movie() {
