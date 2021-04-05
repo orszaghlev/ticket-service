@@ -6,6 +6,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.shell.standard.ShellComponent;
 import org.springframework.shell.standard.ShellMethod;
+import org.springframework.shell.standard.ShellOption;
 
 import java.util.List;
 
@@ -16,38 +17,32 @@ public class MovieCommand {
     @Autowired
     private MovieService movieService;
 
-    /*@ShellMethod(value = "Create movie", key = "create movie")
-    public String createMovie(@ShellOption String title, @ShellOption String genre, @ShellOption int runtime) {
+    @ShellMethod(value = "Create movie", key = "create movie")
+    public void createMovie(@ShellOption String title, @ShellOption String genre, @ShellOption int runtime) {
         try {
             movieService.createMovie(title, genre, runtime);
         } catch (Exception e) {
             log.error("Failed to create movie", e);
-            return "Failed to create movie";
         }
-        return "";
-    }*/
+    }
 
-    /*@ShellMethod(value = "Update movie", key = "update movie")
-    public String updateMovie(@ShellOption String title, @ShellOption String genre, @ShellOption int runtime) {
+    @ShellMethod(value = "Update movie", key = "update movie")
+    public void updateMovie(@ShellOption String title, @ShellOption String genre, @ShellOption int runtime) {
         try {
             movieService.updateMovie(title, genre, runtime);
         } catch (Exception e) {
             log.error("Failed to update movie", e);
-            return "Failed to update movie";
         }
-        return "";
-    }*/
+    }
 
-    /*@ShellMethod(value = "Delete movie", key = "delete movie")
-    public String deleteMovie(@ShellOption String title) {
+    @ShellMethod(value = "Delete movie", key = "delete movie")
+    public void deleteMovie(@ShellOption String title) {
         try {
             movieService.deleteMovie(title);
         } catch (Exception e) {
             log.error("Failed to delete movie", e);
-            return "Failed to delete movie";
         }
-        return "";
-    }*/
+    }
 
     @ShellMethod(value = "List movies", key = "list movies")
     public void listMovies() {

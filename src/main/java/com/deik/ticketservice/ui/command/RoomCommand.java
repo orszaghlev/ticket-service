@@ -6,6 +6,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.shell.standard.ShellComponent;
 import org.springframework.shell.standard.ShellMethod;
+import org.springframework.shell.standard.ShellOption;
 
 import java.util.List;
 
@@ -16,38 +17,32 @@ public class RoomCommand {
     @Autowired
     private RoomService roomService;
 
-    /*@ShellMethod(value = "Create room", key = "create room")
-    public String createRoom(@ShellOption String name, @ShellOption int numberOfRows, @ShellOption int numberOfCols) {
+    @ShellMethod(value = "Create room", key = "create room")
+    public void createRoom(@ShellOption String name, @ShellOption int numberOfRows, @ShellOption int numberOfCols) {
         try {
             roomService.createRoom(name, numberOfRows, numberOfCols);
         } catch (Exception e) {
             log.error("Failed to create room", e);
-            return "Failed to create room";
         }
-        return "";
-    }*/
+    }
 
-    /*@ShellMethod(value = "Update room", key = "update room")
-    public String updateRoom(@ShellOption String name, @ShellOption int numberOfRows, @ShellOption int numberOfCols) {
+    @ShellMethod(value = "Update room", key = "update room")
+    public void updateRoom(@ShellOption String name, @ShellOption int numberOfRows, @ShellOption int numberOfCols) {
         try {
             roomService.updateRoom(name, numberOfRows, numberOfCols);
         } catch (Exception e) {
             log.error("Failed to update room", e);
-            return "Failed to update room";
         }
-        return "";
-    }*/
+    }
 
-    /*@ShellMethod(value = "Delete room", key = "delete room")
-    public String deleteRoom(@ShellOption String name) {
+    @ShellMethod(value = "Delete room", key = "delete room")
+    public void deleteRoom(@ShellOption String name) {
         try {
             roomService.deleteRoom(name);
         } catch (Exception e) {
             log.error("Failed to delete room", e);
-            return "Failed to delete room";
         }
-        return "";
-    }*/
+    }
 
     @ShellMethod(value = "List rooms", key = "list rooms")
     public void listRooms() {

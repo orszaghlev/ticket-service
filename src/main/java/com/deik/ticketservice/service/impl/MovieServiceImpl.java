@@ -15,6 +15,20 @@ public class MovieServiceImpl implements MovieService {
     @Autowired
     private MovieRepository movieRepository;
 
+    public void createMovie(String title, String genre, int runtime) {
+        Movie movie = new Movie(1, title, genre, runtime);
+        movieRepository.save(movie);
+    }
+
+    public void updateMovie(String title, String genre, int runtime) {
+
+    }
+
+    public void deleteMovie(String title) {
+        Movie movie = movieRepository.findByTitle(title).get();
+        movieRepository.delete(movie);
+    }
+
     public List<Movie> listMovies() {
         List<Movie> movies = new ArrayList<>();
         movieRepository.findAll().forEach(movie -> movies.add(movie));
