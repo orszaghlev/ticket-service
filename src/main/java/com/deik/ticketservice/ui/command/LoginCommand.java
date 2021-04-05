@@ -15,14 +15,17 @@ public class LoginCommand {
     private LoginService loginService;
 
     @ShellMethod(value = "Sign in privileged", key = "sign in privileged")
-    public String signInPrivileged(@ShellOption String username, @ShellOption String password) {
+    public void signInPrivileged(@ShellOption String username, @ShellOption String password) {
         try {
-            loginService.signInPrivileged(username, password);
+            if (username.equals("admin") && password.equals("admin")) {
+                loginService.signInPrivileged(username, password);
+            }
+            else {
+                System.out.println("Login failed due to incorrect credentials");
+            }
         } catch (Exception e) {
             log.error("Login failed due to incorrect credentials", e);
-            return "Login failed due to incorrect credentials";
         }
-        return "";
     }
 
     @ShellMethod(value = "Sign out", key = "sign out")
@@ -35,12 +38,8 @@ public class LoginCommand {
     }
 
     @ShellMethod(value = "Describe account", key = "describe account")
-    public void describeAccount(@ShellOption String username) {
-        try {
+    public void describeAccount() {
 
-        } catch (Exception e) {
-            log.error("Failed to describe account", e);
-        }
     }
 
 }

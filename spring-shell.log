@@ -18,3 +18,33 @@
 1617622314511:exit
 1617628364346:list rooms
 1617628366050:list movies
+1617629715805:sign in privileged admin asd
+1617629725014:sign in privileged admin admin
+1617629759339:sign in privileged 'admin' 'admin'
+1617629804027:sign out
+1617629860258:sign in privileged 'admin' 'asd'
+1617629861542:exit
+1617630589329:sign in privileged admin admin
+1617630594935:sign out
+1617632555355:describe account
+1617632584887:sign in privileged admin admin
+1617632605486:sign out
+1617632622511:stacktrace
+1617633630324:list movies
+1617633631688:list rooms
+1617633638005:sign in privileged admin admin
+1617633639610:sig nout
+1617633640999:sign out
+1617633643543:exit
+1617634622937:sign in privileged admin admin
+1617634943456:sign in privileged faka kadu
+1617635029908:sign in privileged admin asdmin
+1617635035046:sign in privileged asdmin admin
+1617635050257:sign in privileged admin admin
+1617635121358:sign in privileged
+1617635126896:sign in privileged a s
+1617635130519:sign in privileged
+1617635333378:sign in privileged admin admin
+1617635350478:sign out
+1617635404693:sign in privileged admin admin
+1617635416392:sign out

@@ -17,18 +17,18 @@ public class Account {
     @Column(name = "password")
     @NotBlank
     private String password;
-    @Column(name = "loggedIn")
-    private boolean loggedIn;
+    @Column(name = "logged")
+    private boolean logged;
 
     public Account() {
 
     }
 
-    public Account(int id, @NotBlank String username, @NotBlank String password, boolean loggedIn) {
+    public Account(int id, @NotBlank String username, @NotBlank String password, boolean logged) {
         this.id = id;
         this.username = username;
         this.password = password;
-        this.loggedIn = loggedIn;
+        this.logged = logged;
     }
 
     public int getId() {
@@ -55,12 +55,12 @@ public class Account {
         this.password = password;
     }
 
-    public boolean isLoggedIn() {
-        return loggedIn;
+    public boolean isLogged() {
+        return logged;
     }
 
-    public void setLoggedIn(boolean loggedIn) {
-        this.loggedIn = loggedIn;
+    public void setLogged(boolean logged) {
+        this.logged = logged;
     }
 
     @Override
@@ -73,7 +73,7 @@ public class Account {
 
     @Override
     public int hashCode() {
-        return Objects.hash(getId(), getUsername(), getPassword(), isLoggedIn());
+        return Objects.hash(getId(), getUsername(), getPassword(), isLogged());
     }
 
     @Override
@@ -82,7 +82,7 @@ public class Account {
                 "id=" + id +
                 ", username='" + username + '\'' +
                 ", password='" + password + '\'' +
-                ", loggedIn=" + loggedIn +
+                ", logged=" + logged +
                 '}';
     }
 
