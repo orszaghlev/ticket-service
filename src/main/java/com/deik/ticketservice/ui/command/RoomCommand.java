@@ -63,7 +63,9 @@ public class RoomCommand {
             }
             else {
                 for (Room room : rooms) {
-                    System.out.println(String.format("%s (%d, %d)", room.getName(), room.getNumberOfRows(), room.getNumberOfCols()));
+                    System.out.println(String.format("Room %s with %d seats, %d rows and %d columns",
+                            room.getName(), (room.getNumberOfRows() * room.getNumberOfCols()), room.getNumberOfRows(),
+                            room.getNumberOfCols()));
                 }
             }
         } catch (Exception e) {
