@@ -16,8 +16,8 @@ public class AccountCommand {
     @ShellMethod(value = "Describe account", key = "describe account")
     public void describeAccount() {
         try {
-            if (accountService.describeAccount()) {
-                System.out.println(String.format("Signed in with privileged account %s", accountService.getAdminAccount().getUsername()));
+            if (accountService.isAdminSignedIn()) {
+                System.out.println(String.format("Signed in with privileged account %s", accountService.getSignedInAccount().getUsername()));
             }
             else {
                 System.out.println("You are not signed in");

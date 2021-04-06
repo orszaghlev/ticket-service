@@ -21,13 +21,13 @@ public class AccountServiceImpl implements AccountService {
         }
     }
 
-    public boolean describeAccount() {
+    public boolean isAdminSignedIn() {
         Account adminAccount = accountRepository.findByUsernameAndPassword("admin", "admin").get();
-        return adminAccount.isLogged();
+        return adminAccount.isSigned();
     }
 
-    public Account getAdminAccount() {
-        return accountRepository.findByUsernameAndPassword("admin", "admin").get();
+    public Account getSignedInAccount() {
+        return accountRepository.findByisSigned(true);
     }
 
 }

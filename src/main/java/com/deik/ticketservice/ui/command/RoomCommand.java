@@ -1,6 +1,7 @@
 package com.deik.ticketservice.ui.command;
 
 import com.deik.ticketservice.entity.Room;
+import com.deik.ticketservice.service.AccountService;
 import com.deik.ticketservice.service.RoomService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,10 +18,15 @@ public class RoomCommand {
     @Autowired
     private RoomService roomService;
 
+    @Autowired
+    private AccountService accountService;
+
     @ShellMethod(value = "Create room", key = "create room")
     public void createRoom(@ShellOption String name, @ShellOption int numberOfRows, @ShellOption int numberOfCols) {
         try {
-            roomService.createRoom(name, numberOfRows, numberOfCols);
+            if (accountService.isAdminSignedIn()) {
+                roomService.createRoom(name, numberOfRows, numberOfCols);
+            }
         } catch (Exception e) {
             log.error("Failed to create room", e);
         }
@@ -29,7 +35,9 @@ public class RoomCommand {
     @ShellMethod(value = "Update room", key = "update room")
     public void updateRoom(@ShellOption String name, @ShellOption int numberOfRows, @ShellOption int numberOfCols) {
         try {
-            roomService.updateRoom(name, numberOfRows, numberOfCols);
+            if (accountService.isAdminSignedIn()) {
+                roomService.updateRoom(name, numberOfRows, numberOfCols);
+            }
         } catch (Exception e) {
             log.error("Failed to update room", e);
         }
@@ -38,7 +46,9 @@ public class RoomCommand {
     @ShellMethod(value = "Delete room", key = "delete room")
     public void deleteRoom(@ShellOption String name) {
         try {
-            roomService.deleteRoom(name);
+            if (accountService.isAdminSignedIn()) {
+                roomService.deleteRoom(name);
+            }
         } catch (Exception e) {
             log.error("Failed to delete room", e);
         }

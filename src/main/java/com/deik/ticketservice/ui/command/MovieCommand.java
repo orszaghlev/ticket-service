@@ -1,6 +1,7 @@
 package com.deik.ticketservice.ui.command;
 
 import com.deik.ticketservice.entity.Movie;
+import com.deik.ticketservice.service.AccountService;
 import com.deik.ticketservice.service.MovieService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,10 +18,15 @@ public class MovieCommand {
     @Autowired
     private MovieService movieService;
 
+    @Autowired
+    private AccountService accountService;
+
     @ShellMethod(value = "Create movie", key = "create movie")
     public void createMovie(@ShellOption String title, @ShellOption String genre, @ShellOption int runtime) {
         try {
-            movieService.createMovie(title, genre, runtime);
+            if (accountService.isAdminSignedIn()) {
+                movieService.createMovie(title, genre, runtime);
+            }
         } catch (Exception e) {
             log.error("Failed to create movie", e);
         }
@@ -29,7 +35,9 @@ public class MovieCommand {
     @ShellMethod(value = "Update movie", key = "update movie")
     public void updateMovie(@ShellOption String title, @ShellOption String genre, @ShellOption int runtime) {
         try {
-            movieService.updateMovie(title, genre, runtime);
+            if (accountService.isAdminSignedIn()) {
+                movieService.updateMovie(title, genre, runtime);
+            }
         } catch (Exception e) {
             log.error("Failed to update movie", e);
         }
@@ -38,7 +46,9 @@ public class MovieCommand {
     @ShellMethod(value = "Delete movie", key = "delete movie")
     public void deleteMovie(@ShellOption String title) {
         try {
-            movieService.deleteMovie(title);
+            if (accountService.isAdminSignedIn()) {
+                movieService.deleteMovie(title);
+            }
         } catch (Exception e) {
             log.error("Failed to delete movie", e);
         }

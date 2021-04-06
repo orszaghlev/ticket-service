@@ -15,15 +15,15 @@ public class LoginServiceImpl implements LoginService {
     public void signInPrivileged(String username, String password) {
         if (username.equals("admin") && password.equals("admin")) {
             Account adminAccount = accountRepository.findByUsernameAndPassword(username, password).get();
-            adminAccount.setLogged(true);
+            adminAccount.setIsSigned(true);
             accountRepository.save(adminAccount);
         }
     }
 
     public void signOut() {
-        Account adminAccount = accountRepository.findByUsernameAndPassword("admin", "admin").get();
-        adminAccount.setLogged(false);
-        accountRepository.save(adminAccount);
+        Account signedInAccount = accountRepository.findByisSigned(true);
+        signedInAccount.setIsSigned(false);
+        accountRepository.save(signedInAccount);
     }
 
 }
