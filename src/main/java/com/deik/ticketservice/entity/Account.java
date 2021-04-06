@@ -9,8 +9,6 @@ import java.util.Objects;
 public class Account {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private int id;
     @Column(name = "username")
     @NotBlank
     private String username;
@@ -24,19 +22,10 @@ public class Account {
 
     }
 
-    public Account(int id, @NotBlank String username, @NotBlank String password, boolean isSigned) {
-        this.id = id;
+    public Account(@NotBlank String username, @NotBlank String password, boolean isSigned) {
         this.username = username;
         this.password = password;
         this.isSigned = isSigned;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
     }
 
     public String getUsername() {
@@ -73,13 +62,12 @@ public class Account {
 
     @Override
     public int hashCode() {
-        return Objects.hash(getId(), getUsername(), getPassword(), isSigned());
+        return Objects.hash(getUsername(), getPassword(), isSigned());
     }
 
     @Override
     public String toString() {
         return "Account{" +
-                "id=" + id +
                 ", username='" + username + '\'' +
                 ", password='" + password + '\'' +
                 ", isSigned=" + isSigned +

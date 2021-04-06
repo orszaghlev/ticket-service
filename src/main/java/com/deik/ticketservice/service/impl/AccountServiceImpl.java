@@ -17,7 +17,7 @@ public class AccountServiceImpl implements AccountService {
     @PostConstruct
     public void init() {
         if (accountRepository.findByUsernameAndPassword("admin", "admin").isEmpty()) {
-            accountRepository.save(new Account(1, "admin", "admin", false));
+            accountRepository.save(new Account("admin", "admin", false));
         }
     }
 

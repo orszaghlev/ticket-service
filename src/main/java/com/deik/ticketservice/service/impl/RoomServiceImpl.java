@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class RoomServiceImpl implements RoomService {
@@ -16,17 +17,27 @@ public class RoomServiceImpl implements RoomService {
     private RoomRepository roomRepository;
 
     public void createRoom(String name, int numberOfRows, int numberOfCols) {
-        Room room = new Room(1, name, numberOfRows, numberOfCols);
+        Room room = new Room(name, numberOfRows, numberOfCols);
         roomRepository.save(room);
     }
 
     public void updateRoom(String name, int numberOfRows, int numberOfCols) {
-
+        Optional<Room> rooms = this.roomRepository.findByName(name);
+        if (rooms.isPresent()) {
+            Room updatedRoom = rooms.get();
+            updatedRoom.setName(name);
+            updatedRoom.setNumberOfRows(numberOfRows);
+            updatedRoom.setNumberOfCols(numberOfCols);
+            roomRepository.save(updatedRoom);
+        }
     }
 
     public void deleteRoom(String name) {
-        Room room = roomRepository.findByName(name).get();
-        roomRepository.delete(room);
+        Optional<Room> rooms = this.roomRepository.findByName(name);
+        if (rooms.isPresent()) {
+            Room roomToDelete = rooms.get();
+            roomRepository.delete(roomToDelete);
+        }
     }
 
     public List<Room> listRooms() {

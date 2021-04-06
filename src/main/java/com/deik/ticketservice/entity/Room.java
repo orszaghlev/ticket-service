@@ -7,8 +7,6 @@ import javax.persistence.*;
 public class Room {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private int id;
     @Column(name = "name")
     private String name;
     @Column(name = "numberOfRows")
@@ -20,19 +18,10 @@ public class Room {
 
     }
 
-    public Room(int id, String name, int numberOfRows, int numberOfCols) {
-        this.id = id;
+    public Room(String name, int numberOfRows, int numberOfCols) {
         this.name = name;
         this.numberOfRows = numberOfRows;
         this.numberOfCols = numberOfCols;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
     }
 
     public String getName() {
@@ -62,7 +51,6 @@ public class Room {
     @Override
     public String toString() {
         return "Room{" +
-                "id=" + id +
                 ", name='" + name + '\'' +
                 ", numberOfRows=" + numberOfRows +
                 ", numberOfCols=" + numberOfCols +

@@ -7,8 +7,6 @@ import javax.persistence.*;
 public class Movie {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private int id;
     @Column(name = "title")
     private String title;
     @Column(name = "genre")
@@ -20,19 +18,10 @@ public class Movie {
 
     }
 
-    public Movie(int id, String title, String genre, int runtime) {
-        this.id = id;
+    public Movie(String title, String genre, int runtime) {
         this.title = title;
         this.genre = genre;
         this.runtime = runtime;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
     }
 
     public String getTitle() {
@@ -62,7 +51,6 @@ public class Movie {
     @Override
     public String toString() {
         return "Movie{" +
-                "id=" + id +
                 ", title='" + title + '\'' +
                 ", genre='" + genre + '\'' +
                 ", runtime=" + runtime +
