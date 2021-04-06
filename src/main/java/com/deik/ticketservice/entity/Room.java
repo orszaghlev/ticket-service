@@ -1,6 +1,7 @@
 package com.deik.ticketservice.entity;
 
 import javax.persistence.*;
+import java.util.Set;
 
 @Entity
 @Table(name = "room")
@@ -13,6 +14,9 @@ public class Room {
     private int numberOfRows;
     @Column(name = "numberOfCols")
     private int numberOfCols;
+
+    @OneToMany(mappedBy = "room", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private Set<Screening> screenings;
 
     public Room() {
 
