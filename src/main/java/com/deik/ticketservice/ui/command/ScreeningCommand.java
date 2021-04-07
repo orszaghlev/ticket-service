@@ -56,8 +56,9 @@ public class ScreeningCommand {
             else {
                 for (Screening screening : screenings) {
                     System.out.println(String.format("%s (%s, %d), screened in room %s, at %tFT",
-                            screening.getMovie().getTitle(), screening.getMovie().getGenre(),
-                            screening.getMovie().getRuntime(), screening.getRoom().getName(), screening.getDate()));
+                            screening.getId().getMovie().getTitle(), screening.getId().getMovie().getGenre(),
+                            screening.getId().getMovie().getRuntime(), screening.getId().getRoom().getName(),
+                            screening.getId().getDate()));
                 }
             }
         } catch (Exception e) {

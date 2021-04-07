@@ -2,17 +2,34 @@ package com.deik.ticketservice.entity.id;
 
 import com.deik.ticketservice.entity.Movie;
 import com.deik.ticketservice.entity.Room;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIdentityReference;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
+import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.Objects;
 
+@Embeddable
 public class ScreeningId implements Serializable {
 
+    @ManyToOne(cascade = CascadeType.ALL, optional = false, fetch = FetchType.LAZY)
+    @JoinColumn(name = "movie", nullable = false)
+    @JsonIdentityInfo(generator= ObjectIdGenerators.PropertyGenerator.class, property="id")
+    @JsonIdentityReference(alwaysAsId=true)
+    @JsonProperty("movie")
     private Movie movie;
 
+    @ManyToOne(cascade = CascadeType.ALL, optional = false, fetch = FetchType.LAZY)
+    @JoinColumn(name = "room", nullable = false)
+    @JsonIdentityInfo(generator= ObjectIdGenerators.PropertyGenerator.class, property="id")
+    @JsonIdentityReference(alwaysAsId=true)
+    @JsonProperty("room")
     private Room room;
 
+    @Column(name = "date")
     private Date date;
 
     public ScreeningId() {
@@ -22,6 +39,30 @@ public class ScreeningId implements Serializable {
     public ScreeningId(Movie movie, Room room, Date date) {
         this.movie = movie;
         this.room = room;
+        this.date = date;
+    }
+
+    public Movie getMovie() {
+        return movie;
+    }
+
+    public void setMovie(Movie movie) {
+        this.movie = movie;
+    }
+
+    public Room getRoom() {
+        return room;
+    }
+
+    public void setRoom(Room room) {
+        this.room = room;
+    }
+
+    public Date getDate() {
+        return date;
+    }
+
+    public void setDate(Date date) {
         this.date = date;
     }
 

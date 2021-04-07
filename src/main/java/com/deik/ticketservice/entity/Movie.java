@@ -15,7 +15,7 @@ public class Movie {
     @Column(name = "runtime")
     private int runtime;
 
-    @OneToMany(mappedBy = "movie", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "id.movie", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Set<Screening> screenings;
 
     public Movie() {
@@ -50,6 +50,14 @@ public class Movie {
 
     public void setRuntime(int runtime) {
         this.runtime = runtime;
+    }
+
+    public Set<Screening> getScreenings() {
+        return screenings;
+    }
+
+    public void setScreenings(Set<Screening> screenings) {
+        this.screenings = screenings;
     }
 
     @Override

@@ -17,25 +17,28 @@ public class RoomServiceImpl implements RoomService {
     private RoomRepository roomRepository;
 
     public void createRoom(String name, int numberOfRows, int numberOfCols) {
-        Room room = new Room(name, numberOfRows, numberOfCols);
-        roomRepository.save(room);
+        Optional<Room> roomsWithTheGivenName = this.roomRepository.findByName(name);
+        if (roomsWithTheGivenName.isEmpty()) {
+            Room roomToCreate = new Room(name, numberOfRows, numberOfCols);
+            roomRepository.save(roomToCreate);
+        }
     }
 
     public void updateRoom(String name, int numberOfRows, int numberOfCols) {
-        Optional<Room> rooms = this.roomRepository.findByName(name);
-        if (rooms.isPresent()) {
-            Room updatedRoom = rooms.get();
-            updatedRoom.setName(name);
-            updatedRoom.setNumberOfRows(numberOfRows);
-            updatedRoom.setNumberOfCols(numberOfCols);
-            roomRepository.save(updatedRoom);
+        Optional<Room> roomsWithTheGivenName = this.roomRepository.findByName(name);
+        if (roomsWithTheGivenName.isPresent()) {
+            Room roomToUpdate = roomsWithTheGivenName.get();
+            roomToUpdate.setName(name);
+            roomToUpdate.setNumberOfRows(numberOfRows);
+            roomToUpdate.setNumberOfCols(numberOfCols);
+            roomRepository.save(roomToUpdate);
         }
     }
 
     public void deleteRoom(String name) {
-        Optional<Room> rooms = this.roomRepository.findByName(name);
-        if (rooms.isPresent()) {
-            Room roomToDelete = rooms.get();
+        Optional<Room> roomsWithTheGivenName = this.roomRepository.findByName(name);
+        if (roomsWithTheGivenName.isPresent()) {
+            Room roomToDelete = roomsWithTheGivenName.get();
             roomRepository.delete(roomToDelete);
         }
     }

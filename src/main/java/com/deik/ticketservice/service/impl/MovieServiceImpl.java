@@ -17,25 +17,28 @@ public class MovieServiceImpl implements MovieService {
     private MovieRepository movieRepository;
 
     public void createMovie(String title, String genre, int runtime) {
-        Movie movie = new Movie(title, genre, runtime);
-        movieRepository.save(movie);
+        Optional<Movie> moviesWithTheGivenTitle = this.movieRepository.findByTitle(title);
+        if (moviesWithTheGivenTitle.isEmpty()) {
+            Movie movieToCreate = new Movie(title, genre, runtime);
+            movieRepository.save(movieToCreate);
+        }
     }
 
     public void updateMovie(String title, String genre, int runtime) {
-        Optional<Movie> movies = this.movieRepository.findByTitle(title);
-        if (movies.isPresent()) {
-            Movie updatedMovie = movies.get();
-            updatedMovie.setTitle(title);
-            updatedMovie.setGenre(genre);
-            updatedMovie.setRuntime(runtime);
-            movieRepository.save(updatedMovie);
+        Optional<Movie> moviesWithTheGivenTitle = this.movieRepository.findByTitle(title);
+        if (moviesWithTheGivenTitle.isPresent()) {
+            Movie movieToUpdate = moviesWithTheGivenTitle.get();
+            movieToUpdate.setTitle(title);
+            movieToUpdate.setGenre(genre);
+            movieToUpdate.setRuntime(runtime);
+            movieRepository.save(movieToUpdate);
         }
     }
 
     public void deleteMovie(String title) {
-        Optional<Movie> movies = this.movieRepository.findByTitle(title);
-        if (movies.isPresent()) {
-            Movie movieToDelete = movies.get();
+        Optional<Movie> moviesWithTheGivenTitle = this.movieRepository.findByTitle(title);
+        if (moviesWithTheGivenTitle.isPresent()) {
+            Movie movieToDelete = moviesWithTheGivenTitle.get();
             movieRepository.delete(movieToDelete);
         }
     }

@@ -15,7 +15,7 @@ public class Room {
     @Column(name = "numberOfCols")
     private int numberOfCols;
 
-    @OneToMany(mappedBy = "room", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "id.room", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Set<Screening> screenings;
 
     public Room() {
@@ -50,6 +50,14 @@ public class Room {
 
     public void setNumberOfCols(int numberOfCols) {
         this.numberOfCols = numberOfCols;
+    }
+
+    public Set<Screening> getScreenings() {
+        return screenings;
+    }
+
+    public void setScreenings(Set<Screening> screenings) {
+        this.screenings = screenings;
     }
 
     @Override
