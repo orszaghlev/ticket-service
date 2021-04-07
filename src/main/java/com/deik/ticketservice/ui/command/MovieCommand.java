@@ -63,7 +63,8 @@ public class MovieCommand {
             }
             else {
                 for (Movie movie : movies) {
-                    System.out.println(String.format("%s (%s, %d)", movie.getTitle(), movie.getGenre(), movie.getRuntime()));
+                    System.out.println(String.format("%s (%s, %d)", movie.getTitle(), movie.getGenre(),
+                            movie.getRuntime()));
                 }
             }
         } catch (Exception e) {

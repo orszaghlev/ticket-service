@@ -11,8 +11,11 @@ import com.deik.ticketservice.service.ScreeningService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -28,22 +31,36 @@ public class ScreeningServiceImpl implements ScreeningService {
     @Autowired
     private RoomRepository roomRepository;
 
-    public void createScreening(Movie movie, Room room, Date date) {
-        Optional<Movie> moviesWithTheGivenTitle = this.movieRepository.findByTitle(movie.getTitle());
-        Optional<Room> roomsWithTheGivenName = this.roomRepository.findByName(room.getName());
-        Optional<Screening> screeningsWithTheGivenId = this.screeningRepository.findById_MovieAndId_RoomAndId_Date(movie, room, date);
-        if (moviesWithTheGivenTitle.isPresent() && roomsWithTheGivenName.isPresent() && screeningsWithTheGivenId.isEmpty()) {
-            ScreeningId screeningId = new ScreeningId(movie, room, date);
-            Screening screeningToCreate = new Screening(screeningId);
-            screeningRepository.save(screeningToCreate);
+    public void createScreening(String movieTitle, String roomName, String dateAsString) throws ParseException {
+        Optional<Movie> moviesWithTheGivenTitle = this.movieRepository.findByTitle(movieTitle);
+        Optional<Room> roomsWithTheGivenName = this.roomRepository.findByName(roomName);
+        if (moviesWithTheGivenTitle.isPresent() && roomsWithTheGivenName.isPresent()) {
+            Movie movie = moviesWithTheGivenTitle.get();
+            Room room = roomsWithTheGivenName.get();
+            DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+            Date date = formatter.parse(dateAsString);
+            Optional<Screening> screeningsWithTheGivenId = this.screeningRepository.findById_MovieAndId_RoomAndId_Date(movie, room, date);
+            if (screeningsWithTheGivenId.isEmpty()) {
+                ScreeningId screeningId = new ScreeningId(movie, room, date);
+                Screening screeningToCreate = new Screening(screeningId);
+                screeningRepository.save(screeningToCreate);
+            }
         }
     }
 
-    public void deleteScreening(Movie movie, Room room, Date date) {
-        Optional<Screening> screeningsWithTheGivenId = this.screeningRepository.findById_MovieAndId_RoomAndId_Date(movie, room, date);
-        if (screeningsWithTheGivenId.isPresent()) {
-            Screening screeningToDelete = screeningsWithTheGivenId.get();
-            screeningRepository.delete(screeningToDelete);
+    public void deleteScreening(String movieTitle, String roomName, String dateAsString) throws ParseException {
+        Optional<Movie> moviesWithTheGivenTitle = this.movieRepository.findByTitle(movieTitle);
+        Optional<Room> roomsWithTheGivenName = this.roomRepository.findByName(roomName);
+        if (moviesWithTheGivenTitle.isPresent() && roomsWithTheGivenName.isPresent()) {
+            Movie movie = moviesWithTheGivenTitle.get();
+            Room room = roomsWithTheGivenName.get();
+            DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+            Date date = formatter.parse(dateAsString);
+            Optional<Screening> screeningsWithTheGivenId = this.screeningRepository.findById_MovieAndId_RoomAndId_Date(movie, room, date);
+            if (screeningsWithTheGivenId.isPresent()) {
+                Screening screeningToDelete = screeningsWithTheGivenId.get();
+                screeningRepository.delete(screeningToDelete);
+            }
         }
     }
 
