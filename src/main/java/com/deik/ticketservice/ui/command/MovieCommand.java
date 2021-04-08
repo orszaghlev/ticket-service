@@ -63,7 +63,7 @@ public class MovieCommand {
             }
             else {
                 for (Movie movie : movies) {
-                    System.out.println(String.format("%s (%s, %d)", movie.getTitle(), movie.getGenre(),
+                    System.out.println(String.format("%s (%s, %d minutes)", movie.getTitle(), movie.getGenre(),
                             movie.getRuntime()));
                 }
             }

@@ -17,7 +17,7 @@ public class AccountCommand {
     public void describeAccount() {
         try {
             if (accountService.isAdminSignedIn()) {
-                System.out.println(String.format("Signed in with privileged account %s",
+                System.out.println(String.format("Signed in with privileged account '%s'",
                         accountService.getSignedInAccount().getUsername()));
             }
             else {
