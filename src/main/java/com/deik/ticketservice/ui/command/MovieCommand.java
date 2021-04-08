@@ -60,8 +60,7 @@ public class MovieCommand {
             List<Movie> movies = movieService.listMovies();
             if (movies.isEmpty()) {
                 System.out.println("There are no movies at the moment");
-            }
-            else {
+            } else {
                 for (Movie movie : movies) {
                     System.out.println(String.format("%s (%s, %d minutes)", movie.getTitle(), movie.getGenre(),
                             movie.getRuntime()));

@@ -60,8 +60,7 @@ public class RoomCommand {
             List<Room> rooms = roomService.listRooms();
             if (rooms.isEmpty()) {
                 System.out.println("There are no rooms at the moment");
-            }
-            else {
+            } else {
                 for (Room room : rooms) {
                     System.out.println(String.format("Room %s with %d seats, %d rows and %d columns",
                             room.getName(), (room.getNumberOfRows() * room.getNumberOfCols()), room.getNumberOfRows(),

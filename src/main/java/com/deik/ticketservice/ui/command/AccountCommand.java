@@ -19,8 +19,7 @@ public class AccountCommand {
             if (accountService.isAdminSignedIn()) {
                 System.out.println(String.format("Signed in with privileged account '%s'",
                         accountService.getSignedInAccount().getUsername()));
-            }
-            else {
+            } else {
                 System.out.println("You are not signed in");
             }
         } catch (Exception e) {

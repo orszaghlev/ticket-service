@@ -1,6 +1,9 @@
 package com.deik.ticketservice.entity;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.Table;
+import javax.persistence.Id;
+import javax.persistence.Column;
 import javax.validation.constraints.NotBlank;
 import java.util.Objects;
 
@@ -54,8 +57,12 @@ public class Account {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof Account)) return false;
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof Account)) {
+            return false;
+        }
         Account account = (Account) o;
         return Objects.equals(username, account.username) && Objects.equals(password, account.password);
     }
@@ -67,11 +74,8 @@ public class Account {
 
     @Override
     public String toString() {
-        return "Account{" +
-                ", username='" + username + '\'' +
-                ", password='" + password + '\'' +
-                ", isSigned=" + isSigned +
-                '}';
+        return "Account{" + ", username='" + username + '\'' + ", password='" + password + '\'' + ", isSigned="
+                + isSigned + '}';
     }
 
 }

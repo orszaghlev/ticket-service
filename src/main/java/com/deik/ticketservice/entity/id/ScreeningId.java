@@ -7,7 +7,12 @@ import com.fasterxml.jackson.annotation.JsonIdentityReference;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
-import javax.persistence.*;
+import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
+import javax.persistence.Column;
+import javax.persistence.CascadeType;
+import javax.persistence.Embeddable;
+import javax.persistence.ManyToOne;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.Objects;
@@ -17,15 +22,15 @@ public class ScreeningId implements Serializable {
 
     @ManyToOne(cascade = CascadeType.ALL, optional = false, fetch = FetchType.LAZY)
     @JoinColumn(name = "movie", nullable = false)
-    @JsonIdentityInfo(generator= ObjectIdGenerators.PropertyGenerator.class, property="id")
-    @JsonIdentityReference(alwaysAsId=true)
+    @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
+    @JsonIdentityReference(alwaysAsId = true)
     @JsonProperty("movie")
     private Movie movie;
 
     @ManyToOne(cascade = CascadeType.ALL, optional = false, fetch = FetchType.LAZY)
     @JoinColumn(name = "room", nullable = false)
-    @JsonIdentityInfo(generator= ObjectIdGenerators.PropertyGenerator.class, property="id")
-    @JsonIdentityReference(alwaysAsId=true)
+    @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
+    @JsonIdentityReference(alwaysAsId = true)
     @JsonProperty("room")
     private Room room;
 
@@ -68,8 +73,12 @@ public class ScreeningId implements Serializable {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof ScreeningId)) return false;
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof ScreeningId)) {
+            return false;
+        }
         ScreeningId that = (ScreeningId) o;
         return movie.equals(that.movie) && room.equals(that.room) && date.equals(that.date);
     }

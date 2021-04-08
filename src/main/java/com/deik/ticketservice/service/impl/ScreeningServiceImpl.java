@@ -39,7 +39,8 @@ public class ScreeningServiceImpl implements ScreeningService {
             Room room = roomsWithTheGivenName.get();
             DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm");
             Date date = formatter.parse(dateAsString);
-            Optional<Screening> screeningsWithTheGivenId = this.screeningRepository.findById_MovieAndId_RoomAndId_Date(movie, room, date);
+            Optional<Screening> screeningsWithTheGivenId =
+                    this.screeningRepository.findById_MovieAndId_RoomAndId_Date(movie, room, date);
             if (screeningsWithTheGivenId.isEmpty()) {
                 ScreeningId screeningId = new ScreeningId(movie, room, date);
                 Screening screeningToCreate = new Screening(screeningId);
@@ -56,7 +57,8 @@ public class ScreeningServiceImpl implements ScreeningService {
             Room room = roomsWithTheGivenName.get();
             DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm");
             Date date = formatter.parse(dateAsString);
-            Optional<Screening> screeningsWithTheGivenId = this.screeningRepository.findById_MovieAndId_RoomAndId_Date(movie, room, date);
+            Optional<Screening> screeningsWithTheGivenId =
+                    this.screeningRepository.findById_MovieAndId_RoomAndId_Date(movie, room, date);
             if (screeningsWithTheGivenId.isPresent()) {
                 Screening screeningToDelete = screeningsWithTheGivenId.get();
                 screeningRepository.delete(screeningToDelete);

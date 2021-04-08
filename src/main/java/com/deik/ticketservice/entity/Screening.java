@@ -2,7 +2,9 @@ package com.deik.ticketservice.entity;
 
 import com.deik.ticketservice.entity.id.ScreeningId;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.Table;
+import javax.persistence.EmbeddedId;
 
 @Entity
 @Table(name = "screening")
@@ -29,9 +31,7 @@ public class Screening {
 
     @Override
     public String toString() {
-        return "Screening{" +
-                "id=" + id +
-                '}';
+        return "Screening{" + "id=" + id + '}';
     }
 
 }

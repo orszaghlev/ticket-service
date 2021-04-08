@@ -19,8 +19,7 @@ public class LoginCommand {
         try {
             if (username.equals("admin") && password.equals("admin")) {
                 loginService.signInPrivileged(username, password);
-            }
-            else {
+            } else {
                 System.out.println("Login failed due to incorrect credentials");
             }
         } catch (Exception e) {

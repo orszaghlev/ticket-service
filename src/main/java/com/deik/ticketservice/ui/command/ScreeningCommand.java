@@ -11,6 +11,7 @@ import org.springframework.shell.standard.ShellOption;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 @Slf4j
@@ -28,7 +29,29 @@ public class ScreeningCommand {
                                 @ShellOption String dateAsString) {
         try {
             if (accountService.isAdminSignedIn()) {
-                screeningService.createScreening(movieTitle, roomName, dateAsString);
+                List<Screening> screenings = screeningService.listScreenings();
+                boolean screeningOverlap = false;
+                boolean breakOverlap = false;
+                DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+                Date date = formatter.parse(dateAsString);
+                for (Screening screening : screenings) {
+                    if (screening.getId().getRoom().getName().equals(roomName)
+                            && (date.getTime() - screening.getId().getDate().getTime())
+                            < screening.getId().getMovie().getRuntime() * 60_000L) {
+                        screeningOverlap = true;
+                    } else if (screening.getId().getRoom().getName().equals(roomName) && ((date.getTime()
+                            - screening.getId().getDate().getTime()) + 600_000)
+                            < screening.getId().getMovie().getRuntime() * 60_000L) {
+                        breakOverlap = true;
+                    }
+                }
+                if (screeningOverlap) {
+                    System.out.println("There is an overlapping screening");
+                } else if (breakOverlap) {
+                    System.out.println("This would start in the break period after another screening in this room");
+                } else {
+                    screeningService.createScreening(movieTitle, roomName, dateAsString);
+                }
             }
         } catch (Exception e) {
             log.error("Failed to create screening", e);
@@ -53,8 +76,7 @@ public class ScreeningCommand {
             List<Screening> screenings = screeningService.listScreenings();
             if (screenings.isEmpty()) {
                 System.out.println("There are no screenings");
-            }
-            else {
+            } else {
                 DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm");
                 for (Screening screening : screenings) {
                     System.out.println(String.format("%s (,  minutes), screened in room %s, at %s",

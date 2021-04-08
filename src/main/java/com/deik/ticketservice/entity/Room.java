@@ -1,6 +1,12 @@
 package com.deik.ticketservice.entity;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.Table;
+import javax.persistence.Id;
+import javax.persistence.Column;
+import javax.persistence.OneToMany;
+import javax.persistence.FetchType;
+import javax.persistence.CascadeType;
 import java.util.Set;
 
 @Entity
@@ -62,11 +68,8 @@ public class Room {
 
     @Override
     public String toString() {
-        return "Room{" +
-                ", name='" + name + '\'' +
-                ", numberOfRows=" + numberOfRows +
-                ", numberOfCols=" + numberOfCols +
-                '}';
+        return "Room{" + ", name='" + name + '\'' + ", numberOfRows=" + numberOfRows + ", numberOfCols=" + numberOfCols
+                + '}';
     }
 
 }
