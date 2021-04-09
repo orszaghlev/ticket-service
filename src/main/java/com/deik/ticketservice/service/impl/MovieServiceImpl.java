@@ -49,4 +49,13 @@ public class MovieServiceImpl implements MovieService {
         return movies;
     }
 
+    public int getRuntimeByTitle(String title) {
+        Optional<Movie> moviesWithTheGivenTitle = this.movieRepository.findByTitle(title);
+        if (moviesWithTheGivenTitle.isPresent()) {
+            Movie movie = moviesWithTheGivenTitle.get();
+            return movie.getRuntime();
+        }
+        return 0;
+    }
+
 }

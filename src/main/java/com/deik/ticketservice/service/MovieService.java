@@ -14,4 +14,7 @@ public interface MovieService {
 
     List<Movie> listMovies();
 
+    int getRuntimeByTitle(String title);
+
+
 }
