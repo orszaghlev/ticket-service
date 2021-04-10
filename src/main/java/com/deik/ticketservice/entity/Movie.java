@@ -1,5 +1,7 @@
 package com.deik.ticketservice.entity;
 
+import org.hibernate.annotations.Proxy;
+
 import javax.persistence.Entity;
 import javax.persistence.Table;
 import javax.persistence.Id;
@@ -11,6 +13,7 @@ import java.util.Set;
 
 @Entity
 @Table(name = "movie")
+@Proxy(lazy = false)
 public class Movie {
 
     @Id
