@@ -46,9 +46,8 @@ public class ScreeningCommand {
                     Date endOfNewScreening = new Date(newScreeningSum);
                     Date endOfBreak = new Date(existingScreeningSum + 600_000L);
                     if (screening.getId().getRoom().getName().equals(roomName)) {
-                        //(ÚJ ELEJE BEFORE RÉGI VÉGE) VAGY (RÉGI ELEJE BEFORE ÚJ VÉGE)
                         if (date.before(endOfExistingScreening)
-                                || screening.getId().getDate().before(endOfNewScreening)) {
+                                && screening.getId().getDate().before(endOfNewScreening)) {
                             screeningOverlap = true;
                         } else if (date.before(endOfBreak) && date.after(endOfExistingScreening)) {
                             breakOverlap = true;
