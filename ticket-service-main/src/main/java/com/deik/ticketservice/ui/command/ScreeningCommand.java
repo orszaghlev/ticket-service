@@ -19,14 +19,19 @@ import java.util.List;
 @ShellComponent
 public class ScreeningCommand {
 
-    @Autowired
-    private ScreeningService screeningService;
+    private final ScreeningService screeningService;
+
+    private final MovieService movieService;
+
+    private final AccountService accountService;
 
     @Autowired
-    private MovieService movieService;
-
-    @Autowired
-    private AccountService accountService;
+    public ScreeningCommand(ScreeningService screeningService, MovieService movieService,
+                            AccountService accountService) {
+        this.screeningService = screeningService;
+        this.movieService = movieService;
+        this.accountService = accountService;
+    }
 
     @ShellMethod(value = "Create screening", key = "create screening")
     public void createScreening(@ShellOption String movieTitle, @ShellOption String roomName,
@@ -36,20 +41,17 @@ public class ScreeningCommand {
                 List<Screening> screenings = screeningService.listScreenings();
                 boolean screeningOverlap = false;
                 boolean breakOverlap = false;
-                DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm");
-                Date date = formatter.parse(dateAsString);
+                Date date = new SimpleDateFormat("yyyy-MM-dd HH:mm").parse(dateAsString);
                 for (Screening screening : screenings) {
                     long existingScreeningSum = screening.getId().getDate().getTime()
                             + (screening.getId().getMovie().getRuntime() * 60_000L);
                     long newScreeningSum = date.getTime() + (movieService.getRuntimeByTitle(movieTitle) * 60_000L);
-                    Date endOfExistingScreening = new Date(existingScreeningSum);
-                    Date endOfNewScreening = new Date(newScreeningSum);
-                    Date endOfBreak = new Date(existingScreeningSum + 600_000L);
                     if (screening.getId().getRoom().getName().equals(roomName)) {
-                        if (date.before(endOfExistingScreening)
-                                && screening.getId().getDate().before(endOfNewScreening)) {
+                        if (date.before(new Date(existingScreeningSum))
+                                && screening.getId().getDate().before(new Date(newScreeningSum))) {
                             screeningOverlap = true;
-                        } else if (date.before(endOfBreak) && date.after(endOfExistingScreening)) {
+                        } else if (date.before(new Date(existingScreeningSum + 600_000L))
+                                && date.after(new Date(existingScreeningSum))) {
                             breakOverlap = true;
                         }
                     }
@@ -86,12 +88,11 @@ public class ScreeningCommand {
             if (screenings.isEmpty()) {
                 System.out.println("There are no screenings");
             } else {
-                DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm");
                 for (Screening screening : screenings) {
-                    System.out.println(String.format("%s (%s, %d minutes), screened in room %s, at %s",
+                    System.out.printf("%s (%s, %d minutes), screened in room %s, at %s%n",
                             screening.getId().getMovie().getTitle(), screening.getId().getMovie().getGenre(),
                             screening.getId().getMovie().getRuntime(), screening.getId().getRoom().getName(),
-                            formatter.format(screening.getId().getDate())));
+                            new SimpleDateFormat("yyyy-MM-dd HH:mm").format(screening.getId().getDate()));
                 }
             }
         } catch (Exception e) {

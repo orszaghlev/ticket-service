@@ -7,12 +7,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
+import java.util.Optional;
 
 @Service
 public class AccountServiceImpl implements AccountService {
 
+    private final AccountRepository accountRepository;
+
     @Autowired
-    private AccountRepository accountRepository;
+    public AccountServiceImpl(AccountRepository accountRepository) {
+        this.accountRepository = accountRepository;
+    }
 
     @PostConstruct
     public void init() {
@@ -21,13 +26,19 @@ public class AccountServiceImpl implements AccountService {
         }
     }
 
+    @Override
     public boolean isAdminSignedIn() {
-        Account adminAccount = accountRepository.findByUsernameAndPassword("admin", "admin").get();
-        return adminAccount.isSigned();
+        if (accountRepository.findByUsernameAndPassword("admin", "admin").isPresent()) {
+            Account adminAccount = accountRepository.findByUsernameAndPassword("admin", "admin").get();
+            return adminAccount.isSigned();
+        }
+        return false;
     }
 
+    @Override
     public Account getSignedInAccount() {
-        return accountRepository.findByisSigned(true);
+        Optional<Account> signedInAccount = accountRepository.findByisSigned(true);
+        return signedInAccount.orElse(null);
     }
 
 }

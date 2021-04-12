@@ -15,11 +15,15 @@ import java.util.List;
 @ShellComponent
 public class MovieCommand {
 
-    @Autowired
-    private MovieService movieService;
+    private final MovieService movieService;
+
+    private final AccountService accountService;
 
     @Autowired
-    private AccountService accountService;
+    public MovieCommand(MovieService movieService, AccountService accountService) {
+        this.movieService = movieService;
+        this.accountService = accountService;
+    }
 
     @ShellMethod(value = "Create movie", key = "create movie")
     public void createMovie(@ShellOption String title, @ShellOption String genre, @ShellOption int runtime) {
@@ -62,8 +66,7 @@ public class MovieCommand {
                 System.out.println("There are no movies at the moment");
             } else {
                 for (Movie movie : movies) {
-                    System.out.println(String.format("%s (%s, %d minutes)", movie.getTitle(), movie.getGenre(),
-                            movie.getRuntime()));
+                    System.out.printf("%s (%s, %d minutes)%n", movie.getTitle(), movie.getGenre(), movie.getRuntime());
                 }
             }
         } catch (Exception e) {

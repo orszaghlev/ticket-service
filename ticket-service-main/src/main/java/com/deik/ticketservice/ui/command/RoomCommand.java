@@ -15,11 +15,15 @@ import java.util.List;
 @ShellComponent
 public class RoomCommand {
 
-    @Autowired
-    private RoomService roomService;
+    private final RoomService roomService;
+
+    private final AccountService accountService;
 
     @Autowired
-    private AccountService accountService;
+    public RoomCommand(RoomService roomService, AccountService accountService) {
+        this.roomService = roomService;
+        this.accountService = accountService;
+    }
 
     @ShellMethod(value = "Create room", key = "create room")
     public void createRoom(@ShellOption String name, @ShellOption int numberOfRows, @ShellOption int numberOfCols) {
@@ -62,9 +66,9 @@ public class RoomCommand {
                 System.out.println("There are no rooms at the moment");
             } else {
                 for (Room room : rooms) {
-                    System.out.println(String.format("Room %s with %d seats, %d rows and %d columns",
-                            room.getName(), (room.getNumberOfRows() * room.getNumberOfCols()), room.getNumberOfRows(),
-                            room.getNumberOfCols()));
+                    System.out.printf("Room %s with %d seats, %d rows and %d columns%n", room.getName(),
+                            (room.getNumberOfRows() * room.getNumberOfCols()), room.getNumberOfRows(),
+                            room.getNumberOfCols());
                 }
             }
         } catch (Exception e) {

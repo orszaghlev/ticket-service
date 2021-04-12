@@ -10,15 +10,19 @@ import org.springframework.shell.standard.ShellMethod;
 @ShellComponent
 public class AccountCommand {
 
+    private final AccountService accountService;
+
     @Autowired
-    private AccountService accountService;
+    public AccountCommand(AccountService accountService) {
+        this.accountService = accountService;
+    }
 
     @ShellMethod(value = "Describe account", key = "describe account")
     public void describeAccount() {
         try {
             if (accountService.isAdminSignedIn()) {
-                System.out.println(String.format("Signed in with privileged account '%s'",
-                        accountService.getSignedInAccount().getUsername()));
+                System.out.printf("Signed in with privileged account '%s'%n",
+                        accountService.getSignedInAccount().getUsername());
             } else {
                 System.out.println("You are not signed in");
             }

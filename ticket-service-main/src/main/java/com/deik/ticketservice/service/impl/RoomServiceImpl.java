@@ -8,26 +8,29 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class RoomServiceImpl implements RoomService {
 
-    @Autowired
-    private RoomRepository roomRepository;
+    private final RoomRepository roomRepository;
 
+    @Autowired
+    public RoomServiceImpl(RoomRepository roomRepository) {
+        this.roomRepository = roomRepository;
+    }
+
+    @Override
     public void createRoom(String name, int numberOfRows, int numberOfCols) {
-        Optional<Room> roomsWithTheGivenName = this.roomRepository.findByName(name);
-        if (roomsWithTheGivenName.isEmpty()) {
+        if (roomRepository.findByName(name).isEmpty()) {
             Room roomToCreate = new Room(name, numberOfRows, numberOfCols);
             roomRepository.save(roomToCreate);
         }
     }
 
+    @Override
     public void updateRoom(String name, int numberOfRows, int numberOfCols) {
-        Optional<Room> roomsWithTheGivenName = this.roomRepository.findByName(name);
-        if (roomsWithTheGivenName.isPresent()) {
-            Room roomToUpdate = roomsWithTheGivenName.get();
+        if (roomRepository.findByName(name).isPresent()) {
+            Room roomToUpdate = roomRepository.findByName(name).get();
             roomToUpdate.setName(name);
             roomToUpdate.setNumberOfRows(numberOfRows);
             roomToUpdate.setNumberOfCols(numberOfCols);
@@ -35,17 +38,18 @@ public class RoomServiceImpl implements RoomService {
         }
     }
 
+    @Override
     public void deleteRoom(String name) {
-        Optional<Room> roomsWithTheGivenName = this.roomRepository.findByName(name);
-        if (roomsWithTheGivenName.isPresent()) {
-            Room roomToDelete = roomsWithTheGivenName.get();
+        if (roomRepository.findByName(name).isPresent()) {
+            Room roomToDelete = roomRepository.findByName(name).get();
             roomRepository.delete(roomToDelete);
         }
     }
 
+    @Override
     public List<Room> listRooms() {
         List<Room> rooms = new ArrayList<>();
-        roomRepository.findAll().forEach(room -> rooms.add(room));
+        roomRepository.findAll().forEach(rooms::add);
         return rooms;
     }
 

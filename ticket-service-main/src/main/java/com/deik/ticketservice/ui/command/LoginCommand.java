@@ -11,8 +11,12 @@ import org.springframework.shell.standard.ShellOption;
 @ShellComponent
 public class LoginCommand {
 
+    private final LoginService loginService;
+
     @Autowired
-    private LoginService loginService;
+    public LoginCommand(LoginService loginService) {
+        this.loginService = loginService;
+    }
 
     @ShellMethod(value = "Sign in privileged", key = "sign in privileged")
     public void signInPrivileged(@ShellOption String username, @ShellOption String password) {

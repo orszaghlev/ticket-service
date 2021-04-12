@@ -9,21 +9,30 @@ import org.springframework.stereotype.Service;
 @Service
 public class LoginServiceImpl implements LoginService {
 
-    @Autowired
-    private AccountRepository accountRepository;
+    private final AccountRepository accountRepository;
 
+    @Autowired
+    public LoginServiceImpl(AccountRepository accountRepository) {
+        this.accountRepository = accountRepository;
+    }
+
+    @Override
     public void signInPrivileged(String username, String password) {
-        if (username.equals("admin") && password.equals("admin")) {
+        if (username.equals("admin") && password.equals("admin")
+                && accountRepository.findByUsernameAndPassword(username, password).isPresent()) {
             Account adminAccount = accountRepository.findByUsernameAndPassword(username, password).get();
             adminAccount.setIsSigned(true);
             accountRepository.save(adminAccount);
         }
     }
 
+    @Override
     public void signOut() {
-        Account signedInAccount = accountRepository.findByisSigned(true);
-        signedInAccount.setIsSigned(false);
-        accountRepository.save(signedInAccount);
+        if (accountRepository.findByisSigned(true).isPresent()) {
+            Account signedInAccount = accountRepository.findByisSigned(true).get();
+            signedInAccount.setIsSigned(false);
+            accountRepository.save(signedInAccount);
+        }
     }
 
 }
