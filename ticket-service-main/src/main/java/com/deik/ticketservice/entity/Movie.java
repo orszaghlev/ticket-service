@@ -9,6 +9,7 @@ import javax.persistence.Column;
 import javax.persistence.OneToMany;
 import javax.persistence.FetchType;
 import javax.persistence.CascadeType;
+import java.util.Objects;
 import java.util.Set;
 
 @Entity
@@ -67,6 +68,24 @@ public class Movie {
 
     public void setScreenings(Set<Screening> screenings) {
         this.screenings = screenings;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof Movie)) {
+            return false;
+        }
+        Movie movie = (Movie) o;
+        return getRuntime() == movie.getRuntime() && getTitle().equals(movie.getTitle())
+                && getGenre().equals(movie.getGenre());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getTitle(), getGenre(), getRuntime());
     }
 
     @Override

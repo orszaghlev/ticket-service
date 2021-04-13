@@ -7,6 +7,7 @@ import javax.persistence.Column;
 import javax.persistence.OneToMany;
 import javax.persistence.FetchType;
 import javax.persistence.CascadeType;
+import java.util.Objects;
 import java.util.Set;
 
 @Entity
@@ -64,6 +65,24 @@ public class Room {
 
     public void setScreenings(Set<Screening> screenings) {
         this.screenings = screenings;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof Room)) {
+            return false;
+        }
+        Room room = (Room) o;
+        return getNumberOfRows() == room.getNumberOfRows() && getNumberOfCols() == room.getNumberOfCols()
+                && getName().equals(room.getName());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getName(), getNumberOfRows(), getNumberOfCols());
     }
 
     @Override

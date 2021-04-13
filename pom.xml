@@ -17,7 +17,7 @@
 
     <modules>
         <module>ticket-service-main</module>
-        <module>ticket-service-test</module>
+        <module>ticket-service-acceptance-tests</module>
     </modules>
 
     <name>ticket-service</name>

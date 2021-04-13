@@ -6,7 +6,7 @@ import com.deik.ticketservice.service.RoomService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 @Service
@@ -20,35 +20,41 @@ public class RoomServiceImpl implements RoomService {
     }
 
     @Override
-    public void createRoom(String name, int numberOfRows, int numberOfCols) {
+    public Room createRoom(String name, int numberOfRows, int numberOfCols) {
         if (roomRepository.findByName(name).isEmpty()) {
             Room roomToCreate = new Room(name, numberOfRows, numberOfCols);
             roomRepository.save(roomToCreate);
+            return roomToCreate;
         }
+        return null;
     }
 
     @Override
-    public void updateRoom(String name, int numberOfRows, int numberOfCols) {
+    public Room updateRoom(String name, int numberOfRows, int numberOfCols) {
         if (roomRepository.findByName(name).isPresent()) {
             Room roomToUpdate = roomRepository.findByName(name).get();
             roomToUpdate.setName(name);
             roomToUpdate.setNumberOfRows(numberOfRows);
             roomToUpdate.setNumberOfCols(numberOfCols);
             roomRepository.save(roomToUpdate);
+            return roomToUpdate;
         }
+        return null;
     }
 
     @Override
-    public void deleteRoom(String name) {
+    public Room deleteRoom(String name) {
         if (roomRepository.findByName(name).isPresent()) {
             Room roomToDelete = roomRepository.findByName(name).get();
             roomRepository.delete(roomToDelete);
+            return roomToDelete;
         }
+        return null;
     }
 
     @Override
     public List<Room> listRooms() {
-        List<Room> rooms = new ArrayList<>();
+        List<Room> rooms = new LinkedList<>();
         roomRepository.findAll().forEach(rooms::add);
         return rooms;
     }

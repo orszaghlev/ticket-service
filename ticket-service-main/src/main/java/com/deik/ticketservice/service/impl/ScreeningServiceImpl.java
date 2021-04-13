@@ -14,7 +14,7 @@ import org.springframework.stereotype.Service;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 @Service
@@ -64,7 +64,7 @@ public class ScreeningServiceImpl implements ScreeningService {
 
     @Override
     public List<Screening> listScreenings() {
-        List<Screening> screenings = new ArrayList<>();
+        List<Screening> screenings = new LinkedList<>();
         screeningRepository.findAll().forEach(screenings::add);
         return screenings;
     }
