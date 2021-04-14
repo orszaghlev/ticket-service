@@ -26,52 +26,61 @@ public class MovieCommand {
     }
 
     @ShellMethod(value = "Create movie", key = "create movie")
-    public void createMovie(@ShellOption String title, @ShellOption String genre, @ShellOption int runtime) {
+    public String createMovie(@ShellOption String title, @ShellOption String genre, @ShellOption int runtime) {
         try {
             if (accountService.isAdminSignedIn()) {
                 movieService.createMovie(title, genre, runtime);
+                return "Created movie";
             }
         } catch (Exception e) {
             log.error("Failed to create movie", e);
         }
+        return "";
     }
 
     @ShellMethod(value = "Update movie", key = "update movie")
-    public void updateMovie(@ShellOption String title, @ShellOption String genre, @ShellOption int runtime) {
+    public String updateMovie(@ShellOption String title, @ShellOption String genre, @ShellOption int runtime) {
         try {
             if (accountService.isAdminSignedIn()) {
                 movieService.updateMovie(title, genre, runtime);
+                return "Updated movie";
             }
         } catch (Exception e) {
             log.error("Failed to update movie", e);
         }
+        return "";
     }
 
     @ShellMethod(value = "Delete movie", key = "delete movie")
-    public void deleteMovie(@ShellOption String title) {
+    public String deleteMovie(@ShellOption String title) {
         try {
             if (accountService.isAdminSignedIn()) {
                 movieService.deleteMovie(title);
+                return "Deleted movie";
             }
         } catch (Exception e) {
             log.error("Failed to delete movie", e);
         }
+        return "";
     }
 
     @ShellMethod(value = "List movies", key = "list movies")
-    public void listMovies() {
+    public List<Movie> listMovies() {
         try {
             List<Movie> movies = movieService.listMovies();
             if (movies.isEmpty()) {
                 System.out.println("There are no movies at the moment");
+                return movies;
             } else {
                 for (Movie movie : movies) {
                     System.out.printf("%s (%s, %d minutes)%n", movie.getTitle(), movie.getGenre(), movie.getRuntime());
                 }
+                return movies;
             }
         } catch (Exception e) {
             log.error("Failed to list movies", e);
         }
+        return null;
     }
 
 }

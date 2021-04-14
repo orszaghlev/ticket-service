@@ -18,17 +18,18 @@ public class AccountCommand {
     }
 
     @ShellMethod(value = "Describe account", key = "describe account")
-    public void describeAccount() {
+    public String describeAccount() {
         try {
             if (accountService.isAdminSignedIn()) {
-                System.out.printf("Signed in with privileged account '%s'%n",
+                return String.format("Signed in with privileged account '%s'",
                         accountService.getSignedInAccount().getUsername());
             } else {
-                System.out.println("You are not signed in");
+                return "You are not signed in";
             }
         } catch (Exception e) {
             log.error("Failed to describe account", e);
         }
+        return "";
     }
 
 }

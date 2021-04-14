@@ -20,36 +20,30 @@ public class RoomServiceImpl implements RoomService {
     }
 
     @Override
-    public Room createRoom(String name, int numberOfRows, int numberOfCols) {
+    public void createRoom(String name, int numberOfRows, int numberOfCols) {
         if (roomRepository.findByName(name).isEmpty()) {
             Room roomToCreate = new Room(name, numberOfRows, numberOfCols);
             roomRepository.save(roomToCreate);
-            return roomToCreate;
         }
-        return null;
     }
 
     @Override
-    public Room updateRoom(String name, int numberOfRows, int numberOfCols) {
+    public void updateRoom(String name, int numberOfRows, int numberOfCols) {
         if (roomRepository.findByName(name).isPresent()) {
             Room roomToUpdate = roomRepository.findByName(name).get();
             roomToUpdate.setName(name);
             roomToUpdate.setNumberOfRows(numberOfRows);
             roomToUpdate.setNumberOfCols(numberOfCols);
             roomRepository.save(roomToUpdate);
-            return roomToUpdate;
         }
-        return null;
     }
 
     @Override
-    public Room deleteRoom(String name) {
+    public void deleteRoom(String name) {
         if (roomRepository.findByName(name).isPresent()) {
             Room roomToDelete = roomRepository.findByName(name).get();
             roomRepository.delete(roomToDelete);
-            return roomToDelete;
         }
-        return null;
     }
 
     @Override

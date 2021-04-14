@@ -19,13 +19,29 @@ public class MovieServiceImplTest {
         // Given
         MovieRepository movieRepository = Mockito.mock(MovieRepository.class);
         underTest = new MovieServiceImpl(movieRepository);
-        Movie expected = new Movie("Sátántangó", "drama", 450);
+        Movie created = new Movie("Sátántangó", "drama", 450);
+        Mockito.when(movieRepository.findByTitle("Sátántangó")).thenReturn(java.util.Optional.empty());
 
         // When
-        Movie actual = underTest.createMovie("Sátántangó", "drama", 450);
+        underTest.createMovie("Sátántangó", "drama", 450);
 
         // Then
-        Assertions.assertEquals(expected, actual);
+        Mockito.verify(movieRepository, Mockito.times(1)).save(created);
+    }
+
+    @Test
+    public void testDeleteMovieShouldDeleteMovieWhenTheRepositoryContainsThatMovie() {
+        // Given
+        MovieRepository movieRepository = Mockito.mock(MovieRepository.class);
+        underTest = new MovieServiceImpl(movieRepository);
+        Movie deleted = new Movie("Sátántangó", "drama", 450);
+        Mockito.when(movieRepository.findByTitle("Sátántangó")).thenReturn(java.util.Optional.of(deleted));
+
+        // When
+        underTest.deleteMovie("Sátántangó");
+
+        // Then
+        Mockito.verify(movieRepository, Mockito.times(1)).delete(deleted);
     }
 
     @Test

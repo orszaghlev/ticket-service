@@ -6,11 +6,11 @@ import java.util.List;
 
 public interface RoomService {
 
-    Room createRoom(String name, int numberOfRows, int numberOfCols);
+    void createRoom(String name, int numberOfRows, int numberOfCols);
 
-    Room updateRoom(String name, int numberOfRows, int numberOfCols);
+    void updateRoom(String name, int numberOfRows, int numberOfCols);
 
-    Room deleteRoom(String name);
+    void deleteRoom(String name);
 
     List<Room> listRooms();
 

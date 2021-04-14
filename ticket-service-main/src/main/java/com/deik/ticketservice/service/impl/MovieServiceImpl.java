@@ -20,36 +20,30 @@ public class MovieServiceImpl implements MovieService {
     }
 
     @Override
-    public Movie createMovie(String title, String genre, int runtime) {
+    public void createMovie(String title, String genre, int runtime) {
         if (movieRepository.findByTitle(title).isEmpty()) {
             Movie movieToCreate = new Movie(title, genre, runtime);
             movieRepository.save(movieToCreate);
-            return movieToCreate;
         }
-        return null;
     }
 
     @Override
-    public Movie updateMovie(String title, String genre, int runtime) {
+    public void updateMovie(String title, String genre, int runtime) {
         if (movieRepository.findByTitle(title).isPresent()) {
             Movie movieToUpdate = movieRepository.findByTitle(title).get();
             movieToUpdate.setTitle(title);
             movieToUpdate.setGenre(genre);
             movieToUpdate.setRuntime(runtime);
             movieRepository.save(movieToUpdate);
-            return movieToUpdate;
         }
-        return null;
     }
 
     @Override
-    public Movie deleteMovie(String title) {
+    public void deleteMovie(String title) {
         if (movieRepository.findByTitle(title).isPresent()) {
             Movie movieToDelete = movieRepository.findByTitle(title).get();
             movieRepository.delete(movieToDelete);
-            return movieToDelete;
         }
-        return null;
     }
 
     @Override
