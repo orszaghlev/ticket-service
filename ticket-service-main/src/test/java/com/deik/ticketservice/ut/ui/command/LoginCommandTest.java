@@ -39,7 +39,7 @@ public class LoginCommandTest {
     }
 
     @Test
-    public void testSignOutShouldSignOut() {
+    public void testSignOutShouldSignOutUser() {
         // Given
         LoginService loginService = Mockito.mock(LoginService.class);
         underTest = new LoginCommand(loginService);

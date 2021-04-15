@@ -65,24 +65,21 @@ public class RoomCommand {
     }
 
     @ShellMethod(value = "List rooms", key = "list rooms")
-    public List<Room> listRooms() {
+    public void listRooms() {
         try {
             List<Room> rooms = roomService.listRooms();
             if (rooms.isEmpty()) {
                 System.out.println("There are no rooms at the moment");
-                return rooms;
             } else {
                 for (Room room : rooms) {
                     System.out.printf("Room %s with %d seats, %d rows and %d columns%n", room.getName(),
                             (room.getNumberOfRows() * room.getNumberOfCols()), room.getNumberOfRows(),
                             room.getNumberOfCols());
                 }
-                return rooms;
             }
         } catch (Exception e) {
             log.error("Failed to list rooms", e);
         }
-        return null;
     }
 
 }

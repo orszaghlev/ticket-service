@@ -1,17 +1,11 @@
 package com.deik.ticketservice.ut.ui.command;
 
-import com.deik.ticketservice.entity.Movie;
-import com.deik.ticketservice.entity.Room;
 import com.deik.ticketservice.service.AccountService;
-import com.deik.ticketservice.service.MovieService;
 import com.deik.ticketservice.service.RoomService;
-import com.deik.ticketservice.ui.command.MovieCommand;
 import com.deik.ticketservice.ui.command.RoomCommand;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
-
-import java.util.List;
 
 public class RoomCommandTest {
 
@@ -123,21 +117,6 @@ public class RoomCommandTest {
         Assertions.assertEquals(expected, actual);
         Mockito.verify(accountService).isAdminSignedIn();
         Mockito.verifyNoMoreInteractions(accountService);
-    }
-
-    @Test
-    public void testListRooms() {
-        // Given
-        RoomService roomService = Mockito.mock(RoomService.class);
-        AccountService accountService = Mockito.mock(AccountService.class);
-        underTest = new RoomCommand(roomService, accountService);
-        List<Room> expected = roomService.listRooms();
-
-        // When
-        List<Room> actual = underTest.listRooms();
-
-        // Then
-        Assertions.assertEquals(expected, actual);
     }
 
 }

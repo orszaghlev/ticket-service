@@ -13,7 +13,7 @@ public class ScreeningCommandTest {
     private ScreeningCommand underTest;
 
     @Test
-    public void testCreateScreeningShouldCreateScreeningWhenAdminIsSignedInAndOverlapCannotHappen() {
+    public void testCreateScreeningShouldCreateScreeningWhenAdminIsSignedInAndNoOverlapOccurs() {
         // Given
         ScreeningService screeningService = Mockito.mock(ScreeningService.class);
         MovieService movieService = Mockito.mock(MovieService.class);

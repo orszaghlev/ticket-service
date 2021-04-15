@@ -15,7 +15,7 @@ public class RoomServiceImplTest {
     private RoomServiceImpl underTest;
 
     @Test
-    public void testCreateRoomShouldCreateARoomWhenTheRoomIsNotInTheRepository() {
+    public void testCreateRoomShouldCreateRoomWhenTheRoomIsNotInTheRepository() {
         // Given
         RoomRepository roomRepository = Mockito.mock(RoomRepository.class);
         underTest = new RoomServiceImpl(roomRepository);
@@ -30,7 +30,26 @@ public class RoomServiceImplTest {
     }
 
     @Test
-    public void testDeleteRoomShouldDeleteRoomWhenTheRepositoryContainsThatRoom() {
+    public void testUpdateRoomShouldUpdateRoomWhenTheOriginalRoomIsInTheRepository() {
+        // Given
+        RoomRepository roomRepository = Mockito.mock(RoomRepository.class);
+        underTest = new RoomServiceImpl(roomRepository);
+        Room existing = new Room("Pedersoli", 20, 1);
+        Mockito.when(roomRepository.findByName("Pedersoli")).thenReturn(java.util.Optional.of(existing));
+        Mockito.when(roomRepository.save(existing)).thenReturn(existing);
+
+        // When
+        underTest.updateRoom("Pedersoli", 10, 10);
+
+        // Then
+        Mockito.verify(roomRepository, Mockito.times(1)).save(existing);
+        Assertions.assertEquals("Pedersoli", existing.getName());
+        Assertions.assertEquals(10, existing.getNumberOfRows());
+        Assertions.assertEquals(10, existing.getNumberOfCols());
+    }
+
+    @Test
+    public void testDeleteRoomShouldDeleteRoomWhenTheRepositoryContainsTheRoom() {
         // Given
         RoomRepository roomRepository = Mockito.mock(RoomRepository.class);
         underTest = new RoomServiceImpl(roomRepository);

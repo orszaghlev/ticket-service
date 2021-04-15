@@ -65,22 +65,19 @@ public class MovieCommand {
     }
 
     @ShellMethod(value = "List movies", key = "list movies")
-    public List<Movie> listMovies() {
+    public void listMovies() {
         try {
             List<Movie> movies = movieService.listMovies();
             if (movies.isEmpty()) {
                 System.out.println("There are no movies at the moment");
-                return movies;
             } else {
                 for (Movie movie : movies) {
                     System.out.printf("%s (%s, %d minutes)%n", movie.getTitle(), movie.getGenre(), movie.getRuntime());
                 }
-                return movies;
             }
         } catch (Exception e) {
             log.error("Failed to list movies", e);
         }
-        return null;
     }
 
 }

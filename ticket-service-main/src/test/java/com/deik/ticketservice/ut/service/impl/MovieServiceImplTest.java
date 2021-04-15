@@ -15,7 +15,7 @@ public class MovieServiceImplTest {
     private MovieServiceImpl underTest;
 
     @Test
-    public void testCreateMovieShouldCreateAMovieWhenTheMovieIsNotInTheRepository() {
+    public void testCreateMovieShouldCreateMovieWhenTheMovieIsNotInTheRepository() {
         // Given
         MovieRepository movieRepository = Mockito.mock(MovieRepository.class);
         underTest = new MovieServiceImpl(movieRepository);
@@ -30,7 +30,26 @@ public class MovieServiceImplTest {
     }
 
     @Test
-    public void testDeleteMovieShouldDeleteMovieWhenTheRepositoryContainsThatMovie() {
+    public void testUpdateMovieShouldUpdateMovieWhenTheOriginalMovieIsInTheRepository() {
+        // Given
+        MovieRepository movieRepository = Mockito.mock(MovieRepository.class);
+        underTest = new MovieServiceImpl(movieRepository);
+        Movie existing = new Movie("Sátántangó", "dram", 45);
+        Mockito.when(movieRepository.findByTitle("Sátántangó")).thenReturn(java.util.Optional.of(existing));
+        Mockito.when(movieRepository.save(existing)).thenReturn(existing);
+
+        // When
+        underTest.updateMovie("Sátántangó", "drama", 450);
+
+        // Then
+        Mockito.verify(movieRepository, Mockito.times(1)).save(existing);
+        Assertions.assertEquals("Sátántangó", existing.getTitle());
+        Assertions.assertEquals("drama", existing.getGenre());
+        Assertions.assertEquals(450, existing.getRuntime());
+    }
+
+    @Test
+    public void testDeleteMovieShouldDeleteMovieWhenTheRepositoryContainsTheMovie() {
         // Given
         MovieRepository movieRepository = Mockito.mock(MovieRepository.class);
         underTest = new MovieServiceImpl(movieRepository);
@@ -56,6 +75,37 @@ public class MovieServiceImplTest {
 
         // Then
         Assertions.assertTrue(underTest.listMovies().size() > 0);
+    }
+
+    @Test
+    public void testGetRuntimeByTitleShouldGetRuntimeWhenTheRepositoryContainsTheMovieWithTheGivenTitle() {
+        // Given
+        MovieRepository movieRepository = Mockito.mock(MovieRepository.class);
+        underTest = new MovieServiceImpl(movieRepository);
+        Movie existing = new Movie("Sátántangó", "drama", 450);
+        Mockito.when(movieRepository.findByTitle("Sátántangó")).thenReturn(java.util.Optional.of(existing));
+        int expected = existing.getRuntime();
+
+        // When
+        int actual = underTest.getRuntimeByTitle("Sátántangó");
+
+        // Then
+        Assertions.assertEquals(expected, actual);
+    }
+
+    @Test
+    public void testGetRuntimeByTitleShouldGetZeroWhenTheRepositoryDoesNotContainTheMovieWithTheGivenTitle() {
+        // Given
+        MovieRepository movieRepository = Mockito.mock(MovieRepository.class);
+        underTest = new MovieServiceImpl(movieRepository);
+        Mockito.when(movieRepository.findByTitle("Sátántangó")).thenReturn(java.util.Optional.empty());
+        int expected = 0;
+
+        // When
+        int actual = underTest.getRuntimeByTitle("Sátántangó");
+
+        // Then
+        Assertions.assertEquals(expected, actual);
     }
 
 }
