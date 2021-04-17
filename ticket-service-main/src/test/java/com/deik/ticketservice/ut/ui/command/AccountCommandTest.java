@@ -27,7 +27,9 @@ public class AccountCommandTest {
 
         // Then
         Assertions.assertEquals(expected, actual);
-        Mockito.verify(accountService).isAdminSignedIn();
+        Mockito.verify(accountService, Mockito.times(1)).isAdminSignedIn();
+        Mockito.verify(accountService, Mockito.times(2)).getSignedInAccount();
+        Mockito.verifyNoMoreInteractions(accountService);
     }
 
     @Test
@@ -36,8 +38,6 @@ public class AccountCommandTest {
         AccountService accountService = Mockito.mock(AccountService.class);
         underTest = new AccountCommand(accountService);
         Mockito.when(accountService.isAdminSignedIn()).thenReturn(false);
-        Account account = Mockito.mock(Account.class);
-        Mockito.when(accountService.getSignedInAccount()).thenReturn(account);
         String expected = "You are not signed in";
 
         // When
@@ -45,7 +45,8 @@ public class AccountCommandTest {
 
         // Then
         Assertions.assertEquals(expected, actual);
-        Mockito.verify(accountService).isAdminSignedIn();
+        Mockito.verify(accountService, Mockito.times(1)).isAdminSignedIn();
+        Mockito.verifyNoMoreInteractions(accountService);
     }
 
 }

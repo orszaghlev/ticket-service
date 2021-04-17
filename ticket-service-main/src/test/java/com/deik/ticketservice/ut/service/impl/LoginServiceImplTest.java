@@ -29,6 +29,9 @@ public class LoginServiceImplTest {
         Assertions.assertEquals("admin", existing.getUsername());
         Assertions.assertEquals("admin", existing.getPassword());
         Assertions.assertTrue(existing.isSigned());
+        Mockito.verify(accountRepository, Mockito.times(2))
+                .findByUsernameAndPassword("admin", "admin");
+        Mockito.verifyNoMoreInteractions(accountRepository);
     }
 
     @Test
@@ -48,6 +51,8 @@ public class LoginServiceImplTest {
         Assertions.assertEquals("admin", existing.getUsername());
         Assertions.assertEquals("admin", existing.getPassword());
         Assertions.assertFalse(existing.isSigned());
+        Mockito.verify(accountRepository, Mockito.times(2)).findByisSigned(true);
+        Mockito.verifyNoMoreInteractions(accountRepository);
     }
 
 }

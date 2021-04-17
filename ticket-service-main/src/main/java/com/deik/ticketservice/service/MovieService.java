@@ -16,5 +16,4 @@ public interface MovieService {
 
     int getRuntimeByTitle(String title);
 
-
 }

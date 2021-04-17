@@ -27,8 +27,8 @@ public class ScreeningCommandTest {
 
         // Then
         Assertions.assertEquals(expected, actual);
-        Mockito.verify(accountService).isAdminSignedIn();
-        Mockito.verifyNoMoreInteractions(accountService);
+        Mockito.verify(accountService, Mockito.times(1)).isAdminSignedIn();
+        Mockito.verifyNoMoreInteractions(movieService, accountService);
     }
 
     @Test
@@ -46,8 +46,8 @@ public class ScreeningCommandTest {
 
         // Then
         Assertions.assertEquals(expected, actual);
-        Mockito.verify(accountService).isAdminSignedIn();
-        Mockito.verifyNoMoreInteractions(accountService);
+        Mockito.verify(accountService, Mockito.times(1)).isAdminSignedIn();
+        Mockito.verifyNoMoreInteractions(screeningService, movieService, accountService);
     }
 
     @Test
@@ -65,8 +65,8 @@ public class ScreeningCommandTest {
 
         // Then
         Assertions.assertEquals(expected, actual);
-        Mockito.verify(accountService).isAdminSignedIn();
-        Mockito.verifyNoMoreInteractions(accountService);
+        Mockito.verify(accountService, Mockito.times(1)).isAdminSignedIn();
+        Mockito.verifyNoMoreInteractions(movieService, accountService);
     }
 
     @Test
@@ -84,8 +84,8 @@ public class ScreeningCommandTest {
 
         // Then
         Assertions.assertEquals(expected, actual);
-        Mockito.verify(accountService).isAdminSignedIn();
-        Mockito.verifyNoMoreInteractions(accountService);
+        Mockito.verify(accountService, Mockito.times(1)).isAdminSignedIn();
+        Mockito.verifyNoMoreInteractions(screeningService, movieService, accountService);
     }
 
 }

@@ -25,7 +25,7 @@ public class RoomCommandTest {
 
         // Then
         Assertions.assertEquals(expected, actual);
-        Mockito.verify(accountService).isAdminSignedIn();
+        Mockito.verify(accountService, Mockito.times(1)).isAdminSignedIn();
         Mockito.verifyNoMoreInteractions(accountService);
     }
 
@@ -43,8 +43,8 @@ public class RoomCommandTest {
 
         // Then
         Assertions.assertEquals(expected, actual);
-        Mockito.verify(accountService).isAdminSignedIn();
-        Mockito.verifyNoMoreInteractions(accountService);
+        Mockito.verify(accountService, Mockito.times(1)).isAdminSignedIn();
+        Mockito.verifyNoMoreInteractions(roomService, accountService);
     }
 
     @Test
@@ -61,7 +61,7 @@ public class RoomCommandTest {
 
         // Then
         Assertions.assertEquals(expected, actual);
-        Mockito.verify(accountService).isAdminSignedIn();
+        Mockito.verify(accountService, Mockito.times(1)).isAdminSignedIn();
         Mockito.verifyNoMoreInteractions(accountService);
     }
 
@@ -79,8 +79,8 @@ public class RoomCommandTest {
 
         // Then
         Assertions.assertEquals(expected, actual);
-        Mockito.verify(accountService).isAdminSignedIn();
-        Mockito.verifyNoMoreInteractions(accountService);
+        Mockito.verify(accountService, Mockito.times(1)).isAdminSignedIn();
+        Mockito.verifyNoMoreInteractions(roomService, accountService);
     }
 
     @Test
@@ -97,7 +97,7 @@ public class RoomCommandTest {
 
         // Then
         Assertions.assertEquals(expected, actual);
-        Mockito.verify(accountService).isAdminSignedIn();
+        Mockito.verify(accountService, Mockito.times(1)).isAdminSignedIn();
         Mockito.verifyNoMoreInteractions(accountService);
     }
 
@@ -115,8 +115,8 @@ public class RoomCommandTest {
 
         // Then
         Assertions.assertEquals(expected, actual);
-        Mockito.verify(accountService).isAdminSignedIn();
-        Mockito.verifyNoMoreInteractions(accountService);
+        Mockito.verify(accountService, Mockito.times(1)).isAdminSignedIn();
+        Mockito.verifyNoMoreInteractions(roomService, accountService);
     }
 
 }

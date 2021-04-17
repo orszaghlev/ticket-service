@@ -25,6 +25,9 @@ public class AccountServiceImplTest {
 
         // Then
         Mockito.verify(accountRepository, Mockito.times(1)).save(created);
+        Mockito.verify(accountRepository, Mockito.times(1))
+                .findByUsernameAndPassword("admin", "admin");
+        Mockito.verifyNoMoreInteractions(accountRepository);
     }
 
     @Test
@@ -42,6 +45,9 @@ public class AccountServiceImplTest {
 
         // Then
         Assertions.assertEquals(expected, actual);
+        Mockito.verify(accountRepository, Mockito.times(2))
+                .findByUsernameAndPassword("admin", "admin");
+        Mockito.verifyNoMoreInteractions(accountRepository);
     }
 
     @Test
@@ -57,6 +63,9 @@ public class AccountServiceImplTest {
 
         // Then
         Assertions.assertFalse(actual);
+        Mockito.verify(accountRepository, Mockito.times(1))
+                .findByUsernameAndPassword("admin", "admin");
+        Mockito.verifyNoMoreInteractions(accountRepository);
     }
 
     @Test
@@ -72,6 +81,8 @@ public class AccountServiceImplTest {
 
         // Then
         Assertions.assertEquals(expected, actual);
+        Mockito.verify(accountRepository, Mockito.times(1)).findByisSigned(true);
+        Mockito.verifyNoMoreInteractions(accountRepository);
     }
 
 }

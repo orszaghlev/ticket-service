@@ -28,7 +28,7 @@ public class LoginCommand {
                 return "Login failed due to incorrect credentials";
             }
         } catch (Exception e) {
-            log.error("Login failed due to incorrect credentials", e);
+            log.error("Failed to sign in", e);
         }
         return "";
     }

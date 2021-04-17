@@ -36,6 +36,7 @@ public class LoginCommandTest {
 
         // Then
         Assertions.assertEquals(expected, actual);
+        Mockito.verifyNoMoreInteractions(loginService);
     }
 
     @Test

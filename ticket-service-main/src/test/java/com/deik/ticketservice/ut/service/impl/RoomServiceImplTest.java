@@ -27,6 +27,8 @@ public class RoomServiceImplTest {
 
         // Then
         Mockito.verify(roomRepository, Mockito.times(1)).save(created);
+        Mockito.verify(roomRepository, Mockito.times(1)).findByName("Pedersoli");
+        Mockito.verifyNoMoreInteractions(roomRepository);
     }
 
     @Test
@@ -46,6 +48,8 @@ public class RoomServiceImplTest {
         Assertions.assertEquals("Pedersoli", existing.getName());
         Assertions.assertEquals(10, existing.getNumberOfRows());
         Assertions.assertEquals(10, existing.getNumberOfCols());
+        Mockito.verify(roomRepository, Mockito.times(2)).findByName("Pedersoli");
+        Mockito.verifyNoMoreInteractions(roomRepository);
     }
 
     @Test
@@ -61,6 +65,8 @@ public class RoomServiceImplTest {
 
         // Then
         Mockito.verify(roomRepository, Mockito.times(1)).delete(deleted);
+        Mockito.verify(roomRepository, Mockito.times(2)).findByName("Pedersoli");
+        Mockito.verifyNoMoreInteractions(roomRepository);
     }
 
     @Test
@@ -75,6 +81,8 @@ public class RoomServiceImplTest {
 
         // Then
         Assertions.assertTrue(underTest.listRooms().size() > 0);
+        Mockito.verify(roomRepository, Mockito.times(1)).findAll();
+        Mockito.verifyNoMoreInteractions(roomRepository);
     }
 
 }

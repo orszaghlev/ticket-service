@@ -44,6 +44,12 @@ public class ScreeningServiceImplTest {
 
         // Then
         Mockito.verify(screeningRepository, Mockito.times(1)).save(created);
+        Mockito.verify(movieRepository, Mockito.times(2)).findByTitle("Sátántangó");
+        Mockito.verify(roomRepository, Mockito.times(2)).findByName("Pedersoli");
+        Mockito.verify(screeningRepository, Mockito.times(1))
+                .findById_MovieAndId_RoomAndId_Date(existingMovie, existingRoom, date);
+        Mockito.verifyNoMoreInteractions(screeningRepository, movieRepository, roomRepository, existingMovie,
+                existingRoom);
     }
 
     @Test
@@ -68,6 +74,12 @@ public class ScreeningServiceImplTest {
 
         // Then
         Mockito.verify(screeningRepository, Mockito.times(1)).delete(deleted);
+        Mockito.verify(movieRepository, Mockito.times(2)).findByTitle("Sátántangó");
+        Mockito.verify(roomRepository, Mockito.times(2)).findByName("Pedersoli");
+        Mockito.verify(screeningRepository, Mockito.times(2))
+                .findById_MovieAndId_RoomAndId_Date(existingMovie, existingRoom, date);
+        Mockito.verifyNoMoreInteractions(screeningRepository, movieRepository, roomRepository, existingMovie,
+                existingRoom);
     }
 
     @Test
@@ -78,9 +90,7 @@ public class ScreeningServiceImplTest {
         RoomRepository roomRepository = Mockito.mock(RoomRepository.class);
         underTest = new ScreeningServiceImpl(screeningRepository, movieRepository, roomRepository);
         Movie existingMovie = Mockito.mock(Movie.class);
-        Mockito.when(movieRepository.findByTitle("Sátántangó")).thenReturn(java.util.Optional.of(existingMovie));
         Room existingRoom = Mockito.mock(Room.class);
-        Mockito.when(roomRepository.findByName("Pedersoli")).thenReturn(java.util.Optional.of(existingRoom));
         Date date = new SimpleDateFormat("yyyy-MM-dd HH:mm").parse("2021-03-14 16:00");
         ScreeningId screeningId = new ScreeningId(existingMovie, existingRoom, date);
 
@@ -90,6 +100,9 @@ public class ScreeningServiceImplTest {
 
         // Then
         Assertions.assertTrue(underTest.listScreenings().size() > 0);
+        Mockito.verify(screeningRepository, Mockito.times(1)).findAll();
+        Mockito.verifyNoMoreInteractions(screeningRepository, movieRepository, roomRepository, existingMovie,
+                existingRoom);
     }
 
 }

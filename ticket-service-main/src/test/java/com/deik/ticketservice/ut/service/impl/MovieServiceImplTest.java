@@ -27,6 +27,8 @@ public class MovieServiceImplTest {
 
         // Then
         Mockito.verify(movieRepository, Mockito.times(1)).save(created);
+        Mockito.verify(movieRepository, Mockito.times(1)).findByTitle("Sátántangó");
+        Mockito.verifyNoMoreInteractions(movieRepository);
     }
 
     @Test
@@ -46,6 +48,8 @@ public class MovieServiceImplTest {
         Assertions.assertEquals("Sátántangó", existing.getTitle());
         Assertions.assertEquals("drama", existing.getGenre());
         Assertions.assertEquals(450, existing.getRuntime());
+        Mockito.verify(movieRepository, Mockito.times(2)).findByTitle("Sátántangó");
+        Mockito.verifyNoMoreInteractions(movieRepository);
     }
 
     @Test
@@ -61,6 +65,8 @@ public class MovieServiceImplTest {
 
         // Then
         Mockito.verify(movieRepository, Mockito.times(1)).delete(deleted);
+        Mockito.verify(movieRepository, Mockito.times(2)).findByTitle("Sátántangó");
+        Mockito.verifyNoMoreInteractions(movieRepository);
     }
 
     @Test
@@ -75,6 +81,8 @@ public class MovieServiceImplTest {
 
         // Then
         Assertions.assertTrue(underTest.listMovies().size() > 0);
+        Mockito.verify(movieRepository, Mockito.times(1)).findAll();
+        Mockito.verifyNoMoreInteractions(movieRepository);
     }
 
     @Test
@@ -91,6 +99,8 @@ public class MovieServiceImplTest {
 
         // Then
         Assertions.assertEquals(expected, actual);
+        Mockito.verify(movieRepository, Mockito.times(2)).findByTitle("Sátántangó");
+        Mockito.verifyNoMoreInteractions(movieRepository);
     }
 
     @Test
@@ -106,6 +116,8 @@ public class MovieServiceImplTest {
 
         // Then
         Assertions.assertEquals(expected, actual);
+        Mockito.verify(movieRepository, Mockito.times(1)).findByTitle("Sátántangó");
+        Mockito.verifyNoMoreInteractions(movieRepository);
     }
 
 }
