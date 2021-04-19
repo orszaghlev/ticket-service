@@ -12,7 +12,7 @@
 
     <groupId>com.deik</groupId>
     <artifactId>ticket-service</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>0.0.5</version>
     <packaging>pom</packaging>
 
     <modules>
@@ -22,6 +22,16 @@
 
     <name>ticket-service</name>
     <description>A ticket service CLI application for DE-IK Java Development course.</description>
+
+    <developers>
+        <developer>
+            <id>orszaghlev</id>
+            <name>Levente Orszagh</name>
+            <email>orszaghlev@gmail.com</email>
+            <organization>Faculty of Informatics, University of Debrecen</organization>
+            <organizationUrl>http://www.inf.unideb.hu/</organizationUrl>
+        </developer>
+    </developers>
 
     <profiles>
         <profile>

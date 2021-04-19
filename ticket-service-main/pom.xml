@@ -4,12 +4,12 @@
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>ticket-service-main</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>0.0.5</version>
 
     <parent>
         <groupId>com.deik</groupId>
         <artifactId>ticket-service</artifactId>
-        <version>0.0.1-SNAPSHOT</version>
+        <version>0.0.5</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
 
