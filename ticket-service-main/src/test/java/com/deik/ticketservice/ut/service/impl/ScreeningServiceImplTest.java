@@ -1,12 +1,12 @@
 package com.deik.ticketservice.ut.service.impl;
 
-import com.deik.ticketservice.entity.Movie;
-import com.deik.ticketservice.entity.Room;
-import com.deik.ticketservice.entity.Screening;
-import com.deik.ticketservice.entity.id.ScreeningId;
-import com.deik.ticketservice.repository.MovieRepository;
-import com.deik.ticketservice.repository.RoomRepository;
-import com.deik.ticketservice.repository.ScreeningRepository;
+import com.deik.ticketservice.persistence.entity.Movie;
+import com.deik.ticketservice.persistence.entity.Room;
+import com.deik.ticketservice.persistence.entity.Screening;
+import com.deik.ticketservice.persistence.entity.id.ScreeningId;
+import com.deik.ticketservice.persistence.repository.MovieRepository;
+import com.deik.ticketservice.persistence.repository.RoomRepository;
+import com.deik.ticketservice.persistence.repository.ScreeningRepository;
 import com.deik.ticketservice.service.impl.ScreeningServiceImpl;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;

@@ -1,6 +1,6 @@
 package com.deik.ticketservice.ui.command;
 
-import com.deik.ticketservice.entity.Screening;
+import com.deik.ticketservice.persistence.entity.Screening;
 import com.deik.ticketservice.service.AccountService;
 import com.deik.ticketservice.service.MovieService;
 import com.deik.ticketservice.service.ScreeningService;

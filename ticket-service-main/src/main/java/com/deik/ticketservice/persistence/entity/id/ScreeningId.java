@@ -1,7 +1,7 @@
-package com.deik.ticketservice.entity.id;
+package com.deik.ticketservice.persistence.entity.id;
 
-import com.deik.ticketservice.entity.Movie;
-import com.deik.ticketservice.entity.Room;
+import com.deik.ticketservice.persistence.entity.Movie;
+import com.deik.ticketservice.persistence.entity.Room;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIdentityReference;
 import com.fasterxml.jackson.annotation.JsonProperty;

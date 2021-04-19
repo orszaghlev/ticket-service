@@ -1,7 +1,7 @@
 package com.deik.ticketservice.service.impl;
 
-import com.deik.ticketservice.entity.Account;
-import com.deik.ticketservice.repository.AccountRepository;
+import com.deik.ticketservice.persistence.entity.Account;
+import com.deik.ticketservice.persistence.repository.AccountRepository;
 import com.deik.ticketservice.service.AccountService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

@@ -1,6 +1,6 @@
-package com.deik.ticketservice.entity;
+package com.deik.ticketservice.persistence.entity;
 
-import com.deik.ticketservice.entity.id.ScreeningId;
+import com.deik.ticketservice.persistence.entity.id.ScreeningId;
 
 import javax.persistence.Entity;
 import javax.persistence.Table;

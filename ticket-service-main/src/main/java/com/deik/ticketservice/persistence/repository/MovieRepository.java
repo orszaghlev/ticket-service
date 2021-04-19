@@ -1,6 +1,6 @@
-package com.deik.ticketservice.repository;
+package com.deik.ticketservice.persistence.repository;
 
-import com.deik.ticketservice.entity.Movie;
+import com.deik.ticketservice.persistence.entity.Movie;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
