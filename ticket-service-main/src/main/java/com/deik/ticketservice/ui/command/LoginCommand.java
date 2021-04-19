@@ -19,29 +19,25 @@ public class LoginCommand {
     }
 
     @ShellMethod(value = "Sign in privileged", key = "sign in privileged")
-    public String signInPrivileged(@ShellOption String username, @ShellOption String password) {
+    public void signInPrivileged(@ShellOption String username, @ShellOption String password) {
         try {
             if (username.equals("admin") && password.equals("admin")) {
                 loginService.signInPrivileged(username, password);
-                return "Login successful";
             } else {
-                return "Login failed due to incorrect credentials";
+                System.out.println("Login failed due to incorrect credentials");
             }
         } catch (Exception e) {
             log.error("Failed to sign in", e);
         }
-        return "";
     }
 
     @ShellMethod(value = "Sign out", key = "sign out")
-    public String signOut() {
+    public void signOut() {
         try {
             loginService.signOut();
-            return "Signed out";
         } catch (Exception e) {
             log.error("Failed to sign out", e);
         }
-        return "";
     }
 
 }

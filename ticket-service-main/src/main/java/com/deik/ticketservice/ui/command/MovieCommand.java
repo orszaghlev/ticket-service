@@ -26,42 +26,36 @@ public class MovieCommand {
     }
 
     @ShellMethod(value = "Create movie", key = "create movie")
-    public String createMovie(@ShellOption String title, @ShellOption String genre, @ShellOption int runtime) {
+    public void createMovie(@ShellOption String title, @ShellOption String genre, @ShellOption int runtime) {
         try {
             if (accountService.isAdminSignedIn()) {
                 movieService.createMovie(title, genre, runtime);
-                return "Created movie";
             }
         } catch (Exception e) {
             log.error("Failed to create movie", e);
         }
-        return "";
     }
 
     @ShellMethod(value = "Update movie", key = "update movie")
-    public String updateMovie(@ShellOption String title, @ShellOption String genre, @ShellOption int runtime) {
+    public void updateMovie(@ShellOption String title, @ShellOption String genre, @ShellOption int runtime) {
         try {
             if (accountService.isAdminSignedIn()) {
                 movieService.updateMovie(title, genre, runtime);
-                return "Updated movie";
             }
         } catch (Exception e) {
             log.error("Failed to update movie", e);
         }
-        return "";
     }
 
     @ShellMethod(value = "Delete movie", key = "delete movie")
-    public String deleteMovie(@ShellOption String title) {
+    public void deleteMovie(@ShellOption String title) {
         try {
             if (accountService.isAdminSignedIn()) {
                 movieService.deleteMovie(title);
-                return "Deleted movie";
             }
         } catch (Exception e) {
             log.error("Failed to delete movie", e);
         }
-        return "";
     }
 
     @ShellMethod(value = "List movies", key = "list movies")

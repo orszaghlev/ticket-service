@@ -33,7 +33,7 @@ public class ScreeningCommand {
     }
 
     @ShellMethod(value = "Create screening", key = "create screening")
-    public String createScreening(@ShellOption String movieTitle, @ShellOption String roomName,
+    public void createScreening(@ShellOption String movieTitle, @ShellOption String roomName,
                                 @ShellOption String dateAsString) {
         try {
             if (accountService.isAdminSignedIn()) {
@@ -56,32 +56,28 @@ public class ScreeningCommand {
                     }
                 }
                 if (screeningOverlap) {
-                    return "There is an overlapping screening";
+                    System.out.println("There is an overlapping screening");
                 } else if (breakOverlap) {
-                    return "This would start in the break period after another screening in this room";
+                    System.out.println("This would start in the break period after another screening in this room");
                 } else {
                     screeningService.createScreening(movieTitle, roomName, dateAsString);
-                    return "Created screening";
                 }
             }
         } catch (Exception e) {
             log.error("Failed to create screening", e);
         }
-        return "";
     }
 
     @ShellMethod(value = "Delete screening", key = "delete screening")
-    public String deleteScreening(@ShellOption String movieTitle, @ShellOption String roomName,
+    public void deleteScreening(@ShellOption String movieTitle, @ShellOption String roomName,
                                 @ShellOption String dateAsString) {
         try {
             if (accountService.isAdminSignedIn()) {
                 screeningService.deleteScreening(movieTitle, roomName, dateAsString);
-                return "Deleted screening";
             }
         } catch (Exception e) {
             log.error("Failed to delete screening", e);
         }
-        return "";
     }
 
     @ShellMethod(value = "List screenings", key = "list screenings")

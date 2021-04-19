@@ -3,7 +3,6 @@ package com.deik.ticketservice.ut.ui.command;
 import com.deik.ticketservice.service.AccountService;
 import com.deik.ticketservice.service.MovieService;
 import com.deik.ticketservice.ui.command.MovieCommand;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
@@ -18,15 +17,15 @@ public class MovieCommandTest {
         AccountService accountService = Mockito.mock(AccountService.class);
         underTest = new MovieCommand(movieService, accountService);
         Mockito.when(accountService.isAdminSignedIn()).thenReturn(true);
-        String expected = "Created movie";
 
         // When
-        String actual = underTest.createMovie("Sátántangó", "drama", 450);
+        underTest.createMovie("Sátántangó", "drama", 450);
 
         // Then
-        Assertions.assertEquals(expected, actual);
         Mockito.verify(accountService, Mockito.times(1)).isAdminSignedIn();
-        Mockito.verifyNoMoreInteractions(accountService);
+        Mockito.verify(movieService, Mockito.times(1))
+                .createMovie("Sátántangó", "drama", 450);
+        Mockito.verifyNoMoreInteractions(accountService, movieService);
     }
 
     @Test
@@ -36,15 +35,13 @@ public class MovieCommandTest {
         AccountService accountService = Mockito.mock(AccountService.class);
         underTest = new MovieCommand(movieService, accountService);
         Mockito.when(accountService.isAdminSignedIn()).thenReturn(false);
-        String expected = "";
 
         // When
-        String actual = underTest.createMovie("Sátántangó", "drama", 450);
+        underTest.createMovie("Sátántangó", "drama", 450);
 
         // Then
-        Assertions.assertEquals(expected, actual);
         Mockito.verify(accountService, Mockito.times(1)).isAdminSignedIn();
-        Mockito.verifyNoMoreInteractions(movieService, accountService);
+        Mockito.verifyNoMoreInteractions(accountService, movieService);
     }
 
     @Test
@@ -54,15 +51,15 @@ public class MovieCommandTest {
         AccountService accountService = Mockito.mock(AccountService.class);
         underTest = new MovieCommand(movieService, accountService);
         Mockito.when(accountService.isAdminSignedIn()).thenReturn(true);
-        String expected = "Updated movie";
 
         // When
-        String actual = underTest.updateMovie("Sátántangó", "drama", 450);
+        underTest.updateMovie("Sátántangó", "drama", 450);
 
         // Then
-        Assertions.assertEquals(expected, actual);
         Mockito.verify(accountService, Mockito.times(1)).isAdminSignedIn();
-        Mockito.verifyNoMoreInteractions(accountService);
+        Mockito.verify(movieService, Mockito.times(1))
+                .updateMovie("Sátántangó", "drama", 450);
+        Mockito.verifyNoMoreInteractions(accountService, movieService);
     }
 
     @Test
@@ -72,15 +69,13 @@ public class MovieCommandTest {
         AccountService accountService = Mockito.mock(AccountService.class);
         underTest = new MovieCommand(movieService, accountService);
         Mockito.when(accountService.isAdminSignedIn()).thenReturn(false);
-        String expected = "";
 
         // When
-        String actual = underTest.updateMovie("Sátántangó", "drama", 450);
+        underTest.updateMovie("Sátántangó", "drama", 450);
 
         // Then
-        Assertions.assertEquals(expected, actual);
         Mockito.verify(accountService, Mockito.times(1)).isAdminSignedIn();
-        Mockito.verifyNoMoreInteractions(movieService, accountService);
+        Mockito.verifyNoMoreInteractions(accountService, movieService);
     }
 
     @Test
@@ -90,15 +85,14 @@ public class MovieCommandTest {
         AccountService accountService = Mockito.mock(AccountService.class);
         underTest = new MovieCommand(movieService, accountService);
         Mockito.when(accountService.isAdminSignedIn()).thenReturn(true);
-        String expected = "Deleted movie";
 
         // When
-        String actual = underTest.deleteMovie("Sátántangó");
+        underTest.deleteMovie("Sátántangó");
 
         // Then
-        Assertions.assertEquals(expected, actual);
         Mockito.verify(accountService, Mockito.times(1)).isAdminSignedIn();
-        Mockito.verifyNoMoreInteractions(accountService);
+        Mockito.verify(movieService, Mockito.times(1)).deleteMovie("Sátántangó");
+        Mockito.verifyNoMoreInteractions(accountService, movieService);
     }
 
     @Test
@@ -108,15 +102,13 @@ public class MovieCommandTest {
         AccountService accountService = Mockito.mock(AccountService.class);
         underTest = new MovieCommand(movieService, accountService);
         Mockito.when(accountService.isAdminSignedIn()).thenReturn(false);
-        String expected = "";
 
         // When
-        String actual = underTest.deleteMovie("Sátántangó");
+        underTest.deleteMovie("Sátántangó");
 
         // Then
-        Assertions.assertEquals(expected, actual);
         Mockito.verify(accountService, Mockito.times(1)).isAdminSignedIn();
-        Mockito.verifyNoMoreInteractions(movieService, accountService);
+        Mockito.verifyNoMoreInteractions(accountService, movieService);
     }
 
 }

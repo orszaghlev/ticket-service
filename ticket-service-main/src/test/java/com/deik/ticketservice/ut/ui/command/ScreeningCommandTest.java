@@ -4,31 +4,32 @@ import com.deik.ticketservice.service.AccountService;
 import com.deik.ticketservice.service.MovieService;
 import com.deik.ticketservice.service.ScreeningService;
 import com.deik.ticketservice.ui.command.ScreeningCommand;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
+
+import java.text.ParseException;
 
 public class ScreeningCommandTest {
 
     private ScreeningCommand underTest;
 
     @Test
-    public void testCreateScreeningShouldCreateScreeningWhenAdminIsSignedInAndNoOverlapOccurs() {
+    public void testCreateScreeningShouldCreateScreeningWhenAdminIsSignedInAndNoOverlapOccurs() throws ParseException {
         // Given
         ScreeningService screeningService = Mockito.mock(ScreeningService.class);
         MovieService movieService = Mockito.mock(MovieService.class);
         AccountService accountService = Mockito.mock(AccountService.class);
         underTest = new ScreeningCommand(screeningService, movieService, accountService);
         Mockito.when(accountService.isAdminSignedIn()).thenReturn(true);
-        String expected = "Created screening";
 
         // When
-        String actual = underTest.createScreening("Sátántangó", "Pedersoli", "2021-03-14 16:00");
+        underTest.createScreening("Sátántangó", "Pedersoli", "2021-03-14 16:00");
 
         // Then
-        Assertions.assertEquals(expected, actual);
         Mockito.verify(accountService, Mockito.times(1)).isAdminSignedIn();
-        Mockito.verifyNoMoreInteractions(movieService, accountService);
+        Mockito.verify(screeningService, Mockito.times(1))
+                .createScreening("Sátántangó", "Pedersoli", "2021-03-14 16:00");
+        Mockito.verifyNoMoreInteractions(accountService, movieService);
     }
 
     @Test
@@ -39,34 +40,32 @@ public class ScreeningCommandTest {
         AccountService accountService = Mockito.mock(AccountService.class);
         underTest = new ScreeningCommand(screeningService, movieService, accountService);
         Mockito.when(accountService.isAdminSignedIn()).thenReturn(false);
-        String expected = "";
 
         // When
-        String actual = underTest.createScreening("Sátántangó", "Pedersoli", "2021-03-14 16:00");
+        underTest.createScreening("Sátántangó", "Pedersoli", "2021-03-14 16:00");
 
         // Then
-        Assertions.assertEquals(expected, actual);
         Mockito.verify(accountService, Mockito.times(1)).isAdminSignedIn();
-        Mockito.verifyNoMoreInteractions(screeningService, movieService, accountService);
+        Mockito.verifyNoMoreInteractions(accountService, movieService, screeningService);
     }
 
     @Test
-    public void testDeleteScreeningShouldDeleteScreeningWhenAdminIsSignedIn() {
+    public void testDeleteScreeningShouldDeleteScreeningWhenAdminIsSignedIn() throws ParseException {
         // Given
         ScreeningService screeningService = Mockito.mock(ScreeningService.class);
         MovieService movieService = Mockito.mock(MovieService.class);
         AccountService accountService = Mockito.mock(AccountService.class);
         underTest = new ScreeningCommand(screeningService, movieService, accountService);
         Mockito.when(accountService.isAdminSignedIn()).thenReturn(true);
-        String expected = "Deleted screening";
 
         // When
-        String actual = underTest.deleteScreening("Sátántangó", "Pedersoli", "2021-03-14 16:00");
+        underTest.deleteScreening("Sátántangó", "Pedersoli", "2021-03-14 16:00");
 
         // Then
-        Assertions.assertEquals(expected, actual);
         Mockito.verify(accountService, Mockito.times(1)).isAdminSignedIn();
-        Mockito.verifyNoMoreInteractions(movieService, accountService);
+        Mockito.verify(screeningService, Mockito.times(1))
+                .deleteScreening("Sátántangó", "Pedersoli", "2021-03-14 16:00");
+        Mockito.verifyNoMoreInteractions(accountService, movieService, screeningService);
     }
 
     @Test
@@ -77,15 +76,13 @@ public class ScreeningCommandTest {
         AccountService accountService = Mockito.mock(AccountService.class);
         underTest = new ScreeningCommand(screeningService, movieService, accountService);
         Mockito.when(accountService.isAdminSignedIn()).thenReturn(false);
-        String expected = "";
 
         // When
-        String actual = underTest.deleteScreening("Sátántangó", "Pedersoli", "2021-03-14 16:00");
+        underTest.deleteScreening("Sátántangó", "Pedersoli", "2021-03-14 16:00");
 
         // Then
-        Assertions.assertEquals(expected, actual);
         Mockito.verify(accountService, Mockito.times(1)).isAdminSignedIn();
-        Mockito.verifyNoMoreInteractions(screeningService, movieService, accountService);
+        Mockito.verifyNoMoreInteractions(accountService, movieService, screeningService);
     }
 
 }

@@ -3,7 +3,6 @@ package com.deik.ticketservice.ut.ui.command;
 import com.deik.ticketservice.service.AccountService;
 import com.deik.ticketservice.service.RoomService;
 import com.deik.ticketservice.ui.command.RoomCommand;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
@@ -18,15 +17,15 @@ public class RoomCommandTest {
         AccountService accountService = Mockito.mock(AccountService.class);
         underTest = new RoomCommand(roomService, accountService);
         Mockito.when(accountService.isAdminSignedIn()).thenReturn(true);
-        String expected = "Created room";
 
         // When
-        String actual = underTest.createRoom("Pedersoli", 20, 10);
+        underTest.createRoom("Pedersoli", 20, 10);
 
         // Then
-        Assertions.assertEquals(expected, actual);
         Mockito.verify(accountService, Mockito.times(1)).isAdminSignedIn();
-        Mockito.verifyNoMoreInteractions(accountService);
+        Mockito.verify(roomService, Mockito.times(1))
+                .createRoom("Pedersoli", 20, 10);
+        Mockito.verifyNoMoreInteractions(accountService, roomService);
     }
 
     @Test
@@ -36,15 +35,13 @@ public class RoomCommandTest {
         AccountService accountService = Mockito.mock(AccountService.class);
         underTest = new RoomCommand(roomService, accountService);
         Mockito.when(accountService.isAdminSignedIn()).thenReturn(false);
-        String expected = "";
 
         // When
-        String actual = underTest.createRoom("Pedersoli", 20, 10);
+        underTest.createRoom("Pedersoli", 20, 10);
 
         // Then
-        Assertions.assertEquals(expected, actual);
         Mockito.verify(accountService, Mockito.times(1)).isAdminSignedIn();
-        Mockito.verifyNoMoreInteractions(roomService, accountService);
+        Mockito.verifyNoMoreInteractions(accountService, roomService);
     }
 
     @Test
@@ -54,15 +51,15 @@ public class RoomCommandTest {
         AccountService accountService = Mockito.mock(AccountService.class);
         underTest = new RoomCommand(roomService, accountService);
         Mockito.when(accountService.isAdminSignedIn()).thenReturn(true);
-        String expected = "Updated room";
 
         // When
-        String actual = underTest.updateRoom("Pedersoli", 10, 10);
+        underTest.updateRoom("Pedersoli", 10, 10);
 
         // Then
-        Assertions.assertEquals(expected, actual);
         Mockito.verify(accountService, Mockito.times(1)).isAdminSignedIn();
-        Mockito.verifyNoMoreInteractions(accountService);
+        Mockito.verify(roomService, Mockito.times(1))
+                .updateRoom("Pedersoli", 10, 10);
+        Mockito.verifyNoMoreInteractions(accountService, roomService);
     }
 
     @Test
@@ -72,15 +69,13 @@ public class RoomCommandTest {
         AccountService accountService = Mockito.mock(AccountService.class);
         underTest = new RoomCommand(roomService, accountService);
         Mockito.when(accountService.isAdminSignedIn()).thenReturn(false);
-        String expected = "";
 
         // When
-        String actual = underTest.updateRoom("Pedersoli", 10, 10);
+        underTest.updateRoom("Pedersoli", 10, 10);
 
         // Then
-        Assertions.assertEquals(expected, actual);
         Mockito.verify(accountService, Mockito.times(1)).isAdminSignedIn();
-        Mockito.verifyNoMoreInteractions(roomService, accountService);
+        Mockito.verifyNoMoreInteractions(accountService, roomService);
     }
 
     @Test
@@ -90,15 +85,14 @@ public class RoomCommandTest {
         AccountService accountService = Mockito.mock(AccountService.class);
         underTest = new RoomCommand(roomService, accountService);
         Mockito.when(accountService.isAdminSignedIn()).thenReturn(true);
-        String expected = "Deleted room";
 
         // When
-        String actual = underTest.deleteRoom("Pedersoli");
+        underTest.deleteRoom("Pedersoli");
 
         // Then
-        Assertions.assertEquals(expected, actual);
         Mockito.verify(accountService, Mockito.times(1)).isAdminSignedIn();
-        Mockito.verifyNoMoreInteractions(accountService);
+        Mockito.verify(roomService, Mockito.times(1)).deleteRoom("Pedersoli");
+        Mockito.verifyNoMoreInteractions(accountService, roomService);
     }
 
     @Test
@@ -108,15 +102,13 @@ public class RoomCommandTest {
         AccountService accountService = Mockito.mock(AccountService.class);
         underTest = new RoomCommand(roomService, accountService);
         Mockito.when(accountService.isAdminSignedIn()).thenReturn(false);
-        String expected = "";
 
         // When
-        String actual = underTest.deleteRoom("Pedersoli");
+        underTest.deleteRoom("Pedersoli");
 
         // Then
-        Assertions.assertEquals(expected, actual);
         Mockito.verify(accountService, Mockito.times(1)).isAdminSignedIn();
-        Mockito.verifyNoMoreInteractions(roomService, accountService);
+        Mockito.verifyNoMoreInteractions(accountService, roomService);
     }
 
 }

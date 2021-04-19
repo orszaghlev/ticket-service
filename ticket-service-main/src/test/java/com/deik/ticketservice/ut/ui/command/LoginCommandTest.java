@@ -2,7 +2,6 @@ package com.deik.ticketservice.ut.ui.command;
 
 import com.deik.ticketservice.service.LoginService;
 import com.deik.ticketservice.ui.command.LoginCommand;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
@@ -15,13 +14,14 @@ public class LoginCommandTest {
         // Given
         LoginService loginService = Mockito.mock(LoginService.class);
         underTest = new LoginCommand(loginService);
-        String expected = "Login successful";
 
         // When
-        String actual = underTest.signInPrivileged("admin", "admin");
+        underTest.signInPrivileged("admin", "admin");
 
         // Then
-        Assertions.assertEquals(expected, actual);
+        Mockito.verify(loginService, Mockito.times(1))
+                .signInPrivileged("admin", "admin");
+        Mockito.verifyNoMoreInteractions(loginService);
     }
 
     @Test
@@ -29,13 +29,11 @@ public class LoginCommandTest {
         // Given
         LoginService loginService = Mockito.mock(LoginService.class);
         underTest = new LoginCommand(loginService);
-        String expected = "Login failed due to incorrect credentials";
 
         // When
-        String actual = underTest.signInPrivileged("sanyi", "asdQWE123");
+        underTest.signInPrivileged("sanyi", "asdQWE123");
 
         // Then
-        Assertions.assertEquals(expected, actual);
         Mockito.verifyNoMoreInteractions(loginService);
     }
 
@@ -44,13 +42,13 @@ public class LoginCommandTest {
         // Given
         LoginService loginService = Mockito.mock(LoginService.class);
         underTest = new LoginCommand(loginService);
-        String expected = "Signed out";
 
         // When
-        String actual = underTest.signOut();
+        underTest.signOut();
 
         // Then
-        Assertions.assertEquals(expected, actual);
+        Mockito.verify(loginService, Mockito.times(1)).signOut();
+        Mockito.verifyNoMoreInteractions(loginService);
     }
 
 }
