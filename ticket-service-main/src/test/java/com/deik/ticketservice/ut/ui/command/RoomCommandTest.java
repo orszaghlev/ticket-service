@@ -1,43 +1,52 @@
 package com.deik.ticketservice.ut.ui.command;
 
+import com.deik.ticketservice.persistence.entity.Room;
 import com.deik.ticketservice.service.AccountService;
 import com.deik.ticketservice.service.RoomService;
 import com.deik.ticketservice.ui.command.RoomCommand;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
 public class RoomCommandTest {
 
+    private final static Room ROOM = new Room("Pedersoli", 20, 10);
+
     private RoomCommand underTest;
+
+    private RoomService roomService;
+
+    private AccountService accountService;
+
+    @BeforeEach
+    public void init() {
+        roomService = Mockito.mock(RoomService.class);
+        accountService = Mockito.mock(AccountService.class);
+        underTest = new RoomCommand(roomService, accountService);
+    }
 
     @Test
     public void testCreateRoomShouldCreateRoomWhenAdminIsSignedIn() {
         // Given
-        RoomService roomService = Mockito.mock(RoomService.class);
-        AccountService accountService = Mockito.mock(AccountService.class);
-        underTest = new RoomCommand(roomService, accountService);
         Mockito.when(accountService.isAdminSignedIn()).thenReturn(true);
 
         // When
-        underTest.createRoom("Pedersoli", 20, 10);
+        underTest.createRoom(ROOM.getName(), ROOM.getNumberOfRows(), ROOM.getNumberOfCols());
 
         // Then
         Mockito.verify(accountService, Mockito.times(1)).isAdminSignedIn();
         Mockito.verify(roomService, Mockito.times(1))
-                .createRoom("Pedersoli", 20, 10);
+                .createRoom(ROOM.getName(), ROOM.getNumberOfRows(), ROOM.getNumberOfCols());
         Mockito.verifyNoMoreInteractions(accountService, roomService);
     }
 
     @Test
     public void testCreateRoomShouldNotCreateRoomWhenAdminIsNotSignedIn() {
         // Given
-        RoomService roomService = Mockito.mock(RoomService.class);
-        AccountService accountService = Mockito.mock(AccountService.class);
-        underTest = new RoomCommand(roomService, accountService);
         Mockito.when(accountService.isAdminSignedIn()).thenReturn(false);
 
         // When
-        underTest.createRoom("Pedersoli", 20, 10);
+        underTest.createRoom(ROOM.getName(), ROOM.getNumberOfRows(), ROOM.getNumberOfCols());
 
         // Then
         Mockito.verify(accountService, Mockito.times(1)).isAdminSignedIn();
@@ -47,31 +56,25 @@ public class RoomCommandTest {
     @Test
     public void testUpdateRoomShouldUpdateRoomWhenAdminIsSignedIn() {
         // Given
-        RoomService roomService = Mockito.mock(RoomService.class);
-        AccountService accountService = Mockito.mock(AccountService.class);
-        underTest = new RoomCommand(roomService, accountService);
         Mockito.when(accountService.isAdminSignedIn()).thenReturn(true);
 
         // When
-        underTest.updateRoom("Pedersoli", 10, 10);
+        underTest.updateRoom(ROOM.getName(), ROOM.getNumberOfRows(), ROOM.getNumberOfCols());
 
         // Then
         Mockito.verify(accountService, Mockito.times(1)).isAdminSignedIn();
         Mockito.verify(roomService, Mockito.times(1))
-                .updateRoom("Pedersoli", 10, 10);
+                .updateRoom(ROOM.getName(), ROOM.getNumberOfRows(), ROOM.getNumberOfCols());
         Mockito.verifyNoMoreInteractions(accountService, roomService);
     }
 
     @Test
     public void testUpdateRoomShouldNotUpdateRoomWhenAdminIsNotSignedIn() {
         // Given
-        RoomService roomService = Mockito.mock(RoomService.class);
-        AccountService accountService = Mockito.mock(AccountService.class);
-        underTest = new RoomCommand(roomService, accountService);
         Mockito.when(accountService.isAdminSignedIn()).thenReturn(false);
 
         // When
-        underTest.updateRoom("Pedersoli", 10, 10);
+        underTest.updateRoom(ROOM.getName(), ROOM.getNumberOfRows(), ROOM.getNumberOfCols());
 
         // Then
         Mockito.verify(accountService, Mockito.times(1)).isAdminSignedIn();
@@ -81,30 +84,24 @@ public class RoomCommandTest {
     @Test
     public void testDeleteRoomShouldDeleteRoomWhenAdminIsSignedIn() {
         // Given
-        RoomService roomService = Mockito.mock(RoomService.class);
-        AccountService accountService = Mockito.mock(AccountService.class);
-        underTest = new RoomCommand(roomService, accountService);
         Mockito.when(accountService.isAdminSignedIn()).thenReturn(true);
 
         // When
-        underTest.deleteRoom("Pedersoli");
+        underTest.deleteRoom(ROOM.getName());
 
         // Then
         Mockito.verify(accountService, Mockito.times(1)).isAdminSignedIn();
-        Mockito.verify(roomService, Mockito.times(1)).deleteRoom("Pedersoli");
+        Mockito.verify(roomService, Mockito.times(1)).deleteRoom(ROOM.getName());
         Mockito.verifyNoMoreInteractions(accountService, roomService);
     }
 
     @Test
     public void testDeleteRoomShouldNotDeleteRoomWhenAdminIsNotSignedIn() {
         // Given
-        RoomService roomService = Mockito.mock(RoomService.class);
-        AccountService accountService = Mockito.mock(AccountService.class);
-        underTest = new RoomCommand(roomService, accountService);
         Mockito.when(accountService.isAdminSignedIn()).thenReturn(false);
 
         // When
-        underTest.deleteRoom("Pedersoli");
+        underTest.deleteRoom(ROOM.getName());
 
         // Then
         Mockito.verify(accountService, Mockito.times(1)).isAdminSignedIn();

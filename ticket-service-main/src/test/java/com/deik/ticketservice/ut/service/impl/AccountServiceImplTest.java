@@ -4,41 +4,49 @@ import com.deik.ticketservice.persistence.entity.Account;
 import com.deik.ticketservice.persistence.repository.AccountRepository;
 import com.deik.ticketservice.service.impl.AccountServiceImpl;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
 public class AccountServiceImplTest {
 
+    private static final String ADMIN_USERNAME = "admin";
+    private static final String ADMIN_PASSWORD = "admin";
+    private static final Account LOGGED_IN_ADMIN_ACCOUNT = new Account(ADMIN_USERNAME, ADMIN_PASSWORD, true);
+    private static final Account LOGGED_OUT_ADMIN_ACCOUNT = new Account(ADMIN_USERNAME, ADMIN_PASSWORD, false);
+
     private AccountServiceImpl underTest;
+
+    private AccountRepository accountRepository;
+
+    @BeforeEach
+    public void init() {
+        accountRepository = Mockito.mock(AccountRepository.class);
+        underTest = new AccountServiceImpl(accountRepository);
+    }
 
     @Test
     public void testInitShouldCreateAdminAccountWhenAdminAccountIsNotInTheRepository() {
         // Given
-        AccountRepository accountRepository = Mockito.mock(AccountRepository.class);
-        underTest = new AccountServiceImpl(accountRepository);
-        Account created = new Account("admin", "admin", false);
-        Mockito.when(accountRepository.findByUsernameAndPassword("admin", "admin"))
+        Mockito.when(accountRepository.findByUsernameAndPassword(ADMIN_USERNAME, ADMIN_PASSWORD))
                 .thenReturn(java.util.Optional.empty());
 
         // When
         underTest.init();
 
         // Then
-        Mockito.verify(accountRepository, Mockito.times(1)).save(created);
+        Mockito.verify(accountRepository, Mockito.times(1)).save(LOGGED_OUT_ADMIN_ACCOUNT);
         Mockito.verify(accountRepository, Mockito.times(1))
-                .findByUsernameAndPassword("admin", "admin");
+                .findByUsernameAndPassword(ADMIN_USERNAME, ADMIN_PASSWORD);
         Mockito.verifyNoMoreInteractions(accountRepository);
     }
 
     @Test
     public void testIsAdminSignedInShouldReturnTrueWhenAdminIsSignedIn() {
         // Given
-        AccountRepository accountRepository = Mockito.mock(AccountRepository.class);
-        underTest = new AccountServiceImpl(accountRepository);
-        Account existing = new Account("admin", "admin", true);
-        Mockito.when(accountRepository.findByUsernameAndPassword("admin", "admin"))
-                .thenReturn(java.util.Optional.of(existing));
-        boolean expected = existing.isSigned();
+        Mockito.when(accountRepository.findByUsernameAndPassword(ADMIN_USERNAME, ADMIN_PASSWORD))
+                .thenReturn(java.util.Optional.of(LOGGED_IN_ADMIN_ACCOUNT));
+        boolean expected = LOGGED_IN_ADMIN_ACCOUNT.isSigned();
 
         // When
         boolean actual = underTest.isAdminSignedIn();
@@ -46,16 +54,14 @@ public class AccountServiceImplTest {
         // Then
         Assertions.assertEquals(expected, actual);
         Mockito.verify(accountRepository, Mockito.times(2))
-                .findByUsernameAndPassword("admin", "admin");
+                .findByUsernameAndPassword(ADMIN_USERNAME, ADMIN_PASSWORD);
         Mockito.verifyNoMoreInteractions(accountRepository);
     }
 
     @Test
     public void testIsAdminSignedInShouldReturnFalseWhenAdminAccountIsNotInTheRepository() {
         // Given
-        AccountRepository accountRepository = Mockito.mock(AccountRepository.class);
-        underTest = new AccountServiceImpl(accountRepository);
-        Mockito.when(accountRepository.findByUsernameAndPassword("admin", "admin"))
+        Mockito.when(accountRepository.findByUsernameAndPassword(ADMIN_USERNAME, ADMIN_PASSWORD))
                 .thenReturn(java.util.Optional.empty());
 
         // When
@@ -64,23 +70,20 @@ public class AccountServiceImplTest {
         // Then
         Assertions.assertFalse(actual);
         Mockito.verify(accountRepository, Mockito.times(1))
-                .findByUsernameAndPassword("admin", "admin");
+                .findByUsernameAndPassword(ADMIN_USERNAME, ADMIN_PASSWORD);
         Mockito.verifyNoMoreInteractions(accountRepository);
     }
 
     @Test
     public void testGetSignedInAccountShouldGetAdminAccountWhenTheAdminIsSignedIn() {
         // Given
-        AccountRepository accountRepository = Mockito.mock(AccountRepository.class);
-        underTest = new AccountServiceImpl(accountRepository);
-        Account expected = new Account("admin", "admin", true);
-        Mockito.when(accountRepository.findByisSigned(true)).thenReturn(java.util.Optional.of(expected));
+        Mockito.when(accountRepository.findByisSigned(true)).thenReturn(java.util.Optional.of(LOGGED_IN_ADMIN_ACCOUNT));
 
         // When
         Account actual = underTest.getSignedInAccount();
 
         // Then
-        Assertions.assertEquals(expected, actual);
+        Assertions.assertEquals(LOGGED_IN_ADMIN_ACCOUNT, actual);
         Mockito.verify(accountRepository, Mockito.times(1)).findByisSigned(true);
         Mockito.verifyNoMoreInteractions(accountRepository);
     }

@@ -1,43 +1,52 @@
 package com.deik.ticketservice.ut.ui.command;
 
+import com.deik.ticketservice.persistence.entity.Movie;
 import com.deik.ticketservice.service.AccountService;
 import com.deik.ticketservice.service.MovieService;
 import com.deik.ticketservice.ui.command.MovieCommand;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
 public class MovieCommandTest {
 
+    private static final Movie MOVIE = new Movie("Sátántangó", "drama", 450);
+
     private MovieCommand underTest;
+
+    private MovieService movieService;
+
+    private AccountService accountService;
+
+    @BeforeEach
+    public void init() {
+        movieService = Mockito.mock(MovieService.class);
+        accountService = Mockito.mock(AccountService.class);
+        underTest = new MovieCommand(movieService, accountService);
+    }
 
     @Test
     public void testCreateMovieShouldCreateMovieWhenAdminIsSignedIn() {
         // Given
-        MovieService movieService = Mockito.mock(MovieService.class);
-        AccountService accountService = Mockito.mock(AccountService.class);
-        underTest = new MovieCommand(movieService, accountService);
         Mockito.when(accountService.isAdminSignedIn()).thenReturn(true);
 
         // When
-        underTest.createMovie("Sátántangó", "drama", 450);
+        underTest.createMovie(MOVIE.getTitle(), MOVIE.getGenre(), MOVIE.getRuntime());
 
         // Then
         Mockito.verify(accountService, Mockito.times(1)).isAdminSignedIn();
         Mockito.verify(movieService, Mockito.times(1))
-                .createMovie("Sátántangó", "drama", 450);
+                .createMovie(MOVIE.getTitle(), MOVIE.getGenre(), MOVIE.getRuntime());
         Mockito.verifyNoMoreInteractions(accountService, movieService);
     }
 
     @Test
     public void testCreateMovieShouldNotCreateMovieWhenAdminIsNotSignedIn() {
         // Given
-        MovieService movieService = Mockito.mock(MovieService.class);
-        AccountService accountService = Mockito.mock(AccountService.class);
-        underTest = new MovieCommand(movieService, accountService);
         Mockito.when(accountService.isAdminSignedIn()).thenReturn(false);
 
         // When
-        underTest.createMovie("Sátántangó", "drama", 450);
+        underTest.createMovie(MOVIE.getTitle(), MOVIE.getGenre(), MOVIE.getRuntime());
 
         // Then
         Mockito.verify(accountService, Mockito.times(1)).isAdminSignedIn();
@@ -47,31 +56,25 @@ public class MovieCommandTest {
     @Test
     public void testUpdateMovieShouldUpdateMovieWhenAdminIsSignedIn() {
         // Given
-        MovieService movieService = Mockito.mock(MovieService.class);
-        AccountService accountService = Mockito.mock(AccountService.class);
-        underTest = new MovieCommand(movieService, accountService);
         Mockito.when(accountService.isAdminSignedIn()).thenReturn(true);
 
         // When
-        underTest.updateMovie("Sátántangó", "drama", 450);
+        underTest.updateMovie(MOVIE.getTitle(), MOVIE.getGenre(), MOVIE.getRuntime());
 
         // Then
         Mockito.verify(accountService, Mockito.times(1)).isAdminSignedIn();
         Mockito.verify(movieService, Mockito.times(1))
-                .updateMovie("Sátántangó", "drama", 450);
+                .updateMovie(MOVIE.getTitle(), MOVIE.getGenre(), MOVIE.getRuntime());
         Mockito.verifyNoMoreInteractions(accountService, movieService);
     }
 
     @Test
     public void testUpdateMovieShouldNotUpdateMovieWhenAdminIsNotSignedIn() {
         // Given
-        MovieService movieService = Mockito.mock(MovieService.class);
-        AccountService accountService = Mockito.mock(AccountService.class);
-        underTest = new MovieCommand(movieService, accountService);
         Mockito.when(accountService.isAdminSignedIn()).thenReturn(false);
 
         // When
-        underTest.updateMovie("Sátántangó", "drama", 450);
+        underTest.updateMovie(MOVIE.getTitle(), MOVIE.getGenre(), MOVIE.getRuntime());
 
         // Then
         Mockito.verify(accountService, Mockito.times(1)).isAdminSignedIn();
@@ -81,30 +84,24 @@ public class MovieCommandTest {
     @Test
     public void testDeleteMovieShouldDeleteMovieWhenAdminIsSignedIn() {
         // Given
-        MovieService movieService = Mockito.mock(MovieService.class);
-        AccountService accountService = Mockito.mock(AccountService.class);
-        underTest = new MovieCommand(movieService, accountService);
         Mockito.when(accountService.isAdminSignedIn()).thenReturn(true);
 
         // When
-        underTest.deleteMovie("Sátántangó");
+        underTest.deleteMovie(MOVIE.getTitle());
 
         // Then
         Mockito.verify(accountService, Mockito.times(1)).isAdminSignedIn();
-        Mockito.verify(movieService, Mockito.times(1)).deleteMovie("Sátántangó");
+        Mockito.verify(movieService, Mockito.times(1)).deleteMovie(MOVIE.getTitle());
         Mockito.verifyNoMoreInteractions(accountService, movieService);
     }
 
     @Test
     public void testDeleteMovieShouldNotDeleteMovieWhenAdminIsNotSignedIn() {
         // Given
-        MovieService movieService = Mockito.mock(MovieService.class);
-        AccountService accountService = Mockito.mock(AccountService.class);
-        underTest = new MovieCommand(movieService, accountService);
         Mockito.when(accountService.isAdminSignedIn()).thenReturn(false);
 
         // When
-        underTest.deleteMovie("Sátántangó");
+        underTest.deleteMovie(MOVIE.getTitle());
 
         // Then
         Mockito.verify(accountService, Mockito.times(1)).isAdminSignedIn();
