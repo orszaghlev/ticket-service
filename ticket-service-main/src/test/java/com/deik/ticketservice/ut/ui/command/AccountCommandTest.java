@@ -1,7 +1,7 @@
 package com.deik.ticketservice.ut.ui.command;
 
-import com.deik.ticketservice.persistence.entity.Account;
-import com.deik.ticketservice.service.AccountService;
+import com.deik.ticketservice.core.persistence.entity.Account;
+import com.deik.ticketservice.core.service.AccountService;
 import com.deik.ticketservice.ui.command.AccountCommand;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

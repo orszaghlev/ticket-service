@@ -1,9 +1,9 @@
-package com.deik.ticketservice.persistence.repository;
+package com.deik.ticketservice.core.persistence.repository;
 
-import com.deik.ticketservice.persistence.entity.Movie;
-import com.deik.ticketservice.persistence.entity.Room;
-import com.deik.ticketservice.persistence.entity.Screening;
-import com.deik.ticketservice.persistence.entity.id.ScreeningId;
+import com.deik.ticketservice.core.persistence.entity.Movie;
+import com.deik.ticketservice.core.persistence.entity.Room;
+import com.deik.ticketservice.core.persistence.entity.id.ScreeningId;
+import com.deik.ticketservice.core.persistence.entity.Screening;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 

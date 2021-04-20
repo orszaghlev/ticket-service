@@ -1,8 +1,8 @@
 package com.deik.ticketservice.ut.service.impl;
 
-import com.deik.ticketservice.persistence.entity.Movie;
-import com.deik.ticketservice.persistence.repository.MovieRepository;
-import com.deik.ticketservice.service.impl.MovieServiceImpl;
+import com.deik.ticketservice.core.persistence.entity.Movie;
+import com.deik.ticketservice.core.persistence.repository.MovieRepository;
+import com.deik.ticketservice.core.service.impl.MovieServiceImpl;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

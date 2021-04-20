@@ -1,8 +1,8 @@
 package com.deik.ticketservice.ut.ui.command;
 
-import com.deik.ticketservice.service.AccountService;
-import com.deik.ticketservice.service.MovieService;
-import com.deik.ticketservice.service.ScreeningService;
+import com.deik.ticketservice.core.service.AccountService;
+import com.deik.ticketservice.core.service.MovieService;
+import com.deik.ticketservice.core.service.ScreeningService;
 import com.deik.ticketservice.ui.command.ScreeningCommand;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

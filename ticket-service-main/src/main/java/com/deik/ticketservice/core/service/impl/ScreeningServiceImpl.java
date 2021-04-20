@@ -1,13 +1,13 @@
-package com.deik.ticketservice.service.impl;
+package com.deik.ticketservice.core.service.impl;
 
-import com.deik.ticketservice.persistence.entity.Movie;
-import com.deik.ticketservice.persistence.entity.Room;
-import com.deik.ticketservice.persistence.entity.Screening;
-import com.deik.ticketservice.persistence.entity.id.ScreeningId;
-import com.deik.ticketservice.persistence.repository.MovieRepository;
-import com.deik.ticketservice.persistence.repository.RoomRepository;
-import com.deik.ticketservice.persistence.repository.ScreeningRepository;
-import com.deik.ticketservice.service.ScreeningService;
+import com.deik.ticketservice.core.persistence.entity.Movie;
+import com.deik.ticketservice.core.persistence.entity.Room;
+import com.deik.ticketservice.core.persistence.entity.Screening;
+import com.deik.ticketservice.core.persistence.entity.id.ScreeningId;
+import com.deik.ticketservice.core.persistence.repository.MovieRepository;
+import com.deik.ticketservice.core.persistence.repository.RoomRepository;
+import com.deik.ticketservice.core.persistence.repository.ScreeningRepository;
+import com.deik.ticketservice.core.service.ScreeningService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

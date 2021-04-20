@@ -1,6 +1,6 @@
-package com.deik.ticketservice.service;
+package com.deik.ticketservice.core.service;
 
-import com.deik.ticketservice.persistence.entity.Screening;
+import com.deik.ticketservice.core.persistence.entity.Screening;
 
 import java.text.ParseException;
 import java.util.List;

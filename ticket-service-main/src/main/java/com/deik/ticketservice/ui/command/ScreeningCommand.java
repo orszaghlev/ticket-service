@@ -1,9 +1,9 @@
 package com.deik.ticketservice.ui.command;
 
-import com.deik.ticketservice.persistence.entity.Screening;
-import com.deik.ticketservice.service.AccountService;
-import com.deik.ticketservice.service.MovieService;
-import com.deik.ticketservice.service.ScreeningService;
+import com.deik.ticketservice.core.persistence.entity.Screening;
+import com.deik.ticketservice.core.service.AccountService;
+import com.deik.ticketservice.core.service.MovieService;
+import com.deik.ticketservice.core.service.ScreeningService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.shell.standard.ShellComponent;

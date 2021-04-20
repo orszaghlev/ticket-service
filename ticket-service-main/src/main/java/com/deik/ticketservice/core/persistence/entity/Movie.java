@@ -1,4 +1,4 @@
-package com.deik.ticketservice.persistence.entity;
+package com.deik.ticketservice.core.persistence.entity;
 
 import org.hibernate.annotations.Proxy;
 

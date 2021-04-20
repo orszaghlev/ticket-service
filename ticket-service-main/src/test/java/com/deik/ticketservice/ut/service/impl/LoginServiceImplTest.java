@@ -1,8 +1,8 @@
 package com.deik.ticketservice.ut.service.impl;
 
-import com.deik.ticketservice.persistence.entity.Account;
-import com.deik.ticketservice.persistence.repository.AccountRepository;
-import com.deik.ticketservice.service.impl.LoginServiceImpl;
+import com.deik.ticketservice.core.persistence.entity.Account;
+import com.deik.ticketservice.core.persistence.repository.AccountRepository;
+import com.deik.ticketservice.core.service.impl.LoginServiceImpl;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

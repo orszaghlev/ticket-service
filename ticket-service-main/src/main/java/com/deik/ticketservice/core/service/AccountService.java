@@ -1,6 +1,6 @@
-package com.deik.ticketservice.service;
+package com.deik.ticketservice.core.service;
 
-import com.deik.ticketservice.persistence.entity.Account;
+import com.deik.ticketservice.core.persistence.entity.Account;
 
 public interface AccountService {
 
