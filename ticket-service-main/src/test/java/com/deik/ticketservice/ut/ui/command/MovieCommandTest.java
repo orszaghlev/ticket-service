@@ -1,8 +1,8 @@
 package com.deik.ticketservice.ut.ui.command;
 
-import com.deik.ticketservice.persistence.entity.Movie;
-import com.deik.ticketservice.service.AccountService;
-import com.deik.ticketservice.service.MovieService;
+import com.deik.ticketservice.core.persistence.entity.Movie;
+import com.deik.ticketservice.core.service.AccountService;
+import com.deik.ticketservice.core.service.MovieService;
 import com.deik.ticketservice.ui.command.MovieCommand;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

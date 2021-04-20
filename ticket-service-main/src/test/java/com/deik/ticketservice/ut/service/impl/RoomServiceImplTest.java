@@ -1,8 +1,8 @@
 package com.deik.ticketservice.ut.service.impl;
 
-import com.deik.ticketservice.persistence.entity.Room;
-import com.deik.ticketservice.persistence.repository.RoomRepository;
-import com.deik.ticketservice.service.impl.RoomServiceImpl;
+import com.deik.ticketservice.core.persistence.entity.Room;
+import com.deik.ticketservice.core.persistence.repository.RoomRepository;
+import com.deik.ticketservice.core.service.impl.RoomServiceImpl;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

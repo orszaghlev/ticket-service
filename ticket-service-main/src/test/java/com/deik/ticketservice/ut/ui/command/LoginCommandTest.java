@@ -1,6 +1,6 @@
 package com.deik.ticketservice.ut.ui.command;
 
-import com.deik.ticketservice.service.LoginService;
+import com.deik.ticketservice.core.service.LoginService;
 import com.deik.ticketservice.ui.command.LoginCommand;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

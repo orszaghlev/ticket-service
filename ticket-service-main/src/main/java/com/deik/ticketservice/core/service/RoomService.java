@@ -1,6 +1,6 @@
-package com.deik.ticketservice.service;
+package com.deik.ticketservice.core.service;
 
-import com.deik.ticketservice.persistence.entity.Room;
+import com.deik.ticketservice.core.persistence.entity.Room;
 
 import java.util.List;
 

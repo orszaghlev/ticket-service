@@ -1,6 +1,6 @@
-package com.deik.ticketservice.service;
+package com.deik.ticketservice.core.service;
 
-import com.deik.ticketservice.persistence.entity.Movie;
+import com.deik.ticketservice.core.persistence.entity.Movie;
 
 import java.util.List;
 

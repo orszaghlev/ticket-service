@@ -1,8 +1,8 @@
-package com.deik.ticketservice.service.impl;
+package com.deik.ticketservice.core.service.impl;
 
-import com.deik.ticketservice.persistence.entity.Account;
-import com.deik.ticketservice.persistence.repository.AccountRepository;
-import com.deik.ticketservice.service.LoginService;
+import com.deik.ticketservice.core.persistence.entity.Account;
+import com.deik.ticketservice.core.persistence.repository.AccountRepository;
+import com.deik.ticketservice.core.service.LoginService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

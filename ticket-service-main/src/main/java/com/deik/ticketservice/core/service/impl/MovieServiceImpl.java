@@ -1,8 +1,8 @@
-package com.deik.ticketservice.service.impl;
+package com.deik.ticketservice.core.service.impl;
 
-import com.deik.ticketservice.persistence.entity.Movie;
-import com.deik.ticketservice.persistence.repository.MovieRepository;
-import com.deik.ticketservice.service.MovieService;
+import com.deik.ticketservice.core.persistence.entity.Movie;
+import com.deik.ticketservice.core.persistence.repository.MovieRepository;
+import com.deik.ticketservice.core.service.MovieService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

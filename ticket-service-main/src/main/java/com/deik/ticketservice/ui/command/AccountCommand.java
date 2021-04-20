@@ -1,6 +1,6 @@
 package com.deik.ticketservice.ui.command;
 
-import com.deik.ticketservice.service.AccountService;
+import com.deik.ticketservice.core.service.AccountService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.shell.standard.ShellComponent;

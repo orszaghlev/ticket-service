@@ -1,4 +1,4 @@
-package com.deik.ticketservice.service;
+package com.deik.ticketservice.core.service;
 
 public interface LoginService {
 
