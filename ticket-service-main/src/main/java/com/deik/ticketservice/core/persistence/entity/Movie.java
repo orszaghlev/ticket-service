@@ -1,20 +1,15 @@
 package com.deik.ticketservice.core.persistence.entity;
 
-import org.hibernate.annotations.Proxy;
-
 import javax.persistence.Entity;
 import javax.persistence.Table;
 import javax.persistence.Id;
 import javax.persistence.Column;
 import javax.persistence.OneToMany;
-import javax.persistence.FetchType;
-import javax.persistence.CascadeType;
 import java.util.Objects;
 import java.util.Set;
 
 @Entity
 @Table(name = "movie")
-@Proxy(lazy = false)
 public class Movie {
 
     @Id
@@ -25,7 +20,7 @@ public class Movie {
     @Column(name = "runtime")
     private int runtime;
 
-    @OneToMany(mappedBy = "id.movie", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "id.movie")
     private Set<Screening> screenings;
 
     public Movie() {

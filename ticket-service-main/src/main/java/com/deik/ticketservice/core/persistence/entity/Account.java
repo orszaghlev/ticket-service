@@ -4,7 +4,6 @@ import javax.persistence.Entity;
 import javax.persistence.Table;
 import javax.persistence.Id;
 import javax.persistence.Column;
-import javax.validation.constraints.NotBlank;
 import java.util.Objects;
 
 @Entity
@@ -13,10 +12,8 @@ public class Account {
 
     @Id
     @Column(name = "username")
-    @NotBlank
     private String username;
     @Column(name = "password")
-    @NotBlank
     private String password;
     @Column(name = "isSigned")
     private boolean isSigned;
@@ -25,7 +22,7 @@ public class Account {
 
     }
 
-    public Account(@NotBlank String username, @NotBlank String password, boolean isSigned) {
+    public Account(String username, String password, boolean isSigned) {
         this.username = username;
         this.password = password;
         this.isSigned = isSigned;
@@ -64,7 +61,8 @@ public class Account {
             return false;
         }
         Account account = (Account) o;
-        return Objects.equals(username, account.username) && Objects.equals(password, account.password);
+        return isSigned() == account.isSigned() && getUsername().equals(account.getUsername())
+                && getPassword().equals(account.getPassword());
     }
 
     @Override

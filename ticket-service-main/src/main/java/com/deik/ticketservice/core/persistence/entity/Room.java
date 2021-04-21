@@ -5,8 +5,6 @@ import javax.persistence.Table;
 import javax.persistence.Id;
 import javax.persistence.Column;
 import javax.persistence.OneToMany;
-import javax.persistence.FetchType;
-import javax.persistence.CascadeType;
 import java.util.Objects;
 import java.util.Set;
 
@@ -22,7 +20,7 @@ public class Room {
     @Column(name = "numberOfCols")
     private int numberOfCols;
 
-    @OneToMany(mappedBy = "id.room", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "id.room")
     private Set<Screening> screenings;
 
     public Room() {

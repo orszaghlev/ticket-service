@@ -2,15 +2,9 @@ package com.deik.ticketservice.core.persistence.entity.id;
 
 import com.deik.ticketservice.core.persistence.entity.Movie;
 import com.deik.ticketservice.core.persistence.entity.Room;
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.JsonIdentityReference;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
-import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.Column;
-import javax.persistence.CascadeType;
 import javax.persistence.Embeddable;
 import javax.persistence.ManyToOne;
 import java.io.Serializable;
@@ -20,18 +14,12 @@ import java.util.Objects;
 @Embeddable
 public class ScreeningId implements Serializable {
 
-    @ManyToOne(cascade = CascadeType.ALL, optional = false, fetch = FetchType.LAZY)
-    @JoinColumn(name = "movie", nullable = false)
-    @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
-    @JsonIdentityReference(alwaysAsId = true)
-    @JsonProperty("movie")
+    @ManyToOne
+    @JoinColumn(name = "movie")
     private Movie movie;
 
-    @ManyToOne(cascade = CascadeType.ALL, optional = false, fetch = FetchType.LAZY)
-    @JoinColumn(name = "room", nullable = false)
-    @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
-    @JsonIdentityReference(alwaysAsId = true)
-    @JsonProperty("room")
+    @ManyToOne
+    @JoinColumn(name = "room")
     private Room room;
 
     @Column(name = "date")
@@ -86,6 +74,11 @@ public class ScreeningId implements Serializable {
     @Override
     public int hashCode() {
         return Objects.hash(movie, room, date);
+    }
+
+    @Override
+    public String toString() {
+        return "ScreeningId{" + "movie=" + movie + ", room=" + room + ", date=" + date + '}';
     }
 
 }
