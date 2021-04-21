@@ -1,4 +1,4 @@
-package com.deik.ticketservice.ut.service.impl;
+package com.deik.ticketservice.ut.core.service.impl;
 
 import com.deik.ticketservice.core.persistence.entity.Account;
 import com.deik.ticketservice.core.persistence.repository.AccountRepository;
@@ -14,6 +14,7 @@ public class LoginServiceImplTest {
     private static final String ADMIN_PASSWORD = "admin";
     private static final Account LOGGED_IN_ADMIN_ACCOUNT = new Account(ADMIN_USERNAME, ADMIN_PASSWORD, true);
     private static final Account LOGGED_OUT_ADMIN_ACCOUNT = new Account(ADMIN_USERNAME, ADMIN_PASSWORD, false);
+    private static final int WANTED_NUMBER_OF_INVOCATIONS = 2;
 
     private LoginServiceImpl underTest;
 
@@ -36,11 +37,11 @@ public class LoginServiceImplTest {
         underTest.signInPrivileged(ADMIN_USERNAME, ADMIN_PASSWORD);
 
         // Then
-        Mockito.verify(accountRepository, Mockito.times(1)).save(LOGGED_OUT_ADMIN_ACCOUNT);
+        Mockito.verify(accountRepository).save(LOGGED_OUT_ADMIN_ACCOUNT);
         Assertions.assertEquals(ADMIN_USERNAME, LOGGED_OUT_ADMIN_ACCOUNT.getUsername());
         Assertions.assertEquals(ADMIN_PASSWORD, LOGGED_OUT_ADMIN_ACCOUNT.getPassword());
         Assertions.assertTrue(LOGGED_OUT_ADMIN_ACCOUNT.isSigned());
-        Mockito.verify(accountRepository, Mockito.times(2))
+        Mockito.verify(accountRepository, Mockito.times(WANTED_NUMBER_OF_INVOCATIONS))
                 .findByUsernameAndPassword(ADMIN_USERNAME, ADMIN_PASSWORD);
         Mockito.verifyNoMoreInteractions(accountRepository);
     }
@@ -55,11 +56,11 @@ public class LoginServiceImplTest {
         underTest.signOut();
 
         // Then
-        Mockito.verify(accountRepository, Mockito.times(1)).save(LOGGED_IN_ADMIN_ACCOUNT);
+        Mockito.verify(accountRepository).save(LOGGED_IN_ADMIN_ACCOUNT);
         Assertions.assertEquals(ADMIN_USERNAME, LOGGED_IN_ADMIN_ACCOUNT.getUsername());
         Assertions.assertEquals(ADMIN_PASSWORD, LOGGED_IN_ADMIN_ACCOUNT.getPassword());
         Assertions.assertFalse(LOGGED_IN_ADMIN_ACCOUNT.isSigned());
-        Mockito.verify(accountRepository, Mockito.times(2)).findByisSigned(true);
+        Mockito.verify(accountRepository, Mockito.times(WANTED_NUMBER_OF_INVOCATIONS)).findByisSigned(true);
         Mockito.verifyNoMoreInteractions(accountRepository);
     }
 

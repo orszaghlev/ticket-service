@@ -6,10 +6,10 @@ import org.springframework.context.annotation.ComponentScan;
 
 @SpringBootApplication
 @ComponentScan(basePackages = {"com.deik"})
-public class TicketServiceApplication {
+public class Main {
 
     public static void main(String[] args) {
-        SpringApplication.run(TicketServiceApplication.class, args);
+        SpringApplication.run(Main.class, args);
     }
 
 }

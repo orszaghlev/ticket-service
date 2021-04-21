@@ -31,8 +31,7 @@ public class LoginCommandTest {
         underTest.signInPrivileged(ADMIN_USERNAME, ADMIN_PASSWORD);
 
         // Then
-        Mockito.verify(loginService, Mockito.times(1))
-                .signInPrivileged(ADMIN_USERNAME, ADMIN_PASSWORD);
+        Mockito.verify(loginService).signInPrivileged(ADMIN_USERNAME, ADMIN_PASSWORD);
         Mockito.verifyNoMoreInteractions(loginService);
     }
 
@@ -55,7 +54,7 @@ public class LoginCommandTest {
         underTest.signOut();
 
         // Then
-        Mockito.verify(loginService, Mockito.times(1)).signOut();
+        Mockito.verify(loginService).signOut();
         Mockito.verifyNoMoreInteractions(loginService);
     }
 

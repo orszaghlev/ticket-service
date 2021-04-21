@@ -1,4 +1,4 @@
-package com.deik.ticketservice.ut.service.impl;
+package com.deik.ticketservice.ut.core.service.impl;
 
 import com.deik.ticketservice.core.persistence.entity.Room;
 import com.deik.ticketservice.core.persistence.repository.RoomRepository;
@@ -15,6 +15,7 @@ public class RoomServiceImplTest {
 
     private static final Room ROOM = new Room("Pedersoli", 20, 10);
     private static final Room ROOM_TO_UPDATE = new Room("Pedersoli", 20, 1);
+    private static final int WANTED_NUMBER_OF_INVOCATIONS = 2;
 
     private RoomServiceImpl underTest;
 
@@ -35,8 +36,8 @@ public class RoomServiceImplTest {
         underTest.createRoom(ROOM.getName(), ROOM.getNumberOfRows(), ROOM.getNumberOfCols());
 
         // Then
-        Mockito.verify(roomRepository, Mockito.times(1)).save(ROOM);
-        Mockito.verify(roomRepository, Mockito.times(1)).findByName(ROOM.getName());
+        Mockito.verify(roomRepository).save(ROOM);
+        Mockito.verify(roomRepository).findByName(ROOM.getName());
         Mockito.verifyNoMoreInteractions(roomRepository);
     }
 
@@ -51,11 +52,11 @@ public class RoomServiceImplTest {
         underTest.updateRoom(ROOM.getName(), ROOM.getNumberOfRows(), ROOM.getNumberOfCols());
 
         // Then
-        Mockito.verify(roomRepository, Mockito.times(1)).save(ROOM_TO_UPDATE);
+        Mockito.verify(roomRepository).save(ROOM_TO_UPDATE);
         Assertions.assertEquals(ROOM.getName(), ROOM_TO_UPDATE.getName());
         Assertions.assertEquals(ROOM.getNumberOfRows(), ROOM_TO_UPDATE.getNumberOfRows());
         Assertions.assertEquals(ROOM.getNumberOfCols(), ROOM_TO_UPDATE.getNumberOfCols());
-        Mockito.verify(roomRepository, Mockito.times(2)).findByName(ROOM_TO_UPDATE.getName());
+        Mockito.verify(roomRepository, Mockito.times(WANTED_NUMBER_OF_INVOCATIONS)).findByName(ROOM_TO_UPDATE.getName());
         Mockito.verifyNoMoreInteractions(roomRepository);
     }
 
@@ -68,8 +69,8 @@ public class RoomServiceImplTest {
         underTest.deleteRoom(ROOM.getName());
 
         // Then
-        Mockito.verify(roomRepository, Mockito.times(1)).delete(ROOM);
-        Mockito.verify(roomRepository, Mockito.times(2)).findByName(ROOM.getName());
+        Mockito.verify(roomRepository).delete(ROOM);
+        Mockito.verify(roomRepository, Mockito.times(WANTED_NUMBER_OF_INVOCATIONS)).findByName(ROOM.getName());
         Mockito.verifyNoMoreInteractions(roomRepository);
     }
 
@@ -82,7 +83,7 @@ public class RoomServiceImplTest {
 
         // Then
         Assertions.assertTrue(underTest.listRooms().size() > 0);
-        Mockito.verify(roomRepository, Mockito.times(1)).findAll();
+        Mockito.verify(roomRepository).findAll();
         Mockito.verifyNoMoreInteractions(roomRepository);
     }
 

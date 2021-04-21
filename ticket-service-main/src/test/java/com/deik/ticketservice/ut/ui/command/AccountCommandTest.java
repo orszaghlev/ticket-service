@@ -30,8 +30,8 @@ public class AccountCommandTest {
         underTest.describeAccount();
 
         // Then
-        Mockito.verify(accountService, Mockito.times(1)).isAdminSignedIn();
-        Mockito.verify(accountService, Mockito.times(1)).getSignedInAccount();
+        Mockito.verify(accountService).isAdminSignedIn();
+        Mockito.verify(accountService).getSignedInAccount();
         Mockito.verifyNoMoreInteractions(accountService);
     }
 
@@ -44,7 +44,7 @@ public class AccountCommandTest {
         underTest.describeAccount();
 
         // Then
-        Mockito.verify(accountService, Mockito.times(1)).isAdminSignedIn();
+        Mockito.verify(accountService).isAdminSignedIn();
         Mockito.verifyNoMoreInteractions(accountService);
     }
 

@@ -34,9 +34,8 @@ public class RoomCommandTest {
         underTest.createRoom(ROOM.getName(), ROOM.getNumberOfRows(), ROOM.getNumberOfCols());
 
         // Then
-        Mockito.verify(accountService, Mockito.times(1)).isAdminSignedIn();
-        Mockito.verify(roomService, Mockito.times(1))
-                .createRoom(ROOM.getName(), ROOM.getNumberOfRows(), ROOM.getNumberOfCols());
+        Mockito.verify(accountService).isAdminSignedIn();
+        Mockito.verify(roomService).createRoom(ROOM.getName(), ROOM.getNumberOfRows(), ROOM.getNumberOfCols());
         Mockito.verifyNoMoreInteractions(accountService, roomService);
     }
 
@@ -49,7 +48,7 @@ public class RoomCommandTest {
         underTest.createRoom(ROOM.getName(), ROOM.getNumberOfRows(), ROOM.getNumberOfCols());
 
         // Then
-        Mockito.verify(accountService, Mockito.times(1)).isAdminSignedIn();
+        Mockito.verify(accountService).isAdminSignedIn();
         Mockito.verifyNoMoreInteractions(accountService, roomService);
     }
 
@@ -62,9 +61,8 @@ public class RoomCommandTest {
         underTest.updateRoom(ROOM.getName(), ROOM.getNumberOfRows(), ROOM.getNumberOfCols());
 
         // Then
-        Mockito.verify(accountService, Mockito.times(1)).isAdminSignedIn();
-        Mockito.verify(roomService, Mockito.times(1))
-                .updateRoom(ROOM.getName(), ROOM.getNumberOfRows(), ROOM.getNumberOfCols());
+        Mockito.verify(accountService).isAdminSignedIn();
+        Mockito.verify(roomService).updateRoom(ROOM.getName(), ROOM.getNumberOfRows(), ROOM.getNumberOfCols());
         Mockito.verifyNoMoreInteractions(accountService, roomService);
     }
 
@@ -77,7 +75,7 @@ public class RoomCommandTest {
         underTest.updateRoom(ROOM.getName(), ROOM.getNumberOfRows(), ROOM.getNumberOfCols());
 
         // Then
-        Mockito.verify(accountService, Mockito.times(1)).isAdminSignedIn();
+        Mockito.verify(accountService).isAdminSignedIn();
         Mockito.verifyNoMoreInteractions(accountService, roomService);
     }
 
@@ -90,8 +88,8 @@ public class RoomCommandTest {
         underTest.deleteRoom(ROOM.getName());
 
         // Then
-        Mockito.verify(accountService, Mockito.times(1)).isAdminSignedIn();
-        Mockito.verify(roomService, Mockito.times(1)).deleteRoom(ROOM.getName());
+        Mockito.verify(accountService).isAdminSignedIn();
+        Mockito.verify(roomService).deleteRoom(ROOM.getName());
         Mockito.verifyNoMoreInteractions(accountService, roomService);
     }
 
@@ -104,7 +102,7 @@ public class RoomCommandTest {
         underTest.deleteRoom(ROOM.getName());
 
         // Then
-        Mockito.verify(accountService, Mockito.times(1)).isAdminSignedIn();
+        Mockito.verify(accountService).isAdminSignedIn();
         Mockito.verifyNoMoreInteractions(accountService, roomService);
     }
 

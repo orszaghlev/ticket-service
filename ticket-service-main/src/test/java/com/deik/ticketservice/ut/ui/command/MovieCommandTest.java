@@ -34,9 +34,8 @@ public class MovieCommandTest {
         underTest.createMovie(MOVIE.getTitle(), MOVIE.getGenre(), MOVIE.getRuntime());
 
         // Then
-        Mockito.verify(accountService, Mockito.times(1)).isAdminSignedIn();
-        Mockito.verify(movieService, Mockito.times(1))
-                .createMovie(MOVIE.getTitle(), MOVIE.getGenre(), MOVIE.getRuntime());
+        Mockito.verify(accountService).isAdminSignedIn();
+        Mockito.verify(movieService).createMovie(MOVIE.getTitle(), MOVIE.getGenre(), MOVIE.getRuntime());
         Mockito.verifyNoMoreInteractions(accountService, movieService);
     }
 
@@ -49,7 +48,7 @@ public class MovieCommandTest {
         underTest.createMovie(MOVIE.getTitle(), MOVIE.getGenre(), MOVIE.getRuntime());
 
         // Then
-        Mockito.verify(accountService, Mockito.times(1)).isAdminSignedIn();
+        Mockito.verify(accountService).isAdminSignedIn();
         Mockito.verifyNoMoreInteractions(accountService, movieService);
     }
 
@@ -62,9 +61,8 @@ public class MovieCommandTest {
         underTest.updateMovie(MOVIE.getTitle(), MOVIE.getGenre(), MOVIE.getRuntime());
 
         // Then
-        Mockito.verify(accountService, Mockito.times(1)).isAdminSignedIn();
-        Mockito.verify(movieService, Mockito.times(1))
-                .updateMovie(MOVIE.getTitle(), MOVIE.getGenre(), MOVIE.getRuntime());
+        Mockito.verify(accountService).isAdminSignedIn();
+        Mockito.verify(movieService).updateMovie(MOVIE.getTitle(), MOVIE.getGenre(), MOVIE.getRuntime());
         Mockito.verifyNoMoreInteractions(accountService, movieService);
     }
 
@@ -77,7 +75,7 @@ public class MovieCommandTest {
         underTest.updateMovie(MOVIE.getTitle(), MOVIE.getGenre(), MOVIE.getRuntime());
 
         // Then
-        Mockito.verify(accountService, Mockito.times(1)).isAdminSignedIn();
+        Mockito.verify(accountService).isAdminSignedIn();
         Mockito.verifyNoMoreInteractions(accountService, movieService);
     }
 
@@ -90,8 +88,8 @@ public class MovieCommandTest {
         underTest.deleteMovie(MOVIE.getTitle());
 
         // Then
-        Mockito.verify(accountService, Mockito.times(1)).isAdminSignedIn();
-        Mockito.verify(movieService, Mockito.times(1)).deleteMovie(MOVIE.getTitle());
+        Mockito.verify(accountService).isAdminSignedIn();
+        Mockito.verify(movieService).deleteMovie(MOVIE.getTitle());
         Mockito.verifyNoMoreInteractions(accountService, movieService);
     }
 
@@ -104,7 +102,7 @@ public class MovieCommandTest {
         underTest.deleteMovie(MOVIE.getTitle());
 
         // Then
-        Mockito.verify(accountService, Mockito.times(1)).isAdminSignedIn();
+        Mockito.verify(accountService).isAdminSignedIn();
         Mockito.verifyNoMoreInteractions(accountService, movieService);
     }
 

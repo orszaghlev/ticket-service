@@ -41,9 +41,8 @@ public class ScreeningCommandTest {
         underTest.createScreening(MOVIE_TITLE, ROOM_NAME, DATE_AS_STRING);
 
         // Then
-        Mockito.verify(accountService, Mockito.times(1)).isAdminSignedIn();
-        Mockito.verify(screeningService, Mockito.times(1))
-                .createScreening(MOVIE_TITLE, ROOM_NAME, DATE_AS_STRING);
+        Mockito.verify(accountService).isAdminSignedIn();
+        Mockito.verify(screeningService).createScreening(MOVIE_TITLE, ROOM_NAME, DATE_AS_STRING);
         Mockito.verifyNoMoreInteractions(accountService, movieService);
     }
 
@@ -56,7 +55,7 @@ public class ScreeningCommandTest {
         underTest.createScreening(MOVIE_TITLE, ROOM_NAME, DATE_AS_STRING);
 
         // Then
-        Mockito.verify(accountService, Mockito.times(1)).isAdminSignedIn();
+        Mockito.verify(accountService).isAdminSignedIn();
         Mockito.verifyNoMoreInteractions(accountService, movieService, screeningService);
     }
 
@@ -69,9 +68,8 @@ public class ScreeningCommandTest {
         underTest.deleteScreening(MOVIE_TITLE, ROOM_NAME, DATE_AS_STRING);
 
         // Then
-        Mockito.verify(accountService, Mockito.times(1)).isAdminSignedIn();
-        Mockito.verify(screeningService, Mockito.times(1))
-                .deleteScreening(MOVIE_TITLE, ROOM_NAME, DATE_AS_STRING);
+        Mockito.verify(accountService).isAdminSignedIn();
+        Mockito.verify(screeningService).deleteScreening(MOVIE_TITLE, ROOM_NAME, DATE_AS_STRING);
         Mockito.verifyNoMoreInteractions(accountService, movieService, screeningService);
     }
 
@@ -84,7 +82,7 @@ public class ScreeningCommandTest {
         underTest.deleteScreening(MOVIE_TITLE, ROOM_NAME, DATE_AS_STRING);
 
         // Then
-        Mockito.verify(accountService, Mockito.times(1)).isAdminSignedIn();
+        Mockito.verify(accountService).isAdminSignedIn();
         Mockito.verifyNoMoreInteractions(accountService, movieService, screeningService);
     }
 

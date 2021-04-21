@@ -1,4 +1,4 @@
-package com.deik.ticketservice.ut.service.impl;
+package com.deik.ticketservice.ut.core.service.impl;
 
 import com.deik.ticketservice.core.persistence.entity.Account;
 import com.deik.ticketservice.core.persistence.repository.AccountRepository;
@@ -14,6 +14,7 @@ public class AccountServiceImplTest {
     private static final String ADMIN_PASSWORD = "admin";
     private static final Account LOGGED_IN_ADMIN_ACCOUNT = new Account(ADMIN_USERNAME, ADMIN_PASSWORD, true);
     private static final Account LOGGED_OUT_ADMIN_ACCOUNT = new Account(ADMIN_USERNAME, ADMIN_PASSWORD, false);
+    private static final int WANTED_NUMBER_OF_INVOCATIONS = 2;
 
     private AccountServiceImpl underTest;
 
@@ -35,9 +36,8 @@ public class AccountServiceImplTest {
         underTest.init();
 
         // Then
-        Mockito.verify(accountRepository, Mockito.times(1)).save(LOGGED_OUT_ADMIN_ACCOUNT);
-        Mockito.verify(accountRepository, Mockito.times(1))
-                .findByUsernameAndPassword(ADMIN_USERNAME, ADMIN_PASSWORD);
+        Mockito.verify(accountRepository).save(LOGGED_OUT_ADMIN_ACCOUNT);
+        Mockito.verify(accountRepository).findByUsernameAndPassword(ADMIN_USERNAME, ADMIN_PASSWORD);
         Mockito.verifyNoMoreInteractions(accountRepository);
     }
 
@@ -53,7 +53,7 @@ public class AccountServiceImplTest {
 
         // Then
         Assertions.assertEquals(expected, actual);
-        Mockito.verify(accountRepository, Mockito.times(2))
+        Mockito.verify(accountRepository, Mockito.times(WANTED_NUMBER_OF_INVOCATIONS))
                 .findByUsernameAndPassword(ADMIN_USERNAME, ADMIN_PASSWORD);
         Mockito.verifyNoMoreInteractions(accountRepository);
     }
@@ -69,8 +69,7 @@ public class AccountServiceImplTest {
 
         // Then
         Assertions.assertFalse(actual);
-        Mockito.verify(accountRepository, Mockito.times(1))
-                .findByUsernameAndPassword(ADMIN_USERNAME, ADMIN_PASSWORD);
+        Mockito.verify(accountRepository).findByUsernameAndPassword(ADMIN_USERNAME, ADMIN_PASSWORD);
         Mockito.verifyNoMoreInteractions(accountRepository);
     }
 
@@ -84,7 +83,7 @@ public class AccountServiceImplTest {
 
         // Then
         Assertions.assertEquals(LOGGED_IN_ADMIN_ACCOUNT, actual);
-        Mockito.verify(accountRepository, Mockito.times(1)).findByisSigned(true);
+        Mockito.verify(accountRepository).findByisSigned(true);
         Mockito.verifyNoMoreInteractions(accountRepository);
     }
 

@@ -1,4 +1,4 @@
-package com.deik.ticketservice.ut.service.impl;
+package com.deik.ticketservice.ut.core.service.impl;
 
 import com.deik.ticketservice.core.persistence.entity.Movie;
 import com.deik.ticketservice.core.persistence.entity.Room;
@@ -25,6 +25,7 @@ public class ScreeningServiceImplTest {
     private static final String ROOM_NAME = "Pedersoli";
     private static final String DATE_PATTERN = "yyyy-MM-dd HH:mm";
     private static final String DATE_AS_STRING = "2021-03-14 16:00";
+    private static final int WANTED_NUMBER_OF_INVOCATIONS = 2;
 
     private ScreeningServiceImpl underTest;
 
@@ -59,10 +60,10 @@ public class ScreeningServiceImplTest {
         underTest.createScreening(MOVIE_TITLE, ROOM_NAME, DATE_AS_STRING);
 
         // Then
-        Mockito.verify(screeningRepository, Mockito.times(1)).save(created);
-        Mockito.verify(movieRepository, Mockito.times(2)).findByTitle(MOVIE_TITLE);
-        Mockito.verify(roomRepository, Mockito.times(2)).findByName(ROOM_NAME);
-        Mockito.verify(screeningRepository, Mockito.times(1))
+        Mockito.verify(screeningRepository).save(created);
+        Mockito.verify(movieRepository, Mockito.times(WANTED_NUMBER_OF_INVOCATIONS)).findByTitle(MOVIE_TITLE);
+        Mockito.verify(roomRepository, Mockito.times(WANTED_NUMBER_OF_INVOCATIONS)).findByName(ROOM_NAME);
+        Mockito.verify(screeningRepository)
                 .findById_MovieAndId_RoomAndId_Date(existingMovie, existingRoom, date);
         Mockito.verifyNoMoreInteractions(screeningRepository, movieRepository, roomRepository, existingMovie,
                 existingRoom);
@@ -85,10 +86,10 @@ public class ScreeningServiceImplTest {
         underTest.deleteScreening(MOVIE_TITLE, ROOM_NAME, DATE_AS_STRING);
 
         // Then
-        Mockito.verify(screeningRepository, Mockito.times(1)).delete(deleted);
-        Mockito.verify(movieRepository, Mockito.times(2)).findByTitle(MOVIE_TITLE);
-        Mockito.verify(roomRepository, Mockito.times(2)).findByName(ROOM_NAME);
-        Mockito.verify(screeningRepository, Mockito.times(2))
+        Mockito.verify(screeningRepository).delete(deleted);
+        Mockito.verify(movieRepository, Mockito.times(WANTED_NUMBER_OF_INVOCATIONS)).findByTitle(MOVIE_TITLE);
+        Mockito.verify(roomRepository, Mockito.times(WANTED_NUMBER_OF_INVOCATIONS)).findByName(ROOM_NAME);
+        Mockito.verify(screeningRepository, Mockito.times(WANTED_NUMBER_OF_INVOCATIONS))
                 .findById_MovieAndId_RoomAndId_Date(existingMovie, existingRoom, date);
         Mockito.verifyNoMoreInteractions(screeningRepository, movieRepository, roomRepository, existingMovie,
                 existingRoom);
@@ -108,7 +109,7 @@ public class ScreeningServiceImplTest {
 
         // Then
         Assertions.assertTrue(underTest.listScreenings().size() > 0);
-        Mockito.verify(screeningRepository, Mockito.times(1)).findAll();
+        Mockito.verify(screeningRepository).findAll();
         Mockito.verifyNoMoreInteractions(screeningRepository, movieRepository, roomRepository, existingMovie,
                 existingRoom);
     }

@@ -1,4 +1,4 @@
-package com.deik.ticketservice.ut.service.impl;
+package com.deik.ticketservice.ut.core.service.impl;
 
 import com.deik.ticketservice.core.persistence.entity.Movie;
 import com.deik.ticketservice.core.persistence.repository.MovieRepository;
@@ -15,6 +15,7 @@ public class MovieServiceImplTest {
 
     private static final Movie MOVIE = new Movie("Sátántangó", "drama", 450);
     private static final Movie MOVIE_TO_UPDATE = new Movie("Sátántangó", "dram", 45);
+    private static final int WANTED_NUMBER_OF_INVOCATIONS = 2;
 
     private MovieServiceImpl underTest;
 
@@ -35,8 +36,8 @@ public class MovieServiceImplTest {
         underTest.createMovie(MOVIE.getTitle(), MOVIE.getGenre(), MOVIE.getRuntime());
 
         // Then
-        Mockito.verify(movieRepository, Mockito.times(1)).save(MOVIE);
-        Mockito.verify(movieRepository, Mockito.times(1)).findByTitle(MOVIE.getTitle());
+        Mockito.verify(movieRepository).save(MOVIE);
+        Mockito.verify(movieRepository).findByTitle(MOVIE.getTitle());
         Mockito.verifyNoMoreInteractions(movieRepository);
     }
 
@@ -51,11 +52,12 @@ public class MovieServiceImplTest {
         underTest.updateMovie(MOVIE.getTitle(), MOVIE.getGenre(), MOVIE.getRuntime());
 
         // Then
-        Mockito.verify(movieRepository, Mockito.times(1)).save(MOVIE_TO_UPDATE);
+        Mockito.verify(movieRepository).save(MOVIE_TO_UPDATE);
         Assertions.assertEquals(MOVIE.getTitle(), MOVIE_TO_UPDATE.getTitle());
         Assertions.assertEquals(MOVIE.getGenre(), MOVIE_TO_UPDATE.getGenre());
         Assertions.assertEquals(MOVIE.getRuntime(), MOVIE_TO_UPDATE.getRuntime());
-        Mockito.verify(movieRepository, Mockito.times(2)).findByTitle(MOVIE_TO_UPDATE.getTitle());
+        Mockito.verify(movieRepository, Mockito.times(WANTED_NUMBER_OF_INVOCATIONS))
+                .findByTitle(MOVIE_TO_UPDATE.getTitle());
         Mockito.verifyNoMoreInteractions(movieRepository);
     }
 
@@ -68,8 +70,8 @@ public class MovieServiceImplTest {
         underTest.deleteMovie(MOVIE.getTitle());
 
         // Then
-        Mockito.verify(movieRepository, Mockito.times(1)).delete(MOVIE);
-        Mockito.verify(movieRepository, Mockito.times(2)).findByTitle(MOVIE.getTitle());
+        Mockito.verify(movieRepository).delete(MOVIE);
+        Mockito.verify(movieRepository, Mockito.times(WANTED_NUMBER_OF_INVOCATIONS)).findByTitle(MOVIE.getTitle());
         Mockito.verifyNoMoreInteractions(movieRepository);
     }
 
@@ -82,7 +84,7 @@ public class MovieServiceImplTest {
 
         // Then
         Assertions.assertTrue(underTest.listMovies().size() > 0);
-        Mockito.verify(movieRepository, Mockito.times(1)).findAll();
+        Mockito.verify(movieRepository).findAll();
         Mockito.verifyNoMoreInteractions(movieRepository);
     }
 
@@ -96,7 +98,7 @@ public class MovieServiceImplTest {
 
         // Then
         Assertions.assertEquals(MOVIE.getRuntime(), actual);
-        Mockito.verify(movieRepository, Mockito.times(2)).findByTitle(MOVIE.getTitle());
+        Mockito.verify(movieRepository, Mockito.times(WANTED_NUMBER_OF_INVOCATIONS)).findByTitle(MOVIE.getTitle());
         Mockito.verifyNoMoreInteractions(movieRepository);
     }
 
@@ -111,7 +113,7 @@ public class MovieServiceImplTest {
 
         // Then
         Assertions.assertEquals(expected, actual);
-        Mockito.verify(movieRepository, Mockito.times(1)).findByTitle(MOVIE.getTitle());
+        Mockito.verify(movieRepository).findByTitle(MOVIE.getTitle());
         Mockito.verifyNoMoreInteractions(movieRepository);
     }
 
