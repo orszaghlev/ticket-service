@@ -22,7 +22,7 @@ public class RoomServiceImpl implements RoomService {
     @Override
     public void createRoom(String name, int numberOfRows, int numberOfCols) {
         if (roomRepository.findByName(name).isEmpty()) {
-            Room roomToCreate = new Room(name, numberOfRows, numberOfCols);
+            Room roomToCreate = new Room(1, name, numberOfRows, numberOfCols);
             roomRepository.save(roomToCreate);
         }
     }

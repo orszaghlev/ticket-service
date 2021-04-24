@@ -5,6 +5,8 @@ import javax.persistence.Table;
 import javax.persistence.Id;
 import javax.persistence.Column;
 import javax.persistence.OneToMany;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import java.util.Objects;
 import java.util.Set;
 
@@ -13,7 +15,9 @@ import java.util.Set;
 public class Movie {
 
     @Id
-    @Column(name = "title")
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Integer id;
+    @Column(name = "title", unique = true)
     private String title;
     @Column(name = "genre")
     private String genre;
@@ -27,10 +31,19 @@ public class Movie {
 
     }
 
-    public Movie(String title, String genre, int runtime) {
+    public Movie(Integer id, String title, String genre, int runtime) {
+        this.id = id;
         this.title = title;
         this.genre = genre;
         this.runtime = runtime;
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public String getTitle() {
@@ -74,18 +87,19 @@ public class Movie {
             return false;
         }
         Movie movie = (Movie) o;
-        return getRuntime() == movie.getRuntime() && getTitle().equals(movie.getTitle())
-                && getGenre().equals(movie.getGenre());
+        return getRuntime() == movie.getRuntime() && getId().equals(movie.getId())
+                && getTitle().equals(movie.getTitle()) && getGenre().equals(movie.getGenre());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getTitle(), getGenre(), getRuntime());
+        return Objects.hash(getId(), getTitle(), getGenre(), getRuntime());
     }
 
     @Override
     public String toString() {
-        return "Movie{" + ", title='" + title + '\'' + ", genre='" + genre + '\'' + ", runtime=" + runtime + '}';
+        return "Movie{" + "id=" + id + ", title='" + title + '\'' + ", genre='" + genre + '\'' + ", runtime=" + runtime
+                + '}';
     }
 
 }

@@ -13,8 +13,8 @@ import java.util.stream.Stream;
 
 public class RoomServiceImplTest {
 
-    private static final Room ROOM = new Room("Pedersoli", 20, 10);
-    private static final Room ROOM_TO_UPDATE = new Room("Pedersoli", 20, 1);
+    private static final Room ROOM = new Room(1, "Pedersoli", 20, 10);
+    private static final Room ROOM_TO_UPDATE = new Room(1, "Pedersoli", 20, 1);
     private static final int WANTED_NUMBER_OF_INVOCATIONS = 2;
 
     private RoomServiceImpl underTest;

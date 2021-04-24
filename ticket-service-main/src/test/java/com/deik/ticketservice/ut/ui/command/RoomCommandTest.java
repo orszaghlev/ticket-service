@@ -10,7 +10,7 @@ import org.mockito.Mockito;
 
 public class RoomCommandTest {
 
-    private final static Room ROOM = new Room("Pedersoli", 20, 10);
+    private final static Room ROOM = new Room(1, "Pedersoli", 20, 10);
 
     private RoomCommand underTest;
 

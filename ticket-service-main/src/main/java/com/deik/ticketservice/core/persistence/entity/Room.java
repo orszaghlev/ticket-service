@@ -5,6 +5,8 @@ import javax.persistence.Table;
 import javax.persistence.Id;
 import javax.persistence.Column;
 import javax.persistence.OneToMany;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import java.util.Objects;
 import java.util.Set;
 
@@ -13,7 +15,9 @@ import java.util.Set;
 public class Room {
 
     @Id
-    @Column(name = "name")
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Integer id;
+    @Column(name = "name", unique = true)
     private String name;
     @Column(name = "numberOfRows")
     private int numberOfRows;
@@ -27,10 +31,19 @@ public class Room {
 
     }
 
-    public Room(String name, int numberOfRows, int numberOfCols) {
+    public Room(Integer id, String name, int numberOfRows, int numberOfCols) {
+        this.id = id;
         this.name = name;
         this.numberOfRows = numberOfRows;
         this.numberOfCols = numberOfCols;
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public String getName() {
@@ -75,18 +88,18 @@ public class Room {
         }
         Room room = (Room) o;
         return getNumberOfRows() == room.getNumberOfRows() && getNumberOfCols() == room.getNumberOfCols()
-                && getName().equals(room.getName());
+                && getId().equals(room.getId()) && getName().equals(room.getName());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getName(), getNumberOfRows(), getNumberOfCols());
+        return Objects.hash(getId(), getName(), getNumberOfRows(), getNumberOfCols());
     }
 
     @Override
     public String toString() {
-        return "Room{" + ", name='" + name + '\'' + ", numberOfRows=" + numberOfRows + ", numberOfCols=" + numberOfCols
-                + '}';
+        return "Room{" + "id=" + id + ", name='" + name + '\'' + ", numberOfRows=" + numberOfRows + ", numberOfCols="
+                + numberOfCols + '}';
     }
 
 }

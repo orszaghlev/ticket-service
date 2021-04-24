@@ -13,8 +13,8 @@ import java.util.stream.Stream;
 
 public class MovieServiceImplTest {
 
-    private static final Movie MOVIE = new Movie("Sátántangó", "drama", 450);
-    private static final Movie MOVIE_TO_UPDATE = new Movie("Sátántangó", "dram", 45);
+    private static final Movie MOVIE = new Movie(1, "Sátántangó", "drama", 450);
+    private static final Movie MOVIE_TO_UPDATE = new Movie(1, "Sátántangó", "dram", 45);
     private static final int WANTED_NUMBER_OF_INVOCATIONS = 2;
 
     private MovieServiceImpl underTest;

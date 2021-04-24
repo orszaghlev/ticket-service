@@ -4,6 +4,8 @@ import javax.persistence.Entity;
 import javax.persistence.Table;
 import javax.persistence.Id;
 import javax.persistence.Column;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import java.util.Objects;
 
 @Entity
@@ -11,7 +13,9 @@ import java.util.Objects;
 public class Account {
 
     @Id
-    @Column(name = "username")
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Integer id;
+    @Column(name = "username", unique = true)
     private String username;
     @Column(name = "password")
     private String password;
@@ -22,10 +26,19 @@ public class Account {
 
     }
 
-    public Account(String username, String password, boolean isSigned) {
+    public Account(Integer id, String username, String password, boolean isSigned) {
+        this.id = id;
         this.username = username;
         this.password = password;
         this.isSigned = isSigned;
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public String getUsername() {
@@ -61,19 +74,19 @@ public class Account {
             return false;
         }
         Account account = (Account) o;
-        return isSigned() == account.isSigned() && getUsername().equals(account.getUsername())
-                && getPassword().equals(account.getPassword());
+        return isSigned() == account.isSigned() && getId().equals(account.getId())
+                && getUsername().equals(account.getUsername()) && getPassword().equals(account.getPassword());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getUsername(), getPassword(), isSigned());
+        return Objects.hash(getId(), getUsername(), getPassword(), isSigned());
     }
 
     @Override
     public String toString() {
-        return "Account{" + ", username='" + username + '\'' + ", password='" + password + '\'' + ", isSigned="
-                + isSigned + '}';
+        return "Account{" + "id=" + id + ", username='" + username + '\'' + ", password='" + password + '\''
+                + ", isSigned=" + isSigned + '}';
     }
 
 }
