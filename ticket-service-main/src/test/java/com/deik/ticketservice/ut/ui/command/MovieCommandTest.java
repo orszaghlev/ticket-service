@@ -10,7 +10,7 @@ import org.mockito.Mockito;
 
 public class MovieCommandTest {
 
-    private static final Movie MOVIE = new Movie(1, "Sátántangó", "drama", 450);
+    private static final Movie MOVIE = new Movie(null, "Sátántangó", "drama", 450);
 
     private MovieCommand underTest;
 

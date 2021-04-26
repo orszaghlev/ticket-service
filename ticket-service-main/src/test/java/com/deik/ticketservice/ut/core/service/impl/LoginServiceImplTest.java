@@ -12,8 +12,8 @@ public class LoginServiceImplTest {
 
     private static final String ADMIN_USERNAME = "admin";
     private static final String ADMIN_PASSWORD = "admin";
-    private static final Account LOGGED_IN_ADMIN_ACCOUNT = new Account(1, ADMIN_USERNAME, ADMIN_PASSWORD, true);
-    private static final Account LOGGED_OUT_ADMIN_ACCOUNT = new Account(1, ADMIN_USERNAME, ADMIN_PASSWORD, false);
+    private static final Account LOGGED_IN_ADMIN_ACCOUNT = new Account(null, ADMIN_USERNAME, ADMIN_PASSWORD, true);
+    private static final Account LOGGED_OUT_ADMIN_ACCOUNT = new Account(null, ADMIN_USERNAME, ADMIN_PASSWORD, false);
     private static final int WANTED_NUMBER_OF_INVOCATIONS = 2;
 
     private LoginServiceImpl underTest;

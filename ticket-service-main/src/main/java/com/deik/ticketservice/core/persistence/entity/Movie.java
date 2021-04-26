@@ -87,7 +87,7 @@ public class Movie {
             return false;
         }
         Movie movie = (Movie) o;
-        return getRuntime() == movie.getRuntime() && getId().equals(movie.getId())
+        return getRuntime() == movie.getRuntime() && Objects.equals(getId(), movie.getId())
                 && getTitle().equals(movie.getTitle()) && getGenre().equals(movie.getGenre());
     }
 

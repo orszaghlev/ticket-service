@@ -88,7 +88,7 @@ public class Room {
         }
         Room room = (Room) o;
         return getNumberOfRows() == room.getNumberOfRows() && getNumberOfCols() == room.getNumberOfCols()
-                && getId().equals(room.getId()) && getName().equals(room.getName());
+                && Objects.equals(getId(), room.getId()) && getName().equals(room.getName());
     }
 
     @Override

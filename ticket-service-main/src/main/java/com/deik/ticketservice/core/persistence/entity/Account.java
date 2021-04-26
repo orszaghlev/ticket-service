@@ -74,7 +74,7 @@ public class Account {
             return false;
         }
         Account account = (Account) o;
-        return isSigned() == account.isSigned() && getId().equals(account.getId())
+        return isSigned() == account.isSigned() && Objects.equals(getId(), account.getId())
                 && getUsername().equals(account.getUsername()) && getPassword().equals(account.getPassword());
     }
 

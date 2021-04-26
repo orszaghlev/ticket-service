@@ -17,11 +17,9 @@ public class ScreeningId implements Serializable {
     @ManyToOne
     @JoinColumn(name = "movie")
     private Movie movie;
-
     @ManyToOne
     @JoinColumn(name = "room")
     private Room room;
-
     @Column(name = "date")
     private Date date;
 

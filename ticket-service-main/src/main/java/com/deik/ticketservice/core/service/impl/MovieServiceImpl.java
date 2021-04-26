@@ -22,7 +22,7 @@ public class MovieServiceImpl implements MovieService {
     @Override
     public void createMovie(String title, String genre, int runtime) {
         if (movieRepository.findByTitle(title).isEmpty()) {
-            Movie movieToCreate = new Movie(1, title, genre, runtime);
+            Movie movieToCreate = new Movie(null, title, genre, runtime);
             movieRepository.save(movieToCreate);
         }
     }
