@@ -2,6 +2,7 @@ package com.deik.ticketservice.ut.core.service.impl;
 
 import com.deik.ticketservice.core.persistence.entity.Movie;
 import com.deik.ticketservice.core.persistence.repository.MovieRepository;
+import com.deik.ticketservice.core.service.exception.MovieException;
 import com.deik.ticketservice.core.service.impl.MovieServiceImpl;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -28,7 +29,7 @@ public class MovieServiceImplTest {
     }
 
     @Test
-    public void testCreateMovieShouldCreateMovieWhenTheMovieIsNotInTheRepository() {
+    public void testCreateMovieShouldCreateMovieWhenTheMovieIsNotInTheRepository() throws MovieException {
         // Given
         Mockito.when(movieRepository.findByTitle(MOVIE.getTitle())).thenReturn(java.util.Optional.empty());
 
@@ -42,7 +43,21 @@ public class MovieServiceImplTest {
     }
 
     @Test
-    public void testUpdateMovieShouldUpdateMovieWhenTheOriginalMovieIsInTheRepository() {
+    public void testCreateMovieShouldThrowMovieExceptionWhenTheMovieIsAlreadyInTheRepository() {
+        // Given
+        Mockito.when(movieRepository.findByTitle(MOVIE.getTitle())).thenReturn(java.util.Optional.of(MOVIE));
+
+        // When
+        Assertions.assertThrows(MovieException.class, () -> underTest.createMovie(MOVIE.getTitle(), MOVIE.getGenre(),
+                MOVIE.getRuntime()));
+
+        // Then
+        Mockito.verify(movieRepository).findByTitle(MOVIE.getTitle());
+        Mockito.verifyNoMoreInteractions(movieRepository);
+    }
+
+    @Test
+    public void testUpdateMovieShouldUpdateMovieWhenTheOriginalMovieIsInTheRepository() throws MovieException {
         // Given
         Mockito.when(movieRepository.findByTitle(MOVIE_TO_UPDATE.getTitle()))
                 .thenReturn(java.util.Optional.of(MOVIE_TO_UPDATE));
@@ -62,7 +77,22 @@ public class MovieServiceImplTest {
     }
 
     @Test
-    public void testDeleteMovieShouldDeleteMovieWhenTheRepositoryContainsTheMovie() {
+    public void testUpdateMovieShouldThrowMovieExceptionWhenTheOriginalMovieIsNotInTheRepository() {
+        // Given
+        Mockito.when(movieRepository.findByTitle(MOVIE_TO_UPDATE.getTitle()))
+                .thenReturn(java.util.Optional.empty());
+
+        // When
+        Assertions.assertThrows(MovieException.class, () -> underTest.updateMovie(MOVIE.getTitle(), MOVIE.getGenre(),
+                MOVIE.getRuntime()));
+
+        // Then
+        Mockito.verify(movieRepository).findByTitle(MOVIE_TO_UPDATE.getTitle());
+        Mockito.verifyNoMoreInteractions(movieRepository);
+    }
+
+    @Test
+    public void testDeleteMovieShouldDeleteMovieWhenTheMovieIsInTheRepository() throws MovieException {
         // Given
         Mockito.when(movieRepository.findByTitle(MOVIE.getTitle())).thenReturn(java.util.Optional.of(MOVIE));
 
@@ -72,6 +102,19 @@ public class MovieServiceImplTest {
         // Then
         Mockito.verify(movieRepository).delete(MOVIE);
         Mockito.verify(movieRepository, Mockito.times(WANTED_NUMBER_OF_INVOCATIONS)).findByTitle(MOVIE.getTitle());
+        Mockito.verifyNoMoreInteractions(movieRepository);
+    }
+
+    @Test
+    public void testDeleteMovieShouldThrowMovieExceptionWhenTheMovieIsNotInTheRepository() {
+        // Given
+        Mockito.when(movieRepository.findByTitle(MOVIE.getTitle())).thenReturn(java.util.Optional.empty());
+
+        // When
+        Assertions.assertThrows(MovieException.class, () -> underTest.deleteMovie(MOVIE.getTitle()));
+
+        // Then
+        Mockito.verify(movieRepository).findByTitle(MOVIE.getTitle());
         Mockito.verifyNoMoreInteractions(movieRepository);
     }
 
@@ -89,7 +132,7 @@ public class MovieServiceImplTest {
     }
 
     @Test
-    public void testGetRuntimeByTitleShouldGetRuntimeWhenTheRepositoryContainsTheMovieWithTheGivenTitle() {
+    public void testGetRuntimeByTitleShouldGetRuntimeWhenTheMovieWithTheGivenTitleIsInTheRepository() throws MovieException {
         // Given
         Mockito.when(movieRepository.findByTitle(MOVIE.getTitle())).thenReturn(java.util.Optional.of(MOVIE));
 
@@ -103,16 +146,14 @@ public class MovieServiceImplTest {
     }
 
     @Test
-    public void testGetRuntimeByTitleShouldGetZeroWhenTheRepositoryDoesNotContainTheMovieWithTheGivenTitle() {
+    public void testGetRuntimeByTitleShouldThrowMovieExceptionWhenTheMovieWithTheGivenTitleIsNotInTheRepository() {
         // Given
         Mockito.when(movieRepository.findByTitle(MOVIE.getTitle())).thenReturn(java.util.Optional.empty());
-        int expected = 0;
 
         // When
-        int actual = underTest.getRuntimeByTitle(MOVIE.getTitle());
+        Assertions.assertThrows(MovieException.class, () -> underTest.getRuntimeByTitle(MOVIE.getTitle()));
 
         // Then
-        Assertions.assertEquals(expected, actual);
         Mockito.verify(movieRepository).findByTitle(MOVIE.getTitle());
         Mockito.verifyNoMoreInteractions(movieRepository);
     }

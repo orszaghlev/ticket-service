@@ -3,6 +3,8 @@ package com.deik.ticketservice.ut.ui.command;
 import com.deik.ticketservice.core.persistence.entity.Room;
 import com.deik.ticketservice.core.service.AccountService;
 import com.deik.ticketservice.core.service.RoomService;
+import com.deik.ticketservice.core.service.exception.AccountException;
+import com.deik.ticketservice.core.service.exception.RoomException;
 import com.deik.ticketservice.ui.command.RoomCommand;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -10,7 +12,7 @@ import org.mockito.Mockito;
 
 public class RoomCommandTest {
 
-    private final static Room ROOM = new Room(null, "Pedersoli", 20, 10);
+    private static final Room ROOM = new Room(null, "Pedersoli", 20, 10);
 
     private RoomCommand underTest;
 
@@ -26,7 +28,7 @@ public class RoomCommandTest {
     }
 
     @Test
-    public void testCreateRoomShouldCreateRoomWhenAdminIsSignedIn() {
+    public void testCreateRoomShouldCreateRoomWhenAdminIsSignedIn() throws AccountException, RoomException {
         // Given
         Mockito.when(accountService.isAdminSignedIn()).thenReturn(true);
 
@@ -40,7 +42,7 @@ public class RoomCommandTest {
     }
 
     @Test
-    public void testCreateRoomShouldNotCreateRoomWhenAdminIsNotSignedIn() {
+    public void testCreateRoomShouldNotCreateRoomWhenAdminIsNotSignedIn() throws AccountException {
         // Given
         Mockito.when(accountService.isAdminSignedIn()).thenReturn(false);
 
@@ -53,7 +55,7 @@ public class RoomCommandTest {
     }
 
     @Test
-    public void testUpdateRoomShouldUpdateRoomWhenAdminIsSignedIn() {
+    public void testUpdateRoomShouldUpdateRoomWhenAdminIsSignedIn() throws AccountException, RoomException {
         // Given
         Mockito.when(accountService.isAdminSignedIn()).thenReturn(true);
 
@@ -67,7 +69,7 @@ public class RoomCommandTest {
     }
 
     @Test
-    public void testUpdateRoomShouldNotUpdateRoomWhenAdminIsNotSignedIn() {
+    public void testUpdateRoomShouldNotUpdateRoomWhenAdminIsNotSignedIn() throws AccountException {
         // Given
         Mockito.when(accountService.isAdminSignedIn()).thenReturn(false);
 
@@ -80,7 +82,7 @@ public class RoomCommandTest {
     }
 
     @Test
-    public void testDeleteRoomShouldDeleteRoomWhenAdminIsSignedIn() {
+    public void testDeleteRoomShouldDeleteRoomWhenAdminIsSignedIn() throws AccountException, RoomException {
         // Given
         Mockito.when(accountService.isAdminSignedIn()).thenReturn(true);
 
@@ -94,7 +96,7 @@ public class RoomCommandTest {
     }
 
     @Test
-    public void testDeleteRoomShouldNotDeleteRoomWhenAdminIsNotSignedIn() {
+    public void testDeleteRoomShouldNotDeleteRoomWhenAdminIsNotSignedIn() throws AccountException {
         // Given
         Mockito.when(accountService.isAdminSignedIn()).thenReturn(false);
 

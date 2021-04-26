@@ -7,6 +7,9 @@ import com.deik.ticketservice.core.persistence.entity.id.ScreeningId;
 import com.deik.ticketservice.core.persistence.repository.MovieRepository;
 import com.deik.ticketservice.core.persistence.repository.RoomRepository;
 import com.deik.ticketservice.core.persistence.repository.ScreeningRepository;
+import com.deik.ticketservice.core.service.exception.MovieException;
+import com.deik.ticketservice.core.service.exception.RoomException;
+import com.deik.ticketservice.core.service.exception.ScreeningException;
 import com.deik.ticketservice.core.service.impl.ScreeningServiceImpl;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -44,7 +47,8 @@ public class ScreeningServiceImplTest {
     }
 
     @Test
-    public void testCreateScreeningShouldCreateScreeningWhenTheScreeningIsNotInTheRepository() throws ParseException {
+    public void testCreateScreeningShouldCreateScreeningWhenTheScreeningIsNotInTheRepository() throws ParseException,
+            ScreeningException, RoomException, MovieException {
         // Given
         Movie existingMovie = Mockito.mock(Movie.class);
         Mockito.when(movieRepository.findByTitle(MOVIE_TITLE)).thenReturn(java.util.Optional.of(existingMovie));
@@ -70,7 +74,62 @@ public class ScreeningServiceImplTest {
     }
 
     @Test
-    public void testDeleteScreeningShouldDeleteScreeningWhenTheRepositoryContainsTheScreening() throws ParseException {
+    public void testCreateScreeningShouldThrowMovieExceptionWhenTheMovieDoesNotExist() {
+        // Given
+        Mockito.when(movieRepository.findByTitle(MOVIE_TITLE)).thenReturn(java.util.Optional.empty());
+
+        // When
+        Assertions.assertThrows(MovieException.class, () -> underTest.createScreening(MOVIE_TITLE, ROOM_NAME, DATE_AS_STRING));
+
+        // Then
+        Mockito.verify(movieRepository).findByTitle(MOVIE_TITLE);
+        Mockito.verifyNoMoreInteractions(screeningRepository, movieRepository, roomRepository);
+    }
+
+    @Test
+    public void testCreateScreeningShouldThrowRoomExceptionWhenTheRoomDoesNotExist() {
+        // Given
+        Movie existingMovie = Mockito.mock(Movie.class);
+        Mockito.when(movieRepository.findByTitle(MOVIE_TITLE)).thenReturn(java.util.Optional.of(existingMovie));
+        Mockito.when(roomRepository.findByName(ROOM_NAME)).thenReturn(java.util.Optional.empty());
+
+        // When
+        Assertions.assertThrows(RoomException.class, () -> underTest.createScreening(MOVIE_TITLE, ROOM_NAME, DATE_AS_STRING));
+
+        // Then
+        Mockito.verify(movieRepository).findByTitle(MOVIE_TITLE);
+        Mockito.verify(roomRepository).findByName(ROOM_NAME);
+        Mockito.verifyNoMoreInteractions(screeningRepository, movieRepository, roomRepository);
+    }
+
+    @Test
+    public void testCreateScreeningShouldThrowScreeningExceptionWhenTheScreeningIsInTheRepository() throws ParseException {
+        // Given
+        Movie existingMovie = Mockito.mock(Movie.class);
+        Mockito.when(movieRepository.findByTitle(MOVIE_TITLE)).thenReturn(java.util.Optional.of(existingMovie));
+        Room existingRoom = Mockito.mock(Room.class);
+        Mockito.when(roomRepository.findByName(ROOM_NAME)).thenReturn(java.util.Optional.of(existingRoom));
+        Date date = new SimpleDateFormat(DATE_PATTERN).parse(DATE_AS_STRING);
+        ScreeningId screeningId = new ScreeningId(existingMovie, existingRoom, date);
+        Screening created = new Screening(screeningId);
+        Mockito.when(screeningRepository.findById_MovieAndId_RoomAndId_Date(existingMovie, existingRoom, date))
+                .thenReturn(java.util.Optional.of(created));
+
+        // When
+        Assertions.assertThrows(ScreeningException.class, () -> underTest.createScreening(MOVIE_TITLE, ROOM_NAME, DATE_AS_STRING));
+
+        // Then
+        Mockito.verify(movieRepository, Mockito.times(WANTED_NUMBER_OF_INVOCATIONS)).findByTitle(MOVIE_TITLE);
+        Mockito.verify(roomRepository, Mockito.times(WANTED_NUMBER_OF_INVOCATIONS)).findByName(ROOM_NAME);
+        Mockito.verify(screeningRepository)
+                .findById_MovieAndId_RoomAndId_Date(existingMovie, existingRoom, date);
+        Mockito.verifyNoMoreInteractions(screeningRepository, movieRepository, roomRepository, existingMovie,
+                existingRoom);
+    }
+
+    @Test
+    public void testDeleteScreeningShouldDeleteScreeningWhenTheScreeningIsInTheRepository() throws ParseException,
+            ScreeningException, RoomException, MovieException {
         // Given
         Movie existingMovie = Mockito.mock(Movie.class);
         Mockito.when(movieRepository.findByTitle(MOVIE_TITLE)).thenReturn(java.util.Optional.of(existingMovie));
@@ -91,6 +150,58 @@ public class ScreeningServiceImplTest {
         Mockito.verify(roomRepository, Mockito.times(WANTED_NUMBER_OF_INVOCATIONS)).findByName(ROOM_NAME);
         Mockito.verify(screeningRepository, Mockito.times(WANTED_NUMBER_OF_INVOCATIONS))
                 .findById_MovieAndId_RoomAndId_Date(existingMovie, existingRoom, date);
+        Mockito.verifyNoMoreInteractions(screeningRepository, movieRepository, roomRepository, existingMovie,
+                existingRoom);
+    }
+
+    @Test
+    public void testDeleteScreeningShouldThrowMovieExceptionWhenTheMovieDoesNotExist() {
+        // Given
+        Mockito.when(movieRepository.findByTitle(MOVIE_TITLE)).thenReturn(java.util.Optional.empty());
+
+        // When
+        Assertions.assertThrows(MovieException.class, () -> underTest.deleteScreening(MOVIE_TITLE, ROOM_NAME, DATE_AS_STRING));
+
+        // Then
+        Mockito.verify(movieRepository).findByTitle(MOVIE_TITLE);
+        Mockito.verifyNoMoreInteractions(screeningRepository, movieRepository, roomRepository);
+    }
+
+    @Test
+    public void testDeleteScreeningShouldThrowRoomExceptionWhenTheRoomDoesNotExist() {
+        // Given
+        Movie existingMovie = Mockito.mock(Movie.class);
+        Mockito.when(movieRepository.findByTitle(MOVIE_TITLE)).thenReturn(java.util.Optional.of(existingMovie));
+        Mockito.when(roomRepository.findByName(ROOM_NAME)).thenReturn(java.util.Optional.empty());
+
+        // When
+        Assertions.assertThrows(RoomException.class, () -> underTest.deleteScreening(MOVIE_TITLE, ROOM_NAME, DATE_AS_STRING));
+
+        // Then
+        Mockito.verify(movieRepository).findByTitle(MOVIE_TITLE);
+        Mockito.verify(roomRepository).findByName(ROOM_NAME);
+        Mockito.verifyNoMoreInteractions(screeningRepository, movieRepository, roomRepository);
+    }
+
+    @Test
+    public void testDeleteScreeningShouldThrowScreeningExceptionWhenTheScreeningIsNotInTheRepository() throws ParseException {
+        // Given
+        Movie existingMovie = Mockito.mock(Movie.class);
+        Mockito.when(movieRepository.findByTitle(MOVIE_TITLE)).thenReturn(java.util.Optional.of(existingMovie));
+        Room existingRoom = Mockito.mock(Room.class);
+        Mockito.when(roomRepository.findByName(ROOM_NAME)).thenReturn(java.util.Optional.of(existingRoom));
+        Date date = new SimpleDateFormat(DATE_PATTERN).parse(DATE_AS_STRING);
+        ScreeningId screeningId = new ScreeningId(existingMovie, existingRoom, date);
+        Mockito.when(screeningRepository.findById_MovieAndId_RoomAndId_Date(existingMovie, existingRoom, date))
+                .thenReturn(java.util.Optional.empty());
+
+        // When
+        Assertions.assertThrows(ScreeningException.class, () -> underTest.deleteScreening(MOVIE_TITLE, ROOM_NAME, DATE_AS_STRING));
+
+        // Then
+        Mockito.verify(movieRepository, Mockito.times(WANTED_NUMBER_OF_INVOCATIONS)).findByTitle(MOVIE_TITLE);
+        Mockito.verify(roomRepository, Mockito.times(WANTED_NUMBER_OF_INVOCATIONS)).findByName(ROOM_NAME);
+        Mockito.verify(screeningRepository).findById_MovieAndId_RoomAndId_Date(existingMovie, existingRoom, date);
         Mockito.verifyNoMoreInteractions(screeningRepository, movieRepository, roomRepository, existingMovie,
                 existingRoom);
     }

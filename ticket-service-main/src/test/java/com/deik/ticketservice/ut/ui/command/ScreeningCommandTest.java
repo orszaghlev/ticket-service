@@ -3,6 +3,10 @@ package com.deik.ticketservice.ut.ui.command;
 import com.deik.ticketservice.core.service.AccountService;
 import com.deik.ticketservice.core.service.MovieService;
 import com.deik.ticketservice.core.service.ScreeningService;
+import com.deik.ticketservice.core.service.exception.AccountException;
+import com.deik.ticketservice.core.service.exception.MovieException;
+import com.deik.ticketservice.core.service.exception.RoomException;
+import com.deik.ticketservice.core.service.exception.ScreeningException;
 import com.deik.ticketservice.ui.command.ScreeningCommand;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -12,9 +16,9 @@ import java.text.ParseException;
 
 public class ScreeningCommandTest {
 
-    private final static String MOVIE_TITLE = "Sátántangó";
-    private final static String ROOM_NAME = "drama";
-    private final static String DATE_AS_STRING = "2021-03-14 16:00";
+    private static final String MOVIE_TITLE = "Sátántangó";
+    private static final String ROOM_NAME = "drama";
+    private static final String DATE_AS_STRING = "2021-03-14 16:00";
 
     private ScreeningCommand underTest;
 
@@ -33,7 +37,8 @@ public class ScreeningCommandTest {
     }
 
     @Test
-    public void testCreateScreeningShouldCreateScreeningWhenAdminIsSignedInAndNoOverlapOccurs() throws ParseException {
+    public void testCreateScreeningShouldCreateScreeningWhenAdminIsSignedInAndNoOverlapOccurs() throws ParseException,
+            AccountException, ScreeningException, RoomException, MovieException {
         // Given
         Mockito.when(accountService.isAdminSignedIn()).thenReturn(true);
 
@@ -47,7 +52,7 @@ public class ScreeningCommandTest {
     }
 
     @Test
-    public void testCreateScreeningShouldNotCreateScreeningWhenAdminIsNotSignedIn() {
+    public void testCreateScreeningShouldNotCreateScreeningWhenAdminIsNotSignedIn() throws AccountException {
         // Given
         Mockito.when(accountService.isAdminSignedIn()).thenReturn(false);
 
@@ -60,7 +65,8 @@ public class ScreeningCommandTest {
     }
 
     @Test
-    public void testDeleteScreeningShouldDeleteScreeningWhenAdminIsSignedIn() throws ParseException {
+    public void testDeleteScreeningShouldDeleteScreeningWhenAdminIsSignedIn() throws ParseException, AccountException,
+            ScreeningException, RoomException, MovieException {
         // Given
         Mockito.when(accountService.isAdminSignedIn()).thenReturn(true);
 
@@ -74,7 +80,7 @@ public class ScreeningCommandTest {
     }
 
     @Test
-    public void testDeleteScreeningShouldNotDeleteScreeningWhenAdminIsNotSignedIn() {
+    public void testDeleteScreeningShouldNotDeleteScreeningWhenAdminIsNotSignedIn() throws AccountException {
         // Given
         Mockito.when(accountService.isAdminSignedIn()).thenReturn(false);
 

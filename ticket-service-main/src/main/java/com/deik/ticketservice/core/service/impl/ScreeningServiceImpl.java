@@ -8,7 +8,9 @@ import com.deik.ticketservice.core.persistence.repository.MovieRepository;
 import com.deik.ticketservice.core.persistence.repository.RoomRepository;
 import com.deik.ticketservice.core.persistence.repository.ScreeningRepository;
 import com.deik.ticketservice.core.service.ScreeningService;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.deik.ticketservice.core.service.exception.MovieException;
+import com.deik.ticketservice.core.service.exception.RoomException;
+import com.deik.ticketservice.core.service.exception.ScreeningException;
 import org.springframework.stereotype.Service;
 
 import java.text.ParseException;
@@ -26,7 +28,6 @@ public class ScreeningServiceImpl implements ScreeningService {
 
     private final RoomRepository roomRepository;
 
-    @Autowired
     public ScreeningServiceImpl(ScreeningRepository screeningRepository, MovieRepository movieRepository,
                                 RoomRepository roomRepository) {
         this.screeningRepository = screeningRepository;
@@ -35,31 +36,42 @@ public class ScreeningServiceImpl implements ScreeningService {
     }
 
     @Override
-    public void createScreening(String movieTitle, String roomName, String dateAsString) throws ParseException {
-        if (movieRepository.findByTitle(movieTitle).isPresent() && roomRepository.findByName(roomName).isPresent()) {
-            Movie movie = movieRepository.findByTitle(movieTitle).get();
-            Room room = roomRepository.findByName(roomName).get();
-            Date date = new SimpleDateFormat("yyyy-MM-dd HH:mm").parse(dateAsString);
-            if (screeningRepository.findById_MovieAndId_RoomAndId_Date(movie, room, date).isEmpty()) {
-                ScreeningId screeningId = new ScreeningId(movie, room, date);
-                Screening screeningToCreate = new Screening(screeningId);
-                screeningRepository.save(screeningToCreate);
-            }
+    public void createScreening(String movieTitle, String roomName, String dateAsString) throws ParseException,
+            MovieException, RoomException, ScreeningException {
+        if (movieRepository.findByTitle(movieTitle).isEmpty()) {
+            throw new MovieException("Movie doesn't exist");
         }
+        if (roomRepository.findByName(roomName).isEmpty()) {
+            throw new RoomException("Room doesn't exist");
+        }
+        Movie movie = movieRepository.findByTitle(movieTitle).get();
+        Room room = roomRepository.findByName(roomName).get();
+        Date date = new SimpleDateFormat("yyyy-MM-dd HH:mm").parse(dateAsString);
+        if (screeningRepository.findById_MovieAndId_RoomAndId_Date(movie, room, date).isPresent()) {
+            throw new ScreeningException("Screening already exists");
+        }
+        ScreeningId screeningId = new ScreeningId(movie, room, date);
+        Screening screeningToCreate = new Screening(screeningId);
+        screeningRepository.save(screeningToCreate);
     }
 
     @Override
-    public void deleteScreening(String movieTitle, String roomName, String dateAsString) throws ParseException {
-        if (movieRepository.findByTitle(movieTitle).isPresent() && roomRepository.findByName(roomName).isPresent()) {
-            Movie movie = movieRepository.findByTitle(movieTitle).get();
-            Room room = roomRepository.findByName(roomName).get();
-            Date date = new SimpleDateFormat("yyyy-MM-dd HH:mm").parse(dateAsString);
-            if (screeningRepository.findById_MovieAndId_RoomAndId_Date(movie, room, date).isPresent()) {
-                Screening screeningToDelete =
-                        screeningRepository.findById_MovieAndId_RoomAndId_Date(movie, room, date).get();
-                screeningRepository.delete(screeningToDelete);
-            }
+    public void deleteScreening(String movieTitle, String roomName, String dateAsString) throws ParseException,
+            MovieException, RoomException, ScreeningException {
+        if (movieRepository.findByTitle(movieTitle).isEmpty()) {
+            throw new MovieException("Movie doesn't exist");
         }
+        if (roomRepository.findByName(roomName).isEmpty()) {
+            throw new RoomException("Room doesn't exist");
+        }
+        Movie movie = movieRepository.findByTitle(movieTitle).get();
+        Room room = roomRepository.findByName(roomName).get();
+        Date date = new SimpleDateFormat("yyyy-MM-dd HH:mm").parse(dateAsString);
+        if (screeningRepository.findById_MovieAndId_RoomAndId_Date(movie, room, date).isEmpty()) {
+            throw new ScreeningException("Screening doesn't exist");
+        }
+        Screening screeningToDelete = screeningRepository.findById_MovieAndId_RoomAndId_Date(movie, room, date).get();
+        screeningRepository.delete(screeningToDelete);
     }
 
     @Override

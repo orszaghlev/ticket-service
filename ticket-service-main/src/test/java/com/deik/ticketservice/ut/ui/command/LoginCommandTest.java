@@ -1,6 +1,7 @@
 package com.deik.ticketservice.ut.ui.command;
 
 import com.deik.ticketservice.core.service.LoginService;
+import com.deik.ticketservice.core.service.exception.LoginException;
 import com.deik.ticketservice.ui.command.LoginCommand;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -8,10 +9,10 @@ import org.mockito.Mockito;
 
 public class LoginCommandTest {
 
-    private final static String ADMIN_USERNAME = "admin";
-    private final static String ADMIN_PASSWORD = "admin";
-    private final static String USER_USERNAME = "sanyi";
-    private final static String USER_PASSWORD = "asdQWE123";
+    private static final String ADMIN_USERNAME = "admin";
+    private static final String ADMIN_PASSWORD = "admin";
+    private static final String USER_USERNAME = "sanyi";
+    private static final String USER_PASSWORD = "asdQWE123";
 
     private LoginCommand underTest;
 
@@ -24,7 +25,7 @@ public class LoginCommandTest {
     }
 
     @Test
-    public void testSignInPrivilegedShouldSignInAdminWhenTheCredentialsAreCorrect() {
+    public void testSignInPrivilegedShouldSignInAdminWhenTheCredentialsAreCorrect() throws LoginException {
         // Given
 
         // When
@@ -47,7 +48,7 @@ public class LoginCommandTest {
     }
 
     @Test
-    public void testSignOutShouldSignOutUser() {
+    public void testSignOutShouldSignOutUser() throws LoginException {
         // Given
 
         // When

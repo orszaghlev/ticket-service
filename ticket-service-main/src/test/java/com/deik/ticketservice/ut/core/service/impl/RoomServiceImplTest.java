@@ -2,6 +2,7 @@ package com.deik.ticketservice.ut.core.service.impl;
 
 import com.deik.ticketservice.core.persistence.entity.Room;
 import com.deik.ticketservice.core.persistence.repository.RoomRepository;
+import com.deik.ticketservice.core.service.exception.RoomException;
 import com.deik.ticketservice.core.service.impl.RoomServiceImpl;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -28,7 +29,7 @@ public class RoomServiceImplTest {
     }
 
     @Test
-    public void testCreateRoomShouldCreateRoomWhenTheRoomIsNotInTheRepository() {
+    public void testCreateRoomShouldCreateRoomWhenTheRoomIsNotInTheRepository() throws RoomException {
         // Given
         Mockito.when(roomRepository.findByName(ROOM.getName())).thenReturn(java.util.Optional.empty());
 
@@ -42,7 +43,21 @@ public class RoomServiceImplTest {
     }
 
     @Test
-    public void testUpdateRoomShouldUpdateRoomWhenTheOriginalRoomIsInTheRepository() {
+    public void testCreateRoomShouldCreateRoomWhenTheRoomIsInTheRepository() {
+        // Given
+        Mockito.when(roomRepository.findByName(ROOM.getName())).thenReturn(java.util.Optional.of(ROOM));
+
+        // When
+        Assertions.assertThrows(RoomException.class, () -> underTest.createRoom(ROOM.getName(), ROOM.getNumberOfRows(),
+                ROOM.getNumberOfCols()));
+
+        // Then
+        Mockito.verify(roomRepository).findByName(ROOM.getName());
+        Mockito.verifyNoMoreInteractions(roomRepository);
+    }
+
+    @Test
+    public void testUpdateRoomShouldUpdateRoomWhenTheOriginalRoomIsInTheRepository() throws RoomException {
         // Given
         Mockito.when(roomRepository.findByName(ROOM_TO_UPDATE.getName()))
                 .thenReturn(java.util.Optional.of(ROOM_TO_UPDATE));
@@ -61,7 +76,22 @@ public class RoomServiceImplTest {
     }
 
     @Test
-    public void testDeleteRoomShouldDeleteRoomWhenTheRepositoryContainsTheRoom() {
+    public void testUpdateRoomShouldThrowRoomExceptionWhenTheOriginalRoomIsNotInTheRepository() {
+        // Given
+        Mockito.when(roomRepository.findByName(ROOM_TO_UPDATE.getName()))
+                .thenReturn(java.util.Optional.empty());
+
+        // When
+        Assertions.assertThrows(RoomException.class, () -> underTest.updateRoom(ROOM.getName(), ROOM.getNumberOfRows(),
+                ROOM.getNumberOfCols()));
+
+        // Then
+        Mockito.verify(roomRepository).findByName(ROOM_TO_UPDATE.getName());
+        Mockito.verifyNoMoreInteractions(roomRepository);
+    }
+
+    @Test
+    public void testDeleteRoomShouldDeleteRoomWhenTheRoomIsInTheRepository() throws RoomException {
         // Given
         Mockito.when(roomRepository.findByName(ROOM.getName())).thenReturn(java.util.Optional.of(ROOM));
 
@@ -71,6 +101,19 @@ public class RoomServiceImplTest {
         // Then
         Mockito.verify(roomRepository).delete(ROOM);
         Mockito.verify(roomRepository, Mockito.times(WANTED_NUMBER_OF_INVOCATIONS)).findByName(ROOM.getName());
+        Mockito.verifyNoMoreInteractions(roomRepository);
+    }
+
+    @Test
+    public void testDeleteRoomShouldThrowRoomExceptionWhenTheRoomIsNotInTheRepository() {
+        // Given
+        Mockito.when(roomRepository.findByName(ROOM.getName())).thenReturn(java.util.Optional.empty());
+
+        // When
+        Assertions.assertThrows(RoomException.class, () -> underTest.deleteRoom(ROOM.getName()));
+
+        // Then
+        Mockito.verify(roomRepository).findByName(ROOM.getName());
         Mockito.verifyNoMoreInteractions(roomRepository);
     }
 

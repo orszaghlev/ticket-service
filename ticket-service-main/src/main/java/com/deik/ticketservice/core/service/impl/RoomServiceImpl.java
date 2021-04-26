@@ -3,7 +3,7 @@ package com.deik.ticketservice.core.service.impl;
 import com.deik.ticketservice.core.persistence.entity.Room;
 import com.deik.ticketservice.core.persistence.repository.RoomRepository;
 import com.deik.ticketservice.core.service.RoomService;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.deik.ticketservice.core.service.exception.RoomException;
 import org.springframework.stereotype.Service;
 
 import java.util.LinkedList;
@@ -14,36 +14,38 @@ public class RoomServiceImpl implements RoomService {
 
     private final RoomRepository roomRepository;
 
-    @Autowired
     public RoomServiceImpl(RoomRepository roomRepository) {
         this.roomRepository = roomRepository;
     }
 
     @Override
-    public void createRoom(String name, int numberOfRows, int numberOfCols) {
+    public void createRoom(String name, int numberOfRows, int numberOfCols) throws RoomException {
+        if (roomRepository.findByName(name).isPresent()) {
+            throw new RoomException("Room already exists");
+        }
+        Room roomToCreate = new Room(null, name, numberOfRows, numberOfCols);
+        roomRepository.save(roomToCreate);
+    }
+
+    @Override
+    public void updateRoom(String name, int numberOfRows, int numberOfCols) throws RoomException {
         if (roomRepository.findByName(name).isEmpty()) {
-            Room roomToCreate = new Room(null, name, numberOfRows, numberOfCols);
-            roomRepository.save(roomToCreate);
+            throw new RoomException("Room doesn't exist");
         }
+        Room roomToUpdate = roomRepository.findByName(name).get();
+        roomToUpdate.setName(name);
+        roomToUpdate.setNumberOfRows(numberOfRows);
+        roomToUpdate.setNumberOfCols(numberOfCols);
+        roomRepository.save(roomToUpdate);
     }
 
     @Override
-    public void updateRoom(String name, int numberOfRows, int numberOfCols) {
-        if (roomRepository.findByName(name).isPresent()) {
-            Room roomToUpdate = roomRepository.findByName(name).get();
-            roomToUpdate.setName(name);
-            roomToUpdate.setNumberOfRows(numberOfRows);
-            roomToUpdate.setNumberOfCols(numberOfCols);
-            roomRepository.save(roomToUpdate);
+    public void deleteRoom(String name) throws RoomException {
+        if (roomRepository.findByName(name).isEmpty()) {
+            throw new RoomException("Room doesn't exist");
         }
-    }
-
-    @Override
-    public void deleteRoom(String name) {
-        if (roomRepository.findByName(name).isPresent()) {
-            Room roomToDelete = roomRepository.findByName(name).get();
-            roomRepository.delete(roomToDelete);
-        }
+        Room roomToDelete = roomRepository.findByName(name).get();
+        roomRepository.delete(roomToDelete);
     }
 
     @Override

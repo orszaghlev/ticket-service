@@ -2,6 +2,7 @@ package com.deik.ticketservice.ut.core.service.impl;
 
 import com.deik.ticketservice.core.persistence.entity.Account;
 import com.deik.ticketservice.core.persistence.repository.AccountRepository;
+import com.deik.ticketservice.core.service.exception.LoginException;
 import com.deik.ticketservice.core.service.impl.LoginServiceImpl;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -12,6 +13,8 @@ public class LoginServiceImplTest {
 
     private static final String ADMIN_USERNAME = "admin";
     private static final String ADMIN_PASSWORD = "admin";
+    private static final String USER_USERNAME = "sanyi";
+    private static final String USER_PASSWORD = "asdQWE123";
     private static final Account LOGGED_IN_ADMIN_ACCOUNT = new Account(null, ADMIN_USERNAME, ADMIN_PASSWORD, true);
     private static final Account LOGGED_OUT_ADMIN_ACCOUNT = new Account(null, ADMIN_USERNAME, ADMIN_PASSWORD, false);
     private static final int WANTED_NUMBER_OF_INVOCATIONS = 2;
@@ -27,7 +30,7 @@ public class LoginServiceImplTest {
     }
 
     @Test
-    public void testSignInPrivilegedShouldSignInAdminWhenTheCredentialsAreCorrect() {
+    public void testSignInPrivilegedShouldSignInAdminWhenTheCredentialsAreCorrect() throws LoginException {
         // Given
         Mockito.when(accountRepository.findByUsernameAndPassword(ADMIN_USERNAME, ADMIN_PASSWORD))
                 .thenReturn(java.util.Optional.of(LOGGED_OUT_ADMIN_ACCOUNT));
@@ -47,7 +50,41 @@ public class LoginServiceImplTest {
     }
 
     @Test
-    public void testSignOutShouldSignOutUserWhenTheUsersAccountIsInTheRepository() {
+    public void testSignInPrivilegedShouldThrowLoginExceptionWhenTheUsernameIsIncorrect() {
+        // Given
+
+        // When
+        Assertions.assertThrows(LoginException.class, () -> underTest.signInPrivileged(USER_USERNAME, ADMIN_PASSWORD));
+
+        // Then
+    }
+
+    @Test
+    public void testSignInPrivilegedShouldThrowLoginExceptionWhenThePasswordIsIncorrect() {
+        // Given
+
+        // When
+        Assertions.assertThrows(LoginException.class, () -> underTest.signInPrivileged(ADMIN_USERNAME, USER_PASSWORD));
+
+        // Then
+    }
+
+    @Test
+    public void testSignInPrivilegedShouldThrowLoginExceptionWhenTheAdminAccountIsNotFound() {
+        // Given
+        Mockito.when(accountRepository.findByUsernameAndPassword(ADMIN_USERNAME, ADMIN_PASSWORD))
+                .thenReturn(java.util.Optional.empty());
+
+        // When
+        Assertions.assertThrows(LoginException.class, () -> underTest.signInPrivileged(ADMIN_USERNAME, ADMIN_PASSWORD));
+
+        // Then
+        Mockito.verify(accountRepository).findByUsernameAndPassword(ADMIN_USERNAME, ADMIN_PASSWORD);
+        Mockito.verifyNoMoreInteractions(accountRepository);
+    }
+
+    @Test
+    public void testSignOutShouldSignOutAdminWhenTheAdminAccountIsInTheRepository() throws LoginException {
         // Given
         Mockito.when(accountRepository.findByisSigned(true)).thenReturn(java.util.Optional.of(LOGGED_IN_ADMIN_ACCOUNT));
         Mockito.when(accountRepository.save(LOGGED_IN_ADMIN_ACCOUNT)).thenReturn(LOGGED_IN_ADMIN_ACCOUNT);
@@ -61,6 +98,19 @@ public class LoginServiceImplTest {
         Assertions.assertEquals(ADMIN_PASSWORD, LOGGED_IN_ADMIN_ACCOUNT.getPassword());
         Assertions.assertFalse(LOGGED_IN_ADMIN_ACCOUNT.isSigned());
         Mockito.verify(accountRepository, Mockito.times(WANTED_NUMBER_OF_INVOCATIONS)).findByisSigned(true);
+        Mockito.verifyNoMoreInteractions(accountRepository);
+    }
+
+    @Test
+    public void testSignOutShouldThrowLoginExceptionWhenTheAdminAccountIsNotInTheRepository() {
+        // Given
+        Mockito.when(accountRepository.findByisSigned(true)).thenReturn(java.util.Optional.empty());
+
+        // When
+        Assertions.assertThrows(LoginException.class, () -> underTest.signOut());
+
+        // Then
+        Mockito.verify(accountRepository).findByisSigned(true);
         Mockito.verifyNoMoreInteractions(accountRepository);
     }
 
