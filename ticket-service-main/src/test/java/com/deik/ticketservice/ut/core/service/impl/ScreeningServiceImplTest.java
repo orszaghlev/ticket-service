@@ -155,7 +155,7 @@ public class ScreeningServiceImplTest {
     }
 
     @Test
-    public void testDeleteScreeningShouldThrowMovieExceptionWhenTheMovieDoesNotExist() {
+    public void testDeleteScreeningShouldThrowMovieExceptionWhenTheMovieIsNotInTheRepository() {
         // Given
         Mockito.when(movieRepository.findByTitle(MOVIE_TITLE)).thenReturn(java.util.Optional.empty());
 
@@ -168,7 +168,7 @@ public class ScreeningServiceImplTest {
     }
 
     @Test
-    public void testDeleteScreeningShouldThrowRoomExceptionWhenTheRoomDoesNotExist() {
+    public void testDeleteScreeningShouldThrowRoomExceptionWhenTheRoomIsNotInTheRepository() {
         // Given
         Movie existingMovie = Mockito.mock(Movie.class);
         Mockito.when(movieRepository.findByTitle(MOVIE_TITLE)).thenReturn(java.util.Optional.of(existingMovie));
@@ -191,7 +191,6 @@ public class ScreeningServiceImplTest {
         Room existingRoom = Mockito.mock(Room.class);
         Mockito.when(roomRepository.findByName(ROOM_NAME)).thenReturn(java.util.Optional.of(existingRoom));
         Date date = new SimpleDateFormat(DATE_PATTERN).parse(DATE_AS_STRING);
-        ScreeningId screeningId = new ScreeningId(existingMovie, existingRoom, date);
         Mockito.when(screeningRepository.findById_MovieAndId_RoomAndId_Date(existingMovie, existingRoom, date))
                 .thenReturn(java.util.Optional.empty());
 

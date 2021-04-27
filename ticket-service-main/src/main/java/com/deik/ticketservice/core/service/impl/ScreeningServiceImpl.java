@@ -22,6 +22,12 @@ import java.util.List;
 @Service
 public class ScreeningServiceImpl implements ScreeningService {
 
+    private static final String MOVIE_NOT_FOUND_MESSAGE = "Movie not found in the repository";
+    private static final String ROOM_NOT_FOUND_MESSAGE = "Room not found in the repository";
+    private static final String DATE_PATTERN = "yyyy-MM-dd HH:mm";
+    private static final String SCREENING_ALREADY_CREATED_MESSAGE = "Screening already created";
+    private static final String SCREENING_NOT_FOUND_MESSAGE = "Screening not found in the repository";
+
     private final ScreeningRepository screeningRepository;
 
     private final MovieRepository movieRepository;
@@ -39,16 +45,16 @@ public class ScreeningServiceImpl implements ScreeningService {
     public void createScreening(String movieTitle, String roomName, String dateAsString) throws ParseException,
             MovieException, RoomException, ScreeningException {
         if (movieRepository.findByTitle(movieTitle).isEmpty()) {
-            throw new MovieException("Movie doesn't exist");
+            throw new MovieException(MOVIE_NOT_FOUND_MESSAGE);
         }
         if (roomRepository.findByName(roomName).isEmpty()) {
-            throw new RoomException("Room doesn't exist");
+            throw new RoomException(ROOM_NOT_FOUND_MESSAGE);
         }
         Movie movie = movieRepository.findByTitle(movieTitle).get();
         Room room = roomRepository.findByName(roomName).get();
-        Date date = new SimpleDateFormat("yyyy-MM-dd HH:mm").parse(dateAsString);
+        Date date = new SimpleDateFormat(DATE_PATTERN).parse(dateAsString);
         if (screeningRepository.findById_MovieAndId_RoomAndId_Date(movie, room, date).isPresent()) {
-            throw new ScreeningException("Screening already exists");
+            throw new ScreeningException(SCREENING_ALREADY_CREATED_MESSAGE);
         }
         ScreeningId screeningId = new ScreeningId(movie, room, date);
         Screening screeningToCreate = new Screening(screeningId);
@@ -59,16 +65,16 @@ public class ScreeningServiceImpl implements ScreeningService {
     public void deleteScreening(String movieTitle, String roomName, String dateAsString) throws ParseException,
             MovieException, RoomException, ScreeningException {
         if (movieRepository.findByTitle(movieTitle).isEmpty()) {
-            throw new MovieException("Movie doesn't exist");
+            throw new MovieException(MOVIE_NOT_FOUND_MESSAGE);
         }
         if (roomRepository.findByName(roomName).isEmpty()) {
-            throw new RoomException("Room doesn't exist");
+            throw new RoomException(ROOM_NOT_FOUND_MESSAGE);
         }
         Movie movie = movieRepository.findByTitle(movieTitle).get();
         Room room = roomRepository.findByName(roomName).get();
-        Date date = new SimpleDateFormat("yyyy-MM-dd HH:mm").parse(dateAsString);
+        Date date = new SimpleDateFormat(DATE_PATTERN).parse(dateAsString);
         if (screeningRepository.findById_MovieAndId_RoomAndId_Date(movie, room, date).isEmpty()) {
-            throw new ScreeningException("Screening doesn't exist");
+            throw new ScreeningException(SCREENING_NOT_FOUND_MESSAGE);
         }
         Screening screeningToDelete = screeningRepository.findById_MovieAndId_RoomAndId_Date(movie, room, date).get();
         screeningRepository.delete(screeningToDelete);

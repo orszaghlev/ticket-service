@@ -3,8 +3,9 @@ package com.deik.ticketservice.ui.command;
 import com.deik.ticketservice.core.persistence.entity.Movie;
 import com.deik.ticketservice.core.service.AccountService;
 import com.deik.ticketservice.core.service.MovieService;
+import com.deik.ticketservice.core.service.exception.AccountException;
+import com.deik.ticketservice.core.service.exception.MovieException;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.shell.standard.ShellComponent;
 import org.springframework.shell.standard.ShellMethod;
 import org.springframework.shell.standard.ShellOption;
@@ -15,62 +16,73 @@ import java.util.List;
 @ShellComponent
 public class MovieCommand {
 
+    private static final String CREATE_MOVIE_VALUE = "Create movie";
+    private static final String CREATE_MOVIE_KEY = "create movie";
+    private static final String UPDATE_MOVIE_VALUE = "Update movie";
+    private static final String UPDATE_MOVIE_KEY = "update movie";
+    private static final String DELETE_MOVIE_VALUE = "Delete movie";
+    private static final String DELETE_MOVIE_KEY = "delete movie";
+    private static final String LIST_MOVIES_VALUE = "List movies";
+    private static final String LIST_MOVIES_KEY = "list movies";
+    private static final String LIST_MOVIES_SUCCESS = "%s (%s, %d minutes)%n";
+    private static final String LIST_MOVIES_EMPTY = "There are no movies at the moment";
+    private static final String LIST_MOVIES_FAIL = "Failed to list movies";
+
     private final MovieService movieService;
 
     private final AccountService accountService;
 
-    @Autowired
     public MovieCommand(MovieService movieService, AccountService accountService) {
         this.movieService = movieService;
         this.accountService = accountService;
     }
 
-    @ShellMethod(value = "Create movie", key = "create movie")
+    @ShellMethod(value = CREATE_MOVIE_VALUE, key = CREATE_MOVIE_KEY)
     public void createMovie(@ShellOption String title, @ShellOption String genre, @ShellOption int runtime) {
         try {
             if (accountService.isAdminSignedIn()) {
                 movieService.createMovie(title, genre, runtime);
             }
-        } catch (Exception e) {
-            log.error("Failed to create movie", e);
+        } catch (AccountException | MovieException e) {
+            log.error(e.getMessage());
         }
     }
 
-    @ShellMethod(value = "Update movie", key = "update movie")
+    @ShellMethod(value = UPDATE_MOVIE_VALUE, key = UPDATE_MOVIE_KEY)
     public void updateMovie(@ShellOption String title, @ShellOption String genre, @ShellOption int runtime) {
         try {
             if (accountService.isAdminSignedIn()) {
                 movieService.updateMovie(title, genre, runtime);
             }
-        } catch (Exception e) {
-            log.error("Failed to update movie", e);
+        } catch (AccountException | MovieException e) {
+            log.error(e.getMessage());
         }
     }
 
-    @ShellMethod(value = "Delete movie", key = "delete movie")
+    @ShellMethod(value = DELETE_MOVIE_VALUE, key = DELETE_MOVIE_KEY)
     public void deleteMovie(@ShellOption String title) {
         try {
             if (accountService.isAdminSignedIn()) {
                 movieService.deleteMovie(title);
             }
-        } catch (Exception e) {
-            log.error("Failed to delete movie", e);
+        } catch (AccountException | MovieException e) {
+            log.error(e.getMessage());
         }
     }
 
-    @ShellMethod(value = "List movies", key = "list movies")
+    @ShellMethod(value = LIST_MOVIES_VALUE, key = LIST_MOVIES_KEY)
     public void listMovies() {
         try {
             List<Movie> movies = movieService.listMovies();
             if (movies.isEmpty()) {
-                System.out.println("There are no movies at the moment");
+                System.out.println(LIST_MOVIES_EMPTY);
             } else {
                 for (Movie movie : movies) {
-                    System.out.printf("%s (%s, %d minutes)%n", movie.getTitle(), movie.getGenre(), movie.getRuntime());
+                    System.out.printf(LIST_MOVIES_SUCCESS, movie.getTitle(), movie.getGenre(), movie.getRuntime());
                 }
             }
         } catch (Exception e) {
-            log.error("Failed to list movies", e);
+            log.error(LIST_MOVIES_FAIL, e);
         }
     }
 

@@ -9,6 +9,12 @@ import org.springframework.stereotype.Service;
 @Service
 public class LoginServiceImpl implements LoginService {
 
+    private static final String ADMIN_USERNAME = "admin";
+    private static final String ADMIN_PASSWORD = "admin";
+    private static final String INCORRECT_CREDENTIALS_MESSAGE = "Incorrect credentials";
+    private static final String ADMIN_ACCOUNT_NOT_FOUND_MESSAGE = "Admin account not found in the repository";
+    private static final String NO_SIGNED_IN_USERS_MESSAGE = "None of the users are signed in at the moment";
+
     private final AccountRepository accountRepository;
 
     public LoginServiceImpl(AccountRepository accountRepository) {
@@ -17,11 +23,11 @@ public class LoginServiceImpl implements LoginService {
 
     @Override
     public void signInPrivileged(String username, String password) throws LoginException {
-        if (!username.equals("admin") || !password.equals("admin")) {
-            throw new LoginException("Incorrect credentials");
+        if (!username.equals(ADMIN_USERNAME) || !password.equals(ADMIN_PASSWORD)) {
+            throw new LoginException(INCORRECT_CREDENTIALS_MESSAGE);
         }
         if (accountRepository.findByUsernameAndPassword(username, password).isEmpty()) {
-            throw new LoginException("Admin account not found");
+            throw new LoginException(ADMIN_ACCOUNT_NOT_FOUND_MESSAGE);
         }
         Account adminAccount = accountRepository.findByUsernameAndPassword(username, password).get();
         adminAccount.setIsSigned(true);
@@ -31,7 +37,7 @@ public class LoginServiceImpl implements LoginService {
     @Override
     public void signOut() throws LoginException {
         if (accountRepository.findByisSigned(true).isEmpty()) {
-            throw new LoginException("None of the accounts are signed in at the moment");
+            throw new LoginException(NO_SIGNED_IN_USERS_MESSAGE);
         }
         Account signedInAccount = accountRepository.findByisSigned(true).get();
         signedInAccount.setIsSigned(false);

@@ -43,7 +43,7 @@ public class MovieServiceImplTest {
     }
 
     @Test
-    public void testCreateMovieShouldThrowMovieExceptionWhenTheMovieIsAlreadyInTheRepository() {
+    public void testCreateMovieShouldThrowMovieExceptionWhenTheMovieIsInTheRepository() {
         // Given
         Mockito.when(movieRepository.findByTitle(MOVIE.getTitle())).thenReturn(java.util.Optional.of(MOVIE));
 

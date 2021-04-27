@@ -12,6 +12,9 @@ import java.util.List;
 @Service
 public class MovieServiceImpl implements MovieService {
 
+    private static final String MOVIE_ALREADY_CREATED_MESSAGE = "Movie already created";
+    private static final String MOVIE_NOT_FOUND_MESSAGE = "Movie not found in the repository";
+
     private final MovieRepository movieRepository;
 
     public MovieServiceImpl(MovieRepository movieRepository) {
@@ -21,7 +24,7 @@ public class MovieServiceImpl implements MovieService {
     @Override
     public void createMovie(String title, String genre, int runtime) throws MovieException {
         if (movieRepository.findByTitle(title).isPresent()) {
-            throw new MovieException("Movie already exists");
+            throw new MovieException(MOVIE_ALREADY_CREATED_MESSAGE);
         }
         Movie movieToCreate = new Movie(null, title, genre, runtime);
         movieRepository.save(movieToCreate);
@@ -30,7 +33,7 @@ public class MovieServiceImpl implements MovieService {
     @Override
     public void updateMovie(String title, String genre, int runtime) throws MovieException {
         if (movieRepository.findByTitle(title).isEmpty()) {
-            throw new MovieException("Movie doesn't exist");
+            throw new MovieException(MOVIE_NOT_FOUND_MESSAGE);
         }
         Movie movieToUpdate = movieRepository.findByTitle(title).get();
         movieToUpdate.setTitle(title);
@@ -42,7 +45,7 @@ public class MovieServiceImpl implements MovieService {
     @Override
     public void deleteMovie(String title) throws MovieException {
         if (movieRepository.findByTitle(title).isEmpty()) {
-            throw new MovieException("Movie doesn't exist");
+            throw new MovieException(MOVIE_NOT_FOUND_MESSAGE);
         }
         Movie movieToDelete = movieRepository.findByTitle(title).get();
         movieRepository.delete(movieToDelete);
@@ -58,7 +61,7 @@ public class MovieServiceImpl implements MovieService {
     @Override
     public int getRuntimeByTitle(String title) throws MovieException {
         if (movieRepository.findByTitle(title).isEmpty()) {
-            throw new MovieException("Movie doesn't exist");
+            throw new MovieException(MOVIE_NOT_FOUND_MESSAGE);
         }
         Movie movie = movieRepository.findByTitle(title).get();
         return movie.getRuntime();

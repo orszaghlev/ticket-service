@@ -102,7 +102,7 @@ public class AccountServiceImplTest {
     }
 
     @Test
-    public void testGetSignedInAccountShouldThrowAccountExceptionWhenNoneOfTheAccountsAreSignedIn() {
+    public void testGetSignedInAccountShouldThrowAccountExceptionWhenNoneOfTheUsersAreSignedIn() {
         // Given
         Mockito.when(accountRepository.findByisSigned(true)).thenReturn(java.util.Optional.empty());
 

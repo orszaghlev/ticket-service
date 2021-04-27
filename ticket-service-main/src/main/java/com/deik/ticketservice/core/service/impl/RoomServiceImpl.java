@@ -12,6 +12,9 @@ import java.util.List;
 @Service
 public class RoomServiceImpl implements RoomService {
 
+    private static final String ROOM_ALREADY_CREATED_MESSAGE = "Room already created";
+    private static final String ROOM_NOT_FOUND_MESSAGE = "Room not found in the repository";
+
     private final RoomRepository roomRepository;
 
     public RoomServiceImpl(RoomRepository roomRepository) {
@@ -21,7 +24,7 @@ public class RoomServiceImpl implements RoomService {
     @Override
     public void createRoom(String name, int numberOfRows, int numberOfCols) throws RoomException {
         if (roomRepository.findByName(name).isPresent()) {
-            throw new RoomException("Room already exists");
+            throw new RoomException(ROOM_ALREADY_CREATED_MESSAGE);
         }
         Room roomToCreate = new Room(null, name, numberOfRows, numberOfCols);
         roomRepository.save(roomToCreate);
@@ -30,7 +33,7 @@ public class RoomServiceImpl implements RoomService {
     @Override
     public void updateRoom(String name, int numberOfRows, int numberOfCols) throws RoomException {
         if (roomRepository.findByName(name).isEmpty()) {
-            throw new RoomException("Room doesn't exist");
+            throw new RoomException(ROOM_NOT_FOUND_MESSAGE);
         }
         Room roomToUpdate = roomRepository.findByName(name).get();
         roomToUpdate.setName(name);
@@ -42,7 +45,7 @@ public class RoomServiceImpl implements RoomService {
     @Override
     public void deleteRoom(String name) throws RoomException {
         if (roomRepository.findByName(name).isEmpty()) {
-            throw new RoomException("Room doesn't exist");
+            throw new RoomException(ROOM_NOT_FOUND_MESSAGE);
         }
         Room roomToDelete = roomRepository.findByName(name).get();
         roomRepository.delete(roomToDelete);
