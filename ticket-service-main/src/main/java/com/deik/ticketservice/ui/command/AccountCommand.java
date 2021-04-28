@@ -2,18 +2,17 @@ package com.deik.ticketservice.ui.command;
 
 import com.deik.ticketservice.core.service.AccountService;
 import com.deik.ticketservice.core.service.exception.AccountException;
-import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.shell.standard.ShellComponent;
 import org.springframework.shell.standard.ShellMethod;
 
-@Slf4j
 @ShellComponent
 public class AccountCommand {
 
-    private static final String DESCRIBE_ACCOUNT_VALUE = "Describe account";
-    private static final String DESCRIBE_ACCOUNT_KEY = "describe account";
-    private static final String DESCRIBE_ACCOUNT_SUCCESS = "Signed in with privileged account '%s'%n";
-    private static final String DESCRIBE_ACCOUNT_FAIL = "You are not signed in";
+    private static final String DESCRIBE_ACCOUNT_SUCCESS_MESSAGE = "Signed in with privileged account '%s'%n";
+    private static final String DESCRIBE_ACCOUNT_FAILURE_MESSAGE = "You are not signed in";
+    private static final Logger LOGGER = LoggerFactory.getLogger(AccountCommand.class);
 
     private final AccountService accountService;
 
@@ -21,17 +20,17 @@ public class AccountCommand {
         this.accountService = accountService;
     }
 
-    @ShellMethod(value = DESCRIBE_ACCOUNT_VALUE, key = DESCRIBE_ACCOUNT_KEY)
+    @ShellMethod(value = "Describe account", key = "describe account")
     public void describeAccount() {
         try {
             if (accountService.isAdminSignedIn()) {
-                System.out.printf(DESCRIBE_ACCOUNT_SUCCESS,
+                System.out.printf(DESCRIBE_ACCOUNT_SUCCESS_MESSAGE,
                         accountService.getSignedInAccount().getUsername());
             } else {
-                System.out.println(DESCRIBE_ACCOUNT_FAIL);
+                System.out.println(DESCRIBE_ACCOUNT_FAILURE_MESSAGE);
             }
         } catch (AccountException e) {
-            log.error(e.getMessage());
+            LOGGER.error(e.getMessage());
         }
     }
 

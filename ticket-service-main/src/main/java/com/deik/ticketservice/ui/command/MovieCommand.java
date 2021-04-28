@@ -5,28 +5,21 @@ import com.deik.ticketservice.core.service.AccountService;
 import com.deik.ticketservice.core.service.MovieService;
 import com.deik.ticketservice.core.service.exception.AccountException;
 import com.deik.ticketservice.core.service.exception.MovieException;
-import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.shell.standard.ShellComponent;
 import org.springframework.shell.standard.ShellMethod;
 import org.springframework.shell.standard.ShellOption;
 
 import java.util.List;
 
-@Slf4j
 @ShellComponent
 public class MovieCommand {
 
-    private static final String CREATE_MOVIE_VALUE = "Create movie";
-    private static final String CREATE_MOVIE_KEY = "create movie";
-    private static final String UPDATE_MOVIE_VALUE = "Update movie";
-    private static final String UPDATE_MOVIE_KEY = "update movie";
-    private static final String DELETE_MOVIE_VALUE = "Delete movie";
-    private static final String DELETE_MOVIE_KEY = "delete movie";
-    private static final String LIST_MOVIES_VALUE = "List movies";
-    private static final String LIST_MOVIES_KEY = "list movies";
-    private static final String LIST_MOVIES_SUCCESS = "%s (%s, %d minutes)%n";
-    private static final String LIST_MOVIES_EMPTY = "There are no movies at the moment";
-    private static final String LIST_MOVIES_FAIL = "Failed to list movies";
+    private static final String LIST_MOVIES_SUCCESS_MESSAGE = "%s (%s, %d minutes)%n";
+    private static final String LIST_MOVIES_FAILURE_MESSAGE = "There are no movies at the moment";
+    private static final String LIST_MOVIES_ERROR_MESSAGE = "Failed to list movies";
+    private static final Logger LOGGER = LoggerFactory.getLogger(MovieCommand.class);
 
     private final MovieService movieService;
 
@@ -37,52 +30,53 @@ public class MovieCommand {
         this.accountService = accountService;
     }
 
-    @ShellMethod(value = CREATE_MOVIE_VALUE, key = CREATE_MOVIE_KEY)
+    @ShellMethod(value = "Create movie", key = "create movie")
     public void createMovie(@ShellOption String title, @ShellOption String genre, @ShellOption int runtime) {
         try {
             if (accountService.isAdminSignedIn()) {
                 movieService.createMovie(title, genre, runtime);
             }
         } catch (AccountException | MovieException e) {
-            log.error(e.getMessage());
+            LOGGER.error(e.getMessage());
         }
     }
 
-    @ShellMethod(value = UPDATE_MOVIE_VALUE, key = UPDATE_MOVIE_KEY)
+    @ShellMethod(value = "Update movie", key = "update movie")
     public void updateMovie(@ShellOption String title, @ShellOption String genre, @ShellOption int runtime) {
         try {
             if (accountService.isAdminSignedIn()) {
                 movieService.updateMovie(title, genre, runtime);
             }
         } catch (AccountException | MovieException e) {
-            log.error(e.getMessage());
+            LOGGER.error(e.getMessage());
         }
     }
 
-    @ShellMethod(value = DELETE_MOVIE_VALUE, key = DELETE_MOVIE_KEY)
+    @ShellMethod(value = "Delete movie", key = "delete movie")
     public void deleteMovie(@ShellOption String title) {
         try {
             if (accountService.isAdminSignedIn()) {
                 movieService.deleteMovie(title);
             }
         } catch (AccountException | MovieException e) {
-            log.error(e.getMessage());
+            LOGGER.error(e.getMessage());
         }
     }
 
-    @ShellMethod(value = LIST_MOVIES_VALUE, key = LIST_MOVIES_KEY)
+    @ShellMethod(value = "List movies", key = "list movies")
     public void listMovies() {
         try {
             List<Movie> movies = movieService.listMovies();
             if (movies.isEmpty()) {
-                System.out.println(LIST_MOVIES_EMPTY);
+                System.out.println(LIST_MOVIES_FAILURE_MESSAGE);
             } else {
                 for (Movie movie : movies) {
-                    System.out.printf(LIST_MOVIES_SUCCESS, movie.getTitle(), movie.getGenre(), movie.getRuntime());
+                    System.out.printf(LIST_MOVIES_SUCCESS_MESSAGE, movie.getTitle(), movie.getGenre(),
+                            movie.getRuntime());
                 }
             }
         } catch (Exception e) {
-            log.error(LIST_MOVIES_FAIL, e);
+            LOGGER.error(LIST_MOVIES_ERROR_MESSAGE, e);
         }
     }
 

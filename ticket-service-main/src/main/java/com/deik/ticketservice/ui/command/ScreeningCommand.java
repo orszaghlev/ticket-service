@@ -8,7 +8,8 @@ import com.deik.ticketservice.core.service.exception.AccountException;
 import com.deik.ticketservice.core.service.exception.MovieException;
 import com.deik.ticketservice.core.service.exception.RoomException;
 import com.deik.ticketservice.core.service.exception.ScreeningException;
-import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.shell.standard.ShellComponent;
 import org.springframework.shell.standard.ShellMethod;
 import org.springframework.shell.standard.ShellOption;
@@ -18,25 +19,19 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
-@Slf4j
 @ShellComponent
 public class ScreeningCommand {
 
-    private static final String CREATE_SCREENING_VALUE = "Create screening";
-    private static final String CREATE_SCREENING_KEY = "create screening";
     private static final String DATE_PATTERN = "yyyy-MM-dd HH:mm";
-    private static final long MINUTE_IN_MS = 60_000L;
-    private static final long TEN_MINUTES_IN_MS = MINUTE_IN_MS * 10;
+    private static final long ONE_MINUTE_IN_MS = 60_000L;
+    private static final long TEN_MINUTES_IN_MS = ONE_MINUTE_IN_MS * 10;
     private static final String SCREENING_OVERLAP_MESSAGE = "There is an overlapping screening";
     private static final String BREAK_OVERLAP_MESSAGE =
             "This would start in the break period after another screening in this room";
-    private static final String DELETE_SCREENING_VALUE = "Delete screening";
-    private static final String DELETE_SCREENING_KEY = "delete screening";
-    private static final String LIST_SCREENINGS_VALUE = "List screenings";
-    private static final String LIST_SCREENINGS_KEY = "list screenings";
-    private static final String LIST_SCREENINGS_SUCCESS = "%s (%s, %d minutes), screened in room %s, at %s%n";
-    private static final String LIST_SCREENINGS_EMPTY = "There are no screenings";
-    private static final String LIST_SCREENINGS_FAIL = "Failed to list screenings";
+    private static final String LIST_SCREENINGS_SUCCESS_MESSAGE = "%s (%s, %d minutes), screened in room %s, at %s%n";
+    private static final String LIST_SCREENINGS_FAILURE_MESSAGE = "There are no screenings";
+    private static final String LIST_SCREENINGS_ERROR_MESSAGE = "Failed to list screenings";
+    private static final Logger LOGGER = LoggerFactory.getLogger(ScreeningCommand.class);
 
     private final ScreeningService screeningService;
 
@@ -51,7 +46,7 @@ public class ScreeningCommand {
         this.accountService = accountService;
     }
 
-    @ShellMethod(value = CREATE_SCREENING_VALUE, key = CREATE_SCREENING_KEY)
+    @ShellMethod(value = "Create screening", key = "create screening")
     public void createScreening(@ShellOption String movieTitle, @ShellOption String roomName,
                                 @ShellOption String dateAsString) {
         try {
@@ -62,8 +57,9 @@ public class ScreeningCommand {
                 Date date = new SimpleDateFormat(DATE_PATTERN).parse(dateAsString);
                 for (Screening screening : screenings) {
                     long existingScreeningSum = screening.getId().getDate().getTime()
-                            + (screening.getId().getMovie().getRuntime() * MINUTE_IN_MS);
-                    long newScreeningSum = date.getTime() + (movieService.getRuntimeByTitle(movieTitle) * MINUTE_IN_MS);
+                            + (screening.getId().getMovie().getRuntime() * ONE_MINUTE_IN_MS);
+                    long newScreeningSum = date.getTime() + (movieService.getRuntimeByTitle(movieTitle)
+                            * ONE_MINUTE_IN_MS);
                     if (screening.getId().getRoom().getName().equals(roomName)) {
                         if (date.before(new Date(existingScreeningSum))
                                 && screening.getId().getDate().before(new Date(newScreeningSum))) {
@@ -83,11 +79,11 @@ public class ScreeningCommand {
                 }
             }
         } catch (AccountException | MovieException | ParseException | RoomException | ScreeningException e) {
-            log.error(e.getMessage());
+            LOGGER.error(e.getMessage());
         }
     }
 
-    @ShellMethod(value = DELETE_SCREENING_VALUE, key = DELETE_SCREENING_KEY)
+    @ShellMethod(value = "Delete screening", key = "delete screening")
     public void deleteScreening(@ShellOption String movieTitle, @ShellOption String roomName,
                                 @ShellOption String dateAsString) {
         try {
@@ -95,26 +91,26 @@ public class ScreeningCommand {
                 screeningService.deleteScreening(movieTitle, roomName, dateAsString);
             }
         } catch (AccountException | MovieException | ParseException | RoomException | ScreeningException e) {
-            log.error(e.getMessage());
+            LOGGER.error(e.getMessage());
         }
     }
 
-    @ShellMethod(value = LIST_SCREENINGS_VALUE, key = LIST_SCREENINGS_KEY)
+    @ShellMethod(value = "List screenings", key = "list screenings")
     public void listScreenings() {
         try {
             List<Screening> screenings = screeningService.listScreenings();
             if (screenings.isEmpty()) {
-                System.out.println(LIST_SCREENINGS_EMPTY);
+                System.out.println(LIST_SCREENINGS_FAILURE_MESSAGE);
             } else {
                 for (Screening screening : screenings) {
-                    System.out.printf(LIST_SCREENINGS_SUCCESS,
+                    System.out.printf(LIST_SCREENINGS_SUCCESS_MESSAGE,
                             screening.getId().getMovie().getTitle(), screening.getId().getMovie().getGenre(),
                             screening.getId().getMovie().getRuntime(), screening.getId().getRoom().getName(),
                             new SimpleDateFormat(DATE_PATTERN).format(screening.getId().getDate()));
                 }
             }
         } catch (Exception e) {
-            log.error(LIST_SCREENINGS_FAIL, e);
+            LOGGER.error(LIST_SCREENINGS_ERROR_MESSAGE, e);
         }
     }
 
