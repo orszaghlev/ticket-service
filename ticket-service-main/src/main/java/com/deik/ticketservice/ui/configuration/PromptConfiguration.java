@@ -8,9 +8,11 @@ import org.springframework.stereotype.Component;
 @Component
 public class PromptConfiguration implements PromptProvider {
 
+    private static final String PROMPT_STRING = "Ticket service>";
+
     @Override
     public AttributedString getPrompt() {
-        return new AttributedString("Ticket service>", AttributedStyle.DEFAULT.foreground(AttributedStyle.GREEN));
+        return new AttributedString(PROMPT_STRING, AttributedStyle.DEFAULT.foreground(AttributedStyle.GREEN));
     }
 
 }

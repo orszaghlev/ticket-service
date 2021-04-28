@@ -97,7 +97,7 @@ public class ScreeningServiceImplTest {
         Assertions.assertThrows(RoomException.class, () -> underTest.createScreening(MOVIE_TITLE, ROOM_NAME, DATE_AS_STRING));
 
         // Then
-        Mockito.verify(movieRepository).findByTitle(MOVIE_TITLE);
+        Mockito.verify(movieRepository, Mockito.times(WANTED_NUMBER_OF_INVOCATIONS)).findByTitle(MOVIE_TITLE);
         Mockito.verify(roomRepository).findByName(ROOM_NAME);
         Mockito.verifyNoMoreInteractions(screeningRepository, movieRepository, roomRepository);
     }
@@ -178,7 +178,7 @@ public class ScreeningServiceImplTest {
         Assertions.assertThrows(RoomException.class, () -> underTest.deleteScreening(MOVIE_TITLE, ROOM_NAME, DATE_AS_STRING));
 
         // Then
-        Mockito.verify(movieRepository).findByTitle(MOVIE_TITLE);
+        Mockito.verify(movieRepository, Mockito.times(WANTED_NUMBER_OF_INVOCATIONS)).findByTitle(MOVIE_TITLE);
         Mockito.verify(roomRepository).findByName(ROOM_NAME);
         Mockito.verifyNoMoreInteractions(screeningRepository, movieRepository, roomRepository);
     }

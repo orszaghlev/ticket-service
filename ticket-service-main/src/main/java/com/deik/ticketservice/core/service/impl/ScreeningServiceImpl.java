@@ -44,15 +44,9 @@ public class ScreeningServiceImpl implements ScreeningService {
     @Override
     public void createScreening(String movieTitle, String roomName, String dateAsString) throws ParseException,
             MovieException, RoomException, ScreeningException {
-        if (movieRepository.findByTitle(movieTitle).isEmpty()) {
-            throw new MovieException(MOVIE_NOT_FOUND_MESSAGE);
-        }
-        if (roomRepository.findByName(roomName).isEmpty()) {
-            throw new RoomException(ROOM_NOT_FOUND_MESSAGE);
-        }
-        Movie movie = movieRepository.findByTitle(movieTitle).get();
-        Room room = roomRepository.findByName(roomName).get();
-        Date date = new SimpleDateFormat(DATE_PATTERN).parse(dateAsString);
+        Movie movie = getMovieByTitle(movieTitle);
+        Room room = getRoomByName(roomName);
+        Date date = getDateByString(dateAsString);
         if (screeningRepository.findById_MovieAndId_RoomAndId_Date(movie, room, date).isPresent()) {
             throw new ScreeningException(SCREENING_ALREADY_CREATED_MESSAGE);
         }
@@ -64,15 +58,9 @@ public class ScreeningServiceImpl implements ScreeningService {
     @Override
     public void deleteScreening(String movieTitle, String roomName, String dateAsString) throws ParseException,
             MovieException, RoomException, ScreeningException {
-        if (movieRepository.findByTitle(movieTitle).isEmpty()) {
-            throw new MovieException(MOVIE_NOT_FOUND_MESSAGE);
-        }
-        if (roomRepository.findByName(roomName).isEmpty()) {
-            throw new RoomException(ROOM_NOT_FOUND_MESSAGE);
-        }
-        Movie movie = movieRepository.findByTitle(movieTitle).get();
-        Room room = roomRepository.findByName(roomName).get();
-        Date date = new SimpleDateFormat(DATE_PATTERN).parse(dateAsString);
+        Movie movie = getMovieByTitle(movieTitle);
+        Room room = getRoomByName(roomName);
+        Date date = getDateByString(dateAsString);
         if (screeningRepository.findById_MovieAndId_RoomAndId_Date(movie, room, date).isEmpty()) {
             throw new ScreeningException(SCREENING_NOT_FOUND_MESSAGE);
         }
@@ -85,6 +73,24 @@ public class ScreeningServiceImpl implements ScreeningService {
         List<Screening> screenings = new LinkedList<>();
         screeningRepository.findAll().forEach(screenings::add);
         return screenings;
+    }
+
+    private Movie getMovieByTitle(String movieTitle) throws MovieException {
+        if (movieRepository.findByTitle(movieTitle).isEmpty()) {
+            throw new MovieException(MOVIE_NOT_FOUND_MESSAGE);
+        }
+        return movieRepository.findByTitle(movieTitle).get();
+    }
+
+    private Room getRoomByName(String roomName) throws RoomException {
+        if (roomRepository.findByName(roomName).isEmpty()) {
+            throw new RoomException(ROOM_NOT_FOUND_MESSAGE);
+        }
+        return roomRepository.findByName(roomName).get();
+    }
+
+    private Date getDateByString(String dateAsString) throws ParseException {
+        return new SimpleDateFormat(DATE_PATTERN).parse(dateAsString);
     }
 
 }

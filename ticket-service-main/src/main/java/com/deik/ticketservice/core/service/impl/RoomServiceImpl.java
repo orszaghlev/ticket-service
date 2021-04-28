@@ -32,10 +32,7 @@ public class RoomServiceImpl implements RoomService {
 
     @Override
     public void updateRoom(String name, int numberOfRows, int numberOfCols) throws RoomException {
-        if (roomRepository.findByName(name).isEmpty()) {
-            throw new RoomException(ROOM_NOT_FOUND_MESSAGE);
-        }
-        Room roomToUpdate = roomRepository.findByName(name).get();
+        Room roomToUpdate = getRoomByName(name);
         roomToUpdate.setName(name);
         roomToUpdate.setNumberOfRows(numberOfRows);
         roomToUpdate.setNumberOfCols(numberOfCols);
@@ -44,10 +41,7 @@ public class RoomServiceImpl implements RoomService {
 
     @Override
     public void deleteRoom(String name) throws RoomException {
-        if (roomRepository.findByName(name).isEmpty()) {
-            throw new RoomException(ROOM_NOT_FOUND_MESSAGE);
-        }
-        Room roomToDelete = roomRepository.findByName(name).get();
+        Room roomToDelete = getRoomByName(name);
         roomRepository.delete(roomToDelete);
     }
 
@@ -56,6 +50,13 @@ public class RoomServiceImpl implements RoomService {
         List<Room> rooms = new LinkedList<>();
         roomRepository.findAll().forEach(rooms::add);
         return rooms;
+    }
+
+    private Room getRoomByName(String name) throws RoomException {
+        if (roomRepository.findByName(name).isEmpty()) {
+            throw new RoomException(ROOM_NOT_FOUND_MESSAGE);
+        }
+        return roomRepository.findByName(name).get();
     }
 
 }

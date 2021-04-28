@@ -32,10 +32,7 @@ public class MovieServiceImpl implements MovieService {
 
     @Override
     public void updateMovie(String title, String genre, int runtime) throws MovieException {
-        if (movieRepository.findByTitle(title).isEmpty()) {
-            throw new MovieException(MOVIE_NOT_FOUND_MESSAGE);
-        }
-        Movie movieToUpdate = movieRepository.findByTitle(title).get();
+        Movie movieToUpdate = getMovieByTitle(title);
         movieToUpdate.setTitle(title);
         movieToUpdate.setGenre(genre);
         movieToUpdate.setRuntime(runtime);
@@ -44,10 +41,7 @@ public class MovieServiceImpl implements MovieService {
 
     @Override
     public void deleteMovie(String title) throws MovieException {
-        if (movieRepository.findByTitle(title).isEmpty()) {
-            throw new MovieException(MOVIE_NOT_FOUND_MESSAGE);
-        }
-        Movie movieToDelete = movieRepository.findByTitle(title).get();
+        Movie movieToDelete = getMovieByTitle(title);
         movieRepository.delete(movieToDelete);
     }
 
@@ -60,11 +54,14 @@ public class MovieServiceImpl implements MovieService {
 
     @Override
     public int getRuntimeByTitle(String title) throws MovieException {
+        return getMovieByTitle(title).getRuntime();
+    }
+
+    private Movie getMovieByTitle(String title) throws MovieException {
         if (movieRepository.findByTitle(title).isEmpty()) {
             throw new MovieException(MOVIE_NOT_FOUND_MESSAGE);
         }
-        Movie movie = movieRepository.findByTitle(title).get();
-        return movie.getRuntime();
+        return movieRepository.findByTitle(title).get();
     }
 
 }
