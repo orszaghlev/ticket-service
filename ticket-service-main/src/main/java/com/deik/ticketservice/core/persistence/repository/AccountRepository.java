@@ -11,6 +11,6 @@ public interface AccountRepository extends CrudRepository<Account, Integer> {
 
     Optional<Account> findByUsernameAndPassword(String username, String password);
 
-    Optional<Account> findByisSigned(boolean isSigned);
+    Optional<Account> findByIsSigned(boolean isSigned);
 
 }

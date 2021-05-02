@@ -41,10 +41,10 @@ public class AccountServiceImpl implements AccountService {
 
     @Override
     public Account getSignedInAccount() throws AccountException {
-        if (accountRepository.findByisSigned(true).isEmpty()) {
+        if (accountRepository.findByIsSigned(true).isEmpty()) {
             throw new AccountException(NO_SIGNED_IN_USERS_MESSAGE);
         }
-        return accountRepository.findByisSigned(true).get();
+        return accountRepository.findByIsSigned(true).get();
     }
 
 }

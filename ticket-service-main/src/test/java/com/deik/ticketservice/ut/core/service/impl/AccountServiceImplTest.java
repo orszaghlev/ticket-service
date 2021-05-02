@@ -28,7 +28,7 @@ public class AccountServiceImplTest {
     }
 
     @Test
-    public void testInitShouldCreateAdminAccountWhenAdminAccountIsNotInTheRepository() {
+    public void testInitShouldCreateAdminAccountWhenTheAdminAccountIsNotInTheRepository() {
         // Given
         Mockito.when(accountRepository.findByUsernameAndPassword(ADMIN_USERNAME, ADMIN_PASSWORD))
                 .thenReturn(java.util.Optional.empty());
@@ -43,7 +43,7 @@ public class AccountServiceImplTest {
     }
 
     @Test
-    public void testInitShouldNotCreateAdminAccountWhenAdminAccountIsInTheRepository() {
+    public void testInitShouldNotCreateAdminAccountWhenTheAdminAccountIsInTheRepository() {
         // Given
         Mockito.when(accountRepository.findByUsernameAndPassword(ADMIN_USERNAME, ADMIN_PASSWORD))
                 .thenReturn(java.util.Optional.of(LOGGED_OUT_ADMIN_ACCOUNT));
@@ -57,7 +57,7 @@ public class AccountServiceImplTest {
     }
 
     @Test
-    public void testIsAdminSignedInShouldReturnTrueWhenAdminIsSignedIn() throws AccountException {
+    public void testIsAdminSignedInShouldReturnTrueWhenTheAdminIsSignedIn() throws AccountException {
         // Given
         Mockito.when(accountRepository.findByUsernameAndPassword(ADMIN_USERNAME, ADMIN_PASSWORD))
                 .thenReturn(java.util.Optional.of(LOGGED_IN_ADMIN_ACCOUNT));
@@ -74,7 +74,7 @@ public class AccountServiceImplTest {
     }
 
     @Test
-    public void testIsAdminSignedInShouldThrowAccountExceptionWhenAdminAccountIsNotInTheRepository() {
+    public void testIsAdminSignedInShouldThrowAccountExceptionWhenTheAdminAccountIsNotInTheRepository() {
         // Given
         Mockito.when(accountRepository.findByUsernameAndPassword(ADMIN_USERNAME, ADMIN_PASSWORD))
                 .thenReturn(java.util.Optional.empty());
@@ -90,27 +90,27 @@ public class AccountServiceImplTest {
     @Test
     public void testGetSignedInAccountShouldGetAdminAccountWhenTheAdminIsSignedIn() throws AccountException {
         // Given
-        Mockito.when(accountRepository.findByisSigned(true)).thenReturn(java.util.Optional.of(LOGGED_IN_ADMIN_ACCOUNT));
+        Mockito.when(accountRepository.findByIsSigned(true)).thenReturn(java.util.Optional.of(LOGGED_IN_ADMIN_ACCOUNT));
 
         // When
         Account actual = underTest.getSignedInAccount();
 
         // Then
         Assertions.assertEquals(LOGGED_IN_ADMIN_ACCOUNT, actual);
-        Mockito.verify(accountRepository, Mockito.times(WANTED_NUMBER_OF_INVOCATIONS)).findByisSigned(true);
+        Mockito.verify(accountRepository, Mockito.times(WANTED_NUMBER_OF_INVOCATIONS)).findByIsSigned(true);
         Mockito.verifyNoMoreInteractions(accountRepository);
     }
 
     @Test
     public void testGetSignedInAccountShouldThrowAccountExceptionWhenNoneOfTheUsersAreSignedIn() {
         // Given
-        Mockito.when(accountRepository.findByisSigned(true)).thenReturn(java.util.Optional.empty());
+        Mockito.when(accountRepository.findByIsSigned(true)).thenReturn(java.util.Optional.empty());
 
         // When
         Assertions.assertThrows(AccountException.class, () -> underTest.getSignedInAccount());
 
         // Then
-        Mockito.verify(accountRepository).findByisSigned(true);
+        Mockito.verify(accountRepository).findByIsSigned(true);
         Mockito.verifyNoMoreInteractions(accountRepository);
     }
 

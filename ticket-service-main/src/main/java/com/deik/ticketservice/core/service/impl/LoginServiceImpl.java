@@ -36,10 +36,10 @@ public class LoginServiceImpl implements LoginService {
 
     @Override
     public void signOut() throws LoginException {
-        if (accountRepository.findByisSigned(true).isEmpty()) {
+        if (accountRepository.findByIsSigned(true).isEmpty()) {
             throw new LoginException(NO_SIGNED_IN_USERS_MESSAGE);
         }
-        Account signedInAccount = accountRepository.findByisSigned(true).get();
+        Account signedInAccount = accountRepository.findByIsSigned(true).get();
         signedInAccount.setIsSigned(false);
         accountRepository.save(signedInAccount);
     }

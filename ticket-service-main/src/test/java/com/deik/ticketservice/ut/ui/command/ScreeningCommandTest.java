@@ -37,7 +37,7 @@ public class ScreeningCommandTest {
     }
 
     @Test
-    public void testCreateScreeningShouldCreateScreeningWhenAdminIsSignedInAndNoOverlapOccurs() throws ParseException,
+    public void testCreateScreeningShouldCreateScreeningWhenTheAdminIsSignedInAndNoOverlapOccurs() throws ParseException,
             AccountException, ScreeningException, RoomException, MovieException {
         // Given
         Mockito.when(accountService.isAdminSignedIn()).thenReturn(true);
@@ -52,7 +52,7 @@ public class ScreeningCommandTest {
     }
 
     @Test
-    public void testCreateScreeningShouldNotCreateScreeningWhenAdminIsNotSignedIn() throws AccountException {
+    public void testCreateScreeningShouldNotCreateScreeningWhenTheAdminIsNotSignedIn() throws AccountException {
         // Given
         Mockito.when(accountService.isAdminSignedIn()).thenReturn(false);
 
@@ -65,7 +65,7 @@ public class ScreeningCommandTest {
     }
 
     @Test
-    public void testDeleteScreeningShouldDeleteScreeningWhenAdminIsSignedIn() throws ParseException, AccountException,
+    public void testDeleteScreeningShouldDeleteScreeningWhenTheAdminIsSignedIn() throws ParseException, AccountException,
             ScreeningException, RoomException, MovieException {
         // Given
         Mockito.when(accountService.isAdminSignedIn()).thenReturn(true);
@@ -80,7 +80,7 @@ public class ScreeningCommandTest {
     }
 
     @Test
-    public void testDeleteScreeningShouldNotDeleteScreeningWhenAdminIsNotSignedIn() throws AccountException {
+    public void testDeleteScreeningShouldNotDeleteScreeningWhenTheAdminIsNotSignedIn() throws AccountException {
         // Given
         Mockito.when(accountService.isAdminSignedIn()).thenReturn(false);
 

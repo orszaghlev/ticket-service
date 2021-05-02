@@ -70,7 +70,7 @@ public class LoginServiceImplTest {
     }
 
     @Test
-    public void testSignInPrivilegedShouldThrowLoginExceptionWhenTheAdminAccountIsNotFound() {
+    public void testSignInPrivilegedShouldThrowLoginExceptionWhenTheAdminAccountIsNotInTheRepository() {
         // Given
         Mockito.when(accountRepository.findByUsernameAndPassword(ADMIN_USERNAME, ADMIN_PASSWORD))
                 .thenReturn(java.util.Optional.empty());
@@ -86,7 +86,7 @@ public class LoginServiceImplTest {
     @Test
     public void testSignOutShouldSignOutAdminWhenTheAdminAccountIsInTheRepository() throws LoginException {
         // Given
-        Mockito.when(accountRepository.findByisSigned(true)).thenReturn(java.util.Optional.of(LOGGED_IN_ADMIN_ACCOUNT));
+        Mockito.when(accountRepository.findByIsSigned(true)).thenReturn(java.util.Optional.of(LOGGED_IN_ADMIN_ACCOUNT));
         Mockito.when(accountRepository.save(LOGGED_IN_ADMIN_ACCOUNT)).thenReturn(LOGGED_IN_ADMIN_ACCOUNT);
 
         // When
@@ -97,20 +97,20 @@ public class LoginServiceImplTest {
         Assertions.assertEquals(ADMIN_USERNAME, LOGGED_IN_ADMIN_ACCOUNT.getUsername());
         Assertions.assertEquals(ADMIN_PASSWORD, LOGGED_IN_ADMIN_ACCOUNT.getPassword());
         Assertions.assertFalse(LOGGED_IN_ADMIN_ACCOUNT.isSigned());
-        Mockito.verify(accountRepository, Mockito.times(WANTED_NUMBER_OF_INVOCATIONS)).findByisSigned(true);
+        Mockito.verify(accountRepository, Mockito.times(WANTED_NUMBER_OF_INVOCATIONS)).findByIsSigned(true);
         Mockito.verifyNoMoreInteractions(accountRepository);
     }
 
     @Test
     public void testSignOutShouldThrowLoginExceptionWhenTheAdminAccountIsNotInTheRepository() {
         // Given
-        Mockito.when(accountRepository.findByisSigned(true)).thenReturn(java.util.Optional.empty());
+        Mockito.when(accountRepository.findByIsSigned(true)).thenReturn(java.util.Optional.empty());
 
         // When
         Assertions.assertThrows(LoginException.class, () -> underTest.signOut());
 
         // Then
-        Mockito.verify(accountRepository).findByisSigned(true);
+        Mockito.verify(accountRepository).findByIsSigned(true);
         Mockito.verifyNoMoreInteractions(accountRepository);
     }
 

@@ -11,7 +11,7 @@ import java.util.List;
 public interface ScreeningService {
 
     void createScreening(String movieTitle, String roomName, String dateAsString) throws ParseException,
-            ScreeningException, MovieException, RoomException;
+            MovieException, RoomException, ScreeningException;
 
     void deleteScreening(String movieTitle, String roomName, String dateAsString) throws ParseException,
             MovieException, RoomException, ScreeningException;

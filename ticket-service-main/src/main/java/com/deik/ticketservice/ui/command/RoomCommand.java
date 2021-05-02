@@ -71,13 +71,12 @@ public class RoomCommand {
                 System.out.println(LIST_ROOMS_FAILURE_MESSAGE);
             } else {
                 for (Room room : rooms) {
-                    System.out.printf(LIST_ROOMS_SUCCESS_MESSAGE, room.getName(),
-                            (room.getNumberOfRows() * room.getNumberOfCols()), room.getNumberOfRows(),
-                            room.getNumberOfCols());
+                    System.out.printf(LIST_ROOMS_SUCCESS_MESSAGE, room.getName(), (room.getNumberOfRows()
+                            * room.getNumberOfCols()), room.getNumberOfRows(), room.getNumberOfCols());
                 }
             }
         } catch (Exception e) {
-            LOGGER.error(LIST_ROOMS_ERROR_MESSAGE, e);
+            LOGGER.error(LIST_ROOMS_ERROR_MESSAGE);
         }
     }
 

@@ -76,7 +76,7 @@ public class MovieCommand {
                 }
             }
         } catch (Exception e) {
-            LOGGER.error(LIST_MOVIES_ERROR_MESSAGE, e);
+            LOGGER.error(LIST_MOVIES_ERROR_MESSAGE);
         }
     }
 

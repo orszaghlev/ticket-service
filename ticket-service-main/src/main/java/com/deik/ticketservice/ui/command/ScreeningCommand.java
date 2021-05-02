@@ -23,7 +23,7 @@ import java.util.List;
 public class ScreeningCommand {
 
     private static final String DATE_PATTERN = "yyyy-MM-dd HH:mm";
-    private static final long ONE_MINUTE_IN_MS = 60_000L;
+    private static final long ONE_MINUTE_IN_MS = 60_000;
     private static final long TEN_MINUTES_IN_MS = ONE_MINUTE_IN_MS * 10;
     private static final String SCREENING_OVERLAP_MESSAGE = "There is an overlapping screening";
     private static final String BREAK_OVERLAP_MESSAGE =
@@ -91,7 +91,7 @@ public class ScreeningCommand {
                 }
             }
         } catch (Exception e) {
-            LOGGER.error(LIST_SCREENINGS_ERROR_MESSAGE, e);
+            LOGGER.error(LIST_SCREENINGS_ERROR_MESSAGE);
         }
     }
 

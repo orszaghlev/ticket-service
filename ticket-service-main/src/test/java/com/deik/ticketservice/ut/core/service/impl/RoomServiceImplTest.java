@@ -43,7 +43,7 @@ public class RoomServiceImplTest {
     }
 
     @Test
-    public void testCreateRoomShouldCreateRoomWhenTheRoomIsInTheRepository() {
+    public void testCreateRoomShouldThrowRoomExceptionWhenTheRoomIsInTheRepository() {
         // Given
         Mockito.when(roomRepository.findByName(ROOM.getName())).thenReturn(java.util.Optional.of(ROOM));
 

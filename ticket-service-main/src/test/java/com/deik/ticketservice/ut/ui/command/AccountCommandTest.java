@@ -21,7 +21,7 @@ public class AccountCommandTest {
     }
 
     @Test
-    public void testDescribeAccountShouldDescribeAccountWhenAdminIsSignedIn() throws AccountException {
+    public void testDescribeAccountShouldDescribeAccountWhenTheAdminIsSignedIn() throws AccountException {
         // Given
         Mockito.when(accountService.isAdminSignedIn()).thenReturn(true);
         Account account = Mockito.mock(Account.class);
@@ -37,7 +37,7 @@ public class AccountCommandTest {
     }
 
     @Test
-    public void testDescribeAccountShouldNotDescribeAccountWhenAdminIsNotSignedIn() throws AccountException {
+    public void testDescribeAccountShouldNotDescribeAccountWhenTheAdminIsNotSignedIn() throws AccountException {
         // Given
         Mockito.when(accountService.isAdminSignedIn()).thenReturn(false);
 

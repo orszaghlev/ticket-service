@@ -74,7 +74,7 @@ public class ScreeningServiceImplTest {
     }
 
     @Test
-    public void testCreateScreeningShouldThrowMovieExceptionWhenTheMovieDoesNotExist() {
+    public void testCreateScreeningShouldThrowMovieExceptionWhenTheMovieIsNotInTheRepository() {
         // Given
         Mockito.when(movieRepository.findByTitle(MOVIE_TITLE)).thenReturn(java.util.Optional.empty());
 
@@ -87,7 +87,7 @@ public class ScreeningServiceImplTest {
     }
 
     @Test
-    public void testCreateScreeningShouldThrowRoomExceptionWhenTheRoomDoesNotExist() {
+    public void testCreateScreeningShouldThrowRoomExceptionWhenTheRoomIsNotInTheRepository() {
         // Given
         Movie existingMovie = Mockito.mock(Movie.class);
         Mockito.when(movieRepository.findByTitle(MOVIE_TITLE)).thenReturn(java.util.Optional.of(existingMovie));
