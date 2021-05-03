@@ -25,7 +25,7 @@ public class ScreeningServiceImpl implements ScreeningService {
     private static final String MOVIE_NOT_FOUND_MESSAGE = "Movie not found in the repository";
     private static final String ROOM_NOT_FOUND_MESSAGE = "Room not found in the repository";
     private static final String DATE_PATTERN = "yyyy-MM-dd HH:mm";
-    private static final String SCREENING_ALREADY_CREATED_MESSAGE = "Screening already created";
+    private static final String SCREENING_ALREADY_CREATED_MESSAGE = "Screening is already in the repository";
     private static final String SCREENING_NOT_FOUND_MESSAGE = "Screening not found in the repository";
 
     private final ScreeningRepository screeningRepository;

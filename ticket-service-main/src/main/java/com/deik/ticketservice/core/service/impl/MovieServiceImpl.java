@@ -12,7 +12,7 @@ import java.util.List;
 @Service
 public class MovieServiceImpl implements MovieService {
 
-    private static final String MOVIE_ALREADY_CREATED_MESSAGE = "Movie already created";
+    private static final String MOVIE_ALREADY_CREATED_MESSAGE = "Movie is already in the repository";
     private static final String MOVIE_NOT_FOUND_MESSAGE = "Movie not found in the repository";
 
     private final MovieRepository movieRepository;

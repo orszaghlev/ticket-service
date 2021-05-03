@@ -55,6 +55,20 @@ public class RoomCommandTest {
     }
 
     @Test
+    public void testCreateRoomShouldCatchAccountExceptionWhenTheAdminAccountIsNotInTheRepository() throws
+            AccountException {
+        // Given
+        Mockito.when(accountService.isAdminSignedIn()).thenThrow(AccountException.class);
+
+        // When
+        underTest.createRoom(ROOM.getName(), ROOM.getNumberOfRows(), ROOM.getNumberOfCols());
+
+        // Then
+        Mockito.verify(accountService).isAdminSignedIn();
+        Mockito.verifyNoMoreInteractions(accountService, roomService);
+    }
+
+    @Test
     public void testUpdateRoomShouldUpdateRoomWhenTheAdminIsSignedIn() throws AccountException, RoomException {
         // Given
         Mockito.when(accountService.isAdminSignedIn()).thenReturn(true);
@@ -82,6 +96,20 @@ public class RoomCommandTest {
     }
 
     @Test
+    public void testUpdateRoomShouldCatchAccountExceptionWhenTheAdminAccountIsNotInTheRepository() throws
+            AccountException {
+        // Given
+        Mockito.when(accountService.isAdminSignedIn()).thenThrow(AccountException.class);
+
+        // When
+        underTest.updateRoom(ROOM.getName(), ROOM.getNumberOfRows(), ROOM.getNumberOfCols());
+
+        // Then
+        Mockito.verify(accountService).isAdminSignedIn();
+        Mockito.verifyNoMoreInteractions(accountService, roomService);
+    }
+
+    @Test
     public void testDeleteRoomShouldDeleteRoomWhenTheAdminIsSignedIn() throws AccountException, RoomException {
         // Given
         Mockito.when(accountService.isAdminSignedIn()).thenReturn(true);
@@ -99,6 +127,20 @@ public class RoomCommandTest {
     public void testDeleteRoomShouldNotDeleteRoomWhenTheAdminIsNotSignedIn() throws AccountException {
         // Given
         Mockito.when(accountService.isAdminSignedIn()).thenReturn(false);
+
+        // When
+        underTest.deleteRoom(ROOM.getName());
+
+        // Then
+        Mockito.verify(accountService).isAdminSignedIn();
+        Mockito.verifyNoMoreInteractions(accountService, roomService);
+    }
+
+    @Test
+    public void testDeleteRoomShouldCatchAccountExceptionWhenTheAdminAccountIsNotInTheRepository() throws
+            AccountException {
+        // Given
+        Mockito.when(accountService.isAdminSignedIn()).thenThrow(AccountException.class);
 
         // When
         underTest.deleteRoom(ROOM.getName());

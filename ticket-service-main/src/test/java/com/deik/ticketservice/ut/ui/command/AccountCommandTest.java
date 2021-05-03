@@ -49,4 +49,18 @@ public class AccountCommandTest {
         Mockito.verifyNoMoreInteractions(accountService);
     }
 
+    @Test
+    public void testDescribeAccountShouldCatchAccountExceptionWhenTheAdminAccountIsNotInTheRepository() throws
+            AccountException {
+        // Given
+        Mockito.when(accountService.isAdminSignedIn()).thenThrow(AccountException.class);
+
+        // When
+        underTest.describeAccount();
+
+        // Then
+        Mockito.verify(accountService).isAdminSignedIn();
+        Mockito.verifyNoMoreInteractions(accountService);
+    }
+
 }

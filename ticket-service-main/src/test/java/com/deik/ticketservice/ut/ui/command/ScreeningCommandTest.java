@@ -65,6 +65,20 @@ public class ScreeningCommandTest {
     }
 
     @Test
+    public void testCreateScreeningShouldCatchAccountExceptionWhenTheAdminAccountIsNotInTheRepository() throws
+            AccountException {
+        // Given
+        Mockito.when(accountService.isAdminSignedIn()).thenThrow(AccountException.class);
+
+        // When
+        underTest.createScreening(MOVIE_TITLE, ROOM_NAME, DATE_AS_STRING);
+
+        // Then
+        Mockito.verify(accountService).isAdminSignedIn();
+        Mockito.verifyNoMoreInteractions(accountService, movieService, screeningService);
+    }
+
+    @Test
     public void testDeleteScreeningShouldDeleteScreeningWhenTheAdminIsSignedIn() throws ParseException, AccountException,
             ScreeningException, RoomException, MovieException {
         // Given
@@ -83,6 +97,20 @@ public class ScreeningCommandTest {
     public void testDeleteScreeningShouldNotDeleteScreeningWhenTheAdminIsNotSignedIn() throws AccountException {
         // Given
         Mockito.when(accountService.isAdminSignedIn()).thenReturn(false);
+
+        // When
+        underTest.deleteScreening(MOVIE_TITLE, ROOM_NAME, DATE_AS_STRING);
+
+        // Then
+        Mockito.verify(accountService).isAdminSignedIn();
+        Mockito.verifyNoMoreInteractions(accountService, movieService, screeningService);
+    }
+
+    @Test
+    public void testDeleteScreeningShouldCatchAccountExceptionWhenTheAdminAccountIsNotInTheRepository() throws
+            AccountException {
+        // Given
+        Mockito.when(accountService.isAdminSignedIn()).thenThrow(AccountException.class);
 
         // When
         underTest.deleteScreening(MOVIE_TITLE, ROOM_NAME, DATE_AS_STRING);

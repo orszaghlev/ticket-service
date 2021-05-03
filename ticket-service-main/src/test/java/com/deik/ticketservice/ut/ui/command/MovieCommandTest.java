@@ -55,6 +55,20 @@ public class MovieCommandTest {
     }
 
     @Test
+    public void testCreateMovieShouldCatchAccountExceptionWhenTheAdminAccountIsNotInTheRepository() throws
+            AccountException {
+        // Given
+        Mockito.when(accountService.isAdminSignedIn()).thenThrow(AccountException.class);
+
+        // When
+        underTest.createMovie(MOVIE.getTitle(), MOVIE.getGenre(), MOVIE.getRuntime());
+
+        // Then
+        Mockito.verify(accountService).isAdminSignedIn();
+        Mockito.verifyNoMoreInteractions(accountService, movieService);
+    }
+
+    @Test
     public void testUpdateMovieShouldUpdateMovieWhenTheAdminIsSignedIn() throws AccountException, MovieException {
         // Given
         Mockito.when(accountService.isAdminSignedIn()).thenReturn(true);
@@ -82,6 +96,20 @@ public class MovieCommandTest {
     }
 
     @Test
+    public void testUpdateMovieShouldCatchAccountExceptionWhenTheAdminAccountIsNotInTheRepository() throws
+            AccountException {
+        // Given
+        Mockito.when(accountService.isAdminSignedIn()).thenThrow(AccountException.class);
+
+        // When
+        underTest.updateMovie(MOVIE.getTitle(), MOVIE.getGenre(), MOVIE.getRuntime());
+
+        // Then
+        Mockito.verify(accountService).isAdminSignedIn();
+        Mockito.verifyNoMoreInteractions(accountService, movieService);
+    }
+
+    @Test
     public void testDeleteMovieShouldDeleteMovieWhenTheAdminIsSignedIn() throws AccountException, MovieException {
         // Given
         Mockito.when(accountService.isAdminSignedIn()).thenReturn(true);
@@ -99,6 +127,19 @@ public class MovieCommandTest {
     public void testDeleteMovieShouldNotDeleteMovieWhenTheAdminIsNotSignedIn() throws AccountException {
         // Given
         Mockito.when(accountService.isAdminSignedIn()).thenReturn(false);
+
+        // When
+        underTest.deleteMovie(MOVIE.getTitle());
+
+        // Then
+        Mockito.verify(accountService).isAdminSignedIn();
+        Mockito.verifyNoMoreInteractions(accountService, movieService);
+    }
+
+    @Test
+    public void testDeleteMovieShouldCatchExceptionWhenTheAdminAccountIsNotInTheRepository() throws AccountException {
+        // Given
+        Mockito.when(accountService.isAdminSignedIn()).thenThrow(AccountException.class);
 
         // When
         underTest.deleteMovie(MOVIE.getTitle());

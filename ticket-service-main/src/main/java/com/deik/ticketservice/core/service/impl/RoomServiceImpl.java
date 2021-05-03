@@ -12,7 +12,7 @@ import java.util.List;
 @Service
 public class RoomServiceImpl implements RoomService {
 
-    private static final String ROOM_ALREADY_CREATED_MESSAGE = "Room already created";
+    private static final String ROOM_ALREADY_CREATED_MESSAGE = "Room is already in the repository";
     private static final String ROOM_NOT_FOUND_MESSAGE = "Room not found in the repository";
 
     private final RoomRepository roomRepository;
