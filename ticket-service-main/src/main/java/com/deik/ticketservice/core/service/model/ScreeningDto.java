@@ -8,7 +8,7 @@ public class ScreeningDto {
     private final String roomName;
     private final String dateAsString;
 
-    public ScreeningDto(String movieTitle, String roomName, String dateAsString) {
+    private ScreeningDto(String movieTitle, String roomName, String dateAsString) {
         this.movieTitle = movieTitle;
         this.roomName = roomName;
         this.dateAsString = dateAsString;

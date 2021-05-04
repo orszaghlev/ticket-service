@@ -7,6 +7,7 @@ import com.deik.ticketservice.core.service.exception.AccountException;
 import com.deik.ticketservice.core.service.exception.MovieException;
 import com.deik.ticketservice.core.service.exception.RoomException;
 import com.deik.ticketservice.core.service.exception.ScreeningException;
+import com.deik.ticketservice.core.service.model.ScreeningDto;
 import com.deik.ticketservice.ui.command.ScreeningCommand;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -19,6 +20,11 @@ public class ScreeningCommandTest {
     private static final String MOVIE_TITLE = "Sátántangó";
     private static final String ROOM_NAME = "drama";
     private static final String DATE_AS_STRING = "2021-03-14 16:00";
+    private static final ScreeningDto SCREENING_DTO = new ScreeningDto.Builder()
+            .withMovieTitle(MOVIE_TITLE)
+            .withRoomName(ROOM_NAME)
+            .withDateAsString(DATE_AS_STRING)
+            .build();
 
     private ScreeningCommand underTest;
 
@@ -47,7 +53,7 @@ public class ScreeningCommandTest {
 
         // Then
         Mockito.verify(accountService).isAdminSignedIn();
-        Mockito.verify(screeningService).createScreening(MOVIE_TITLE, ROOM_NAME, DATE_AS_STRING);
+        Mockito.verify(screeningService).createScreening(SCREENING_DTO);
         Mockito.verifyNoMoreInteractions(accountService, movieService);
     }
 
@@ -89,7 +95,7 @@ public class ScreeningCommandTest {
 
         // Then
         Mockito.verify(accountService).isAdminSignedIn();
-        Mockito.verify(screeningService).deleteScreening(MOVIE_TITLE, ROOM_NAME, DATE_AS_STRING);
+        Mockito.verify(screeningService).deleteScreening(SCREENING_DTO);
         Mockito.verifyNoMoreInteractions(accountService, movieService, screeningService);
     }
 

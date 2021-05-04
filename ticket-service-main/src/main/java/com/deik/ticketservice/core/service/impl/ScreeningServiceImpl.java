@@ -11,13 +11,16 @@ import com.deik.ticketservice.core.service.ScreeningService;
 import com.deik.ticketservice.core.service.exception.MovieException;
 import com.deik.ticketservice.core.service.exception.RoomException;
 import com.deik.ticketservice.core.service.exception.ScreeningException;
+import com.deik.ticketservice.core.service.model.ScreeningDto;
+import com.deik.ticketservice.core.service.model.ScreeningListDto;
 import org.springframework.stereotype.Service;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.LinkedList;
 import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
 @Service
 public class ScreeningServiceImpl implements ScreeningService {
@@ -42,11 +45,12 @@ public class ScreeningServiceImpl implements ScreeningService {
     }
 
     @Override
-    public void createScreening(String movieTitle, String roomName, String dateAsString) throws ParseException,
-            MovieException, RoomException, ScreeningException {
-        Movie movie = getMovieByTitle(movieTitle);
-        Room room = getRoomByName(roomName);
-        Date date = getDateByString(dateAsString);
+    public void createScreening(ScreeningDto screeningDto) throws ParseException, MovieException, RoomException,
+            ScreeningException {
+        requireNonNull(screeningDto);
+        Movie movie = getMovieByTitle(screeningDto.getMovieTitle());
+        Room room = getRoomByName(screeningDto.getRoomName());
+        Date date = getDateByString(screeningDto.getDateAsString());
         if (screeningRepository.findById_MovieAndId_RoomAndId_Date(movie, room, date).isPresent()) {
             throw new ScreeningException(SCREENING_ALREADY_CREATED_MESSAGE);
         }
@@ -56,11 +60,12 @@ public class ScreeningServiceImpl implements ScreeningService {
     }
 
     @Override
-    public void deleteScreening(String movieTitle, String roomName, String dateAsString) throws ParseException,
-            MovieException, RoomException, ScreeningException {
-        Movie movie = getMovieByTitle(movieTitle);
-        Room room = getRoomByName(roomName);
-        Date date = getDateByString(dateAsString);
+    public void deleteScreening(ScreeningDto screeningDto) throws ParseException, MovieException, RoomException,
+            ScreeningException {
+        requireNonNull(screeningDto);
+        Movie movie = getMovieByTitle(screeningDto.getMovieTitle());
+        Room room = getRoomByName(screeningDto.getRoomName());
+        Date date = getDateByString(screeningDto.getDateAsString());
         if (screeningRepository.findById_MovieAndId_RoomAndId_Date(movie, room, date).isEmpty()) {
             throw new ScreeningException(SCREENING_NOT_FOUND_MESSAGE);
         }
@@ -69,10 +74,8 @@ public class ScreeningServiceImpl implements ScreeningService {
     }
 
     @Override
-    public List<Screening> listScreenings() {
-        List<Screening> screenings = new LinkedList<>();
-        screeningRepository.findAll().forEach(screenings::add);
-        return screenings;
+    public List<ScreeningListDto> listScreenings() {
+        return screeningRepository.findAll().stream().map(this::convertEntityToListDto).collect(Collectors.toList());
     }
 
     private Movie getMovieByTitle(String movieTitle) throws MovieException {
@@ -91,6 +94,21 @@ public class ScreeningServiceImpl implements ScreeningService {
 
     private Date getDateByString(String dateAsString) throws ParseException {
         return new SimpleDateFormat(DATE_PATTERN).parse(dateAsString);
+    }
+
+    private void requireNonNull(ScreeningDto screeningDto) {
+        Objects.requireNonNull(screeningDto, "Screening cannot be null");
+        Objects.requireNonNull(screeningDto.getMovieTitle(), "Screening movie title cannot be null");
+        Objects.requireNonNull(screeningDto.getRoomName(), "Screening room name cannot be null");
+        Objects.requireNonNull(screeningDto.getDateAsString(), "Screening date (as string) cannot be null");
+    }
+
+    private ScreeningListDto convertEntityToListDto(Screening screening) {
+        return new ScreeningListDto.Builder()
+                .withMovie(screening.getId().getMovie())
+                .withRoom(screening.getId().getRoom())
+                .withDate(screening.getId().getDate())
+                .build();
     }
 
 }
