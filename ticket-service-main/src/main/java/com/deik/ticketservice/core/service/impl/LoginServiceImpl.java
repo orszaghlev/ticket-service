@@ -4,7 +4,10 @@ import com.deik.ticketservice.core.persistence.entity.Account;
 import com.deik.ticketservice.core.persistence.repository.AccountRepository;
 import com.deik.ticketservice.core.service.LoginService;
 import com.deik.ticketservice.core.service.exception.LoginException;
+import com.deik.ticketservice.core.service.model.AccountDto;
 import org.springframework.stereotype.Service;
+
+import java.util.Objects;
 
 @Service
 public class LoginServiceImpl implements LoginService {
@@ -22,14 +25,16 @@ public class LoginServiceImpl implements LoginService {
     }
 
     @Override
-    public void signInPrivileged(String username, String password) throws LoginException {
-        if (!username.equals(ADMIN_USERNAME) || !password.equals(ADMIN_PASSWORD)) {
+    public void signInPrivileged(AccountDto accountDto) throws LoginException {
+        requireNonNull(accountDto);
+        if (!accountDto.getUsername().equals(ADMIN_USERNAME) || !accountDto.getPassword().equals(ADMIN_PASSWORD)) {
             throw new LoginException(INCORRECT_CREDENTIALS_MESSAGE);
         }
-        if (accountRepository.findByUsernameAndPassword(username, password).isEmpty()) {
+        if (accountRepository.findByUsernameAndPassword(accountDto.getUsername(), accountDto.getPassword()).isEmpty()) {
             throw new LoginException(ADMIN_ACCOUNT_NOT_FOUND_MESSAGE);
         }
-        Account adminAccount = accountRepository.findByUsernameAndPassword(username, password).get();
+        Account adminAccount = accountRepository.findByUsernameAndPassword(accountDto.getUsername(),
+                accountDto.getPassword()).get();
         adminAccount.setIsSigned(true);
         accountRepository.save(adminAccount);
     }
@@ -42,6 +47,12 @@ public class LoginServiceImpl implements LoginService {
         Account signedInAccount = accountRepository.findByIsSigned(true).get();
         signedInAccount.setIsSigned(false);
         accountRepository.save(signedInAccount);
+    }
+
+    private void requireNonNull(AccountDto accountDto) {
+        Objects.requireNonNull(accountDto, "Account cannot be null");
+        Objects.requireNonNull(accountDto.getUsername(), "Account username cannot be null");
+        Objects.requireNonNull(accountDto.getPassword(), "Account password cannot be null");
     }
 
 }

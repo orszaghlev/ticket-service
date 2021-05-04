@@ -5,6 +5,7 @@ import com.deik.ticketservice.core.service.AccountService;
 import com.deik.ticketservice.core.service.RoomService;
 import com.deik.ticketservice.core.service.exception.AccountException;
 import com.deik.ticketservice.core.service.exception.RoomException;
+import com.deik.ticketservice.core.service.model.RoomDto;
 import com.deik.ticketservice.ui.command.RoomCommand;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -13,6 +14,11 @@ import org.mockito.Mockito;
 public class RoomCommandTest {
 
     private static final Room ROOM = new Room(null, "Pedersoli", 20, 10);
+    private static final RoomDto ROOM_DTO = new RoomDto.Builder()
+            .withName(ROOM.getName())
+            .withNumberOfRows(ROOM.getNumberOfRows())
+            .withNumberOfCols(ROOM.getNumberOfCols())
+            .build();
 
     private RoomCommand underTest;
 
@@ -37,7 +43,7 @@ public class RoomCommandTest {
 
         // Then
         Mockito.verify(accountService).isAdminSignedIn();
-        Mockito.verify(roomService).createRoom(ROOM.getName(), ROOM.getNumberOfRows(), ROOM.getNumberOfCols());
+        Mockito.verify(roomService).createRoom(ROOM_DTO);
         Mockito.verifyNoMoreInteractions(accountService, roomService);
     }
 
@@ -78,7 +84,7 @@ public class RoomCommandTest {
 
         // Then
         Mockito.verify(accountService).isAdminSignedIn();
-        Mockito.verify(roomService).updateRoom(ROOM.getName(), ROOM.getNumberOfRows(), ROOM.getNumberOfCols());
+        Mockito.verify(roomService).updateRoom(ROOM_DTO);
         Mockito.verifyNoMoreInteractions(accountService, roomService);
     }
 

@@ -2,6 +2,7 @@ package com.deik.ticketservice.ui.command;
 
 import com.deik.ticketservice.core.service.LoginService;
 import com.deik.ticketservice.core.service.exception.LoginException;
+import com.deik.ticketservice.core.service.model.AccountDto;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.shell.standard.ShellComponent;
@@ -26,7 +27,8 @@ public class LoginCommand {
     public void signInPrivileged(@ShellOption String username, @ShellOption String password) {
         try {
             if (username.equals(ADMIN_USERNAME) && password.equals(ADMIN_PASSWORD)) {
-                loginService.signInPrivileged(username, password);
+                AccountDto accountDto = getAccountDto(username, password);
+                loginService.signInPrivileged(accountDto);
             } else {
                 System.out.println(SIGN_IN_PRIVILEGED_FAILURE_MESSAGE);
             }
@@ -42,6 +44,13 @@ public class LoginCommand {
         } catch (LoginException e) {
             LOGGER.error(e.getMessage());
         }
+    }
+
+    private AccountDto getAccountDto(String username, String password) {
+        return new AccountDto.Builder()
+                .withUsername(username)
+                .withPassword(password)
+                .build();
     }
 
 }

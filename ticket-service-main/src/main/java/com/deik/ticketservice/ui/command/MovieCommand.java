@@ -1,10 +1,10 @@
 package com.deik.ticketservice.ui.command;
 
-import com.deik.ticketservice.core.persistence.entity.Movie;
 import com.deik.ticketservice.core.service.AccountService;
 import com.deik.ticketservice.core.service.MovieService;
 import com.deik.ticketservice.core.service.exception.AccountException;
 import com.deik.ticketservice.core.service.exception.MovieException;
+import com.deik.ticketservice.core.service.model.MovieDto;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.shell.standard.ShellComponent;
@@ -34,7 +34,8 @@ public class MovieCommand {
     public void createMovie(@ShellOption String title, @ShellOption String genre, @ShellOption int runtime) {
         try {
             if (accountService.isAdminSignedIn()) {
-                movieService.createMovie(title, genre, runtime);
+                MovieDto movieDto = getMovieDto(title, genre, runtime);
+                movieService.createMovie(movieDto);
             }
         } catch (AccountException | MovieException e) {
             LOGGER.error(e.getMessage());
@@ -45,7 +46,8 @@ public class MovieCommand {
     public void updateMovie(@ShellOption String title, @ShellOption String genre, @ShellOption int runtime) {
         try {
             if (accountService.isAdminSignedIn()) {
-                movieService.updateMovie(title, genre, runtime);
+                MovieDto movieDto = getMovieDto(title, genre, runtime);
+                movieService.updateMovie(movieDto);
             }
         } catch (AccountException | MovieException e) {
             LOGGER.error(e.getMessage());
@@ -66,11 +68,11 @@ public class MovieCommand {
     @ShellMethod(value = "List movies", key = "list movies")
     public void listMovies() {
         try {
-            List<Movie> movies = movieService.listMovies();
+            List<MovieDto> movies = movieService.listMovies();
             if (movies.isEmpty()) {
                 System.out.println(LIST_MOVIES_FAILURE_MESSAGE);
             } else {
-                for (Movie movie : movies) {
+                for (MovieDto movie : movies) {
                     System.out.printf(LIST_MOVIES_SUCCESS_MESSAGE, movie.getTitle(), movie.getGenre(),
                             movie.getRuntime());
                 }
@@ -78,6 +80,14 @@ public class MovieCommand {
         } catch (Exception e) {
             LOGGER.error(LIST_MOVIES_ERROR_MESSAGE);
         }
+    }
+
+    private MovieDto getMovieDto(String title, String genre, int runtime) {
+        return new MovieDto.Builder()
+                .withTitle(title)
+                .withGenre(genre)
+                .withRuntime(runtime)
+                .build();
     }
 
 }

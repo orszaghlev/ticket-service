@@ -1,19 +1,19 @@
 package com.deik.ticketservice.core.service;
 
-import com.deik.ticketservice.core.persistence.entity.Movie;
 import com.deik.ticketservice.core.service.exception.MovieException;
+import com.deik.ticketservice.core.service.model.MovieDto;
 
 import java.util.List;
 
 public interface MovieService {
 
-    void createMovie(String title, String genre, int runtime) throws MovieException;
+    void createMovie(MovieDto movieDto) throws MovieException;
 
-    void updateMovie(String title, String genre, int runtime) throws MovieException;
+    void updateMovie(MovieDto movieDto) throws MovieException;
 
     void deleteMovie(String title) throws MovieException;
 
-    List<Movie> listMovies();
+    List<MovieDto> listMovies();
 
     int getRuntimeByTitle(String title) throws MovieException;
 

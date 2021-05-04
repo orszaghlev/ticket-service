@@ -4,6 +4,7 @@ import com.deik.ticketservice.core.persistence.entity.Movie;
 import com.deik.ticketservice.core.persistence.repository.MovieRepository;
 import com.deik.ticketservice.core.service.exception.MovieException;
 import com.deik.ticketservice.core.service.impl.MovieServiceImpl;
+import com.deik.ticketservice.core.service.model.MovieDto;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -16,6 +17,16 @@ public class MovieServiceImplTest {
 
     private static final Movie MOVIE = new Movie(null, "Sátántangó", "drama", 450);
     private static final Movie MOVIE_TO_UPDATE = new Movie(null, "Sátántangó", "dram", 45);
+    private static final MovieDto MOVIE_DTO = new MovieDto.Builder()
+            .withTitle(MOVIE.getTitle())
+            .withGenre(MOVIE.getGenre())
+            .withRuntime(MOVIE.getRuntime())
+            .build();
+    private static final MovieDto MOVIE_TO_UPDATE_DTO = new MovieDto.Builder()
+            .withTitle(MOVIE_TO_UPDATE.getTitle())
+            .withGenre(MOVIE_TO_UPDATE.getGenre())
+            .withRuntime(MOVIE_TO_UPDATE.getRuntime())
+            .build();
     private static final int WANTED_NUMBER_OF_INVOCATIONS = 2;
 
     private MovieServiceImpl underTest;
@@ -34,7 +45,7 @@ public class MovieServiceImplTest {
         Mockito.when(movieRepository.findByTitle(MOVIE.getTitle())).thenReturn(java.util.Optional.empty());
 
         // When
-        underTest.createMovie(MOVIE.getTitle(), MOVIE.getGenre(), MOVIE.getRuntime());
+        underTest.createMovie(MOVIE_DTO);
 
         // Then
         Mockito.verify(movieRepository).save(MOVIE);
@@ -48,8 +59,7 @@ public class MovieServiceImplTest {
         Mockito.when(movieRepository.findByTitle(MOVIE.getTitle())).thenReturn(java.util.Optional.of(MOVIE));
 
         // When
-        Assertions.assertThrows(MovieException.class, () -> underTest.createMovie(MOVIE.getTitle(), MOVIE.getGenre(),
-                MOVIE.getRuntime()));
+        Assertions.assertThrows(MovieException.class, () -> underTest.createMovie(MOVIE_DTO));
 
         // Then
         Mockito.verify(movieRepository).findByTitle(MOVIE.getTitle());
@@ -64,7 +74,7 @@ public class MovieServiceImplTest {
         Mockito.when(movieRepository.save(MOVIE_TO_UPDATE)).thenReturn(MOVIE_TO_UPDATE);
 
         // When
-        underTest.updateMovie(MOVIE.getTitle(), MOVIE.getGenre(), MOVIE.getRuntime());
+        underTest.updateMovie(MOVIE_DTO);
 
         // Then
         Mockito.verify(movieRepository).save(MOVIE_TO_UPDATE);
@@ -83,8 +93,7 @@ public class MovieServiceImplTest {
                 .thenReturn(java.util.Optional.empty());
 
         // When
-        Assertions.assertThrows(MovieException.class, () -> underTest.updateMovie(MOVIE.getTitle(), MOVIE.getGenre(),
-                MOVIE.getRuntime()));
+        Assertions.assertThrows(MovieException.class, () -> underTest.updateMovie(MOVIE_TO_UPDATE_DTO));
 
         // Then
         Mockito.verify(movieRepository).findByTitle(MOVIE_TO_UPDATE.getTitle());

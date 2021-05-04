@@ -4,10 +4,12 @@ import com.deik.ticketservice.core.persistence.entity.Room;
 import com.deik.ticketservice.core.persistence.repository.RoomRepository;
 import com.deik.ticketservice.core.service.RoomService;
 import com.deik.ticketservice.core.service.exception.RoomException;
+import com.deik.ticketservice.core.service.model.RoomDto;
 import org.springframework.stereotype.Service;
 
-import java.util.LinkedList;
 import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
 @Service
 public class RoomServiceImpl implements RoomService {
@@ -22,20 +24,22 @@ public class RoomServiceImpl implements RoomService {
     }
 
     @Override
-    public void createRoom(String name, int numberOfRows, int numberOfCols) throws RoomException {
-        if (roomRepository.findByName(name).isPresent()) {
+    public void createRoom(RoomDto roomDto) throws RoomException {
+        requireNonNull(roomDto);
+        if (roomRepository.findByName(roomDto.getName()).isPresent()) {
             throw new RoomException(ROOM_ALREADY_CREATED_MESSAGE);
         }
-        Room roomToCreate = new Room(null, name, numberOfRows, numberOfCols);
+        Room roomToCreate = new Room(null, roomDto.getName(), roomDto.getNumberOfRows(), roomDto.getNumberOfCols());
         roomRepository.save(roomToCreate);
     }
 
     @Override
-    public void updateRoom(String name, int numberOfRows, int numberOfCols) throws RoomException {
-        Room roomToUpdate = getRoomByName(name);
-        roomToUpdate.setName(name);
-        roomToUpdate.setNumberOfRows(numberOfRows);
-        roomToUpdate.setNumberOfCols(numberOfCols);
+    public void updateRoom(RoomDto roomDto) throws RoomException {
+        requireNonNull(roomDto);
+        Room roomToUpdate = getRoomByName(roomDto.getName());
+        roomToUpdate.setName(roomDto.getName());
+        roomToUpdate.setNumberOfRows(roomDto.getNumberOfRows());
+        roomToUpdate.setNumberOfCols(roomDto.getNumberOfCols());
         roomRepository.save(roomToUpdate);
     }
 
@@ -46,10 +50,8 @@ public class RoomServiceImpl implements RoomService {
     }
 
     @Override
-    public List<Room> listRooms() {
-        List<Room> rooms = new LinkedList<>();
-        roomRepository.findAll().forEach(rooms::add);
-        return rooms;
+    public List<RoomDto> listRooms() {
+        return roomRepository.findAll().stream().map(this::convertEntityToDto).collect(Collectors.toList());
     }
 
     private Room getRoomByName(String name) throws RoomException {
@@ -57,6 +59,19 @@ public class RoomServiceImpl implements RoomService {
             throw new RoomException(ROOM_NOT_FOUND_MESSAGE);
         }
         return roomRepository.findByName(name).get();
+    }
+
+    private void requireNonNull(RoomDto roomDto) {
+        Objects.requireNonNull(roomDto, "Room cannot be null");
+        Objects.requireNonNull(roomDto.getName(), "Room name cannot be null");
+    }
+
+    private RoomDto convertEntityToDto(Room room) {
+        return new RoomDto.Builder()
+                .withName(room.getName())
+                .withNumberOfRows(room.getNumberOfRows())
+                .withNumberOfCols(room.getNumberOfCols())
+                .build();
     }
 
 }

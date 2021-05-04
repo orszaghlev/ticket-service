@@ -11,6 +11,7 @@ import com.deik.ticketservice.core.service.exception.MovieException;
 import com.deik.ticketservice.core.service.exception.RoomException;
 import com.deik.ticketservice.core.service.exception.ScreeningException;
 import com.deik.ticketservice.core.service.impl.ScreeningServiceImpl;
+import com.deik.ticketservice.core.service.model.ScreeningDto;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -28,6 +29,11 @@ public class ScreeningServiceImplTest {
     private static final String ROOM_NAME = "Pedersoli";
     private static final String DATE_PATTERN = "yyyy-MM-dd HH:mm";
     private static final String DATE_AS_STRING = "2021-03-14 16:00";
+    private static final ScreeningDto SCREENING_DTO = new ScreeningDto.Builder()
+            .withMovieTitle(MOVIE_TITLE)
+            .withRoomName(ROOM_NAME)
+            .withDateAsString(DATE_AS_STRING)
+            .build();
     private static final int WANTED_NUMBER_OF_INVOCATIONS = 2;
 
     private ScreeningServiceImpl underTest;
@@ -61,7 +67,7 @@ public class ScreeningServiceImplTest {
                 .thenReturn(java.util.Optional.empty());
 
         // When
-        underTest.createScreening(MOVIE_TITLE, ROOM_NAME, DATE_AS_STRING);
+        underTest.createScreening(SCREENING_DTO);
 
         // Then
         Mockito.verify(screeningRepository).save(created);
@@ -79,7 +85,7 @@ public class ScreeningServiceImplTest {
         Mockito.when(movieRepository.findByTitle(MOVIE_TITLE)).thenReturn(java.util.Optional.empty());
 
         // When
-        Assertions.assertThrows(MovieException.class, () -> underTest.createScreening(MOVIE_TITLE, ROOM_NAME, DATE_AS_STRING));
+        Assertions.assertThrows(MovieException.class, () -> underTest.createScreening(SCREENING_DTO));
 
         // Then
         Mockito.verify(movieRepository).findByTitle(MOVIE_TITLE);
@@ -94,7 +100,7 @@ public class ScreeningServiceImplTest {
         Mockito.when(roomRepository.findByName(ROOM_NAME)).thenReturn(java.util.Optional.empty());
 
         // When
-        Assertions.assertThrows(RoomException.class, () -> underTest.createScreening(MOVIE_TITLE, ROOM_NAME, DATE_AS_STRING));
+        Assertions.assertThrows(RoomException.class, () -> underTest.createScreening(SCREENING_DTO));
 
         // Then
         Mockito.verify(movieRepository, Mockito.times(WANTED_NUMBER_OF_INVOCATIONS)).findByTitle(MOVIE_TITLE);
@@ -116,7 +122,7 @@ public class ScreeningServiceImplTest {
                 .thenReturn(java.util.Optional.of(created));
 
         // When
-        Assertions.assertThrows(ScreeningException.class, () -> underTest.createScreening(MOVIE_TITLE, ROOM_NAME, DATE_AS_STRING));
+        Assertions.assertThrows(ScreeningException.class, () -> underTest.createScreening(SCREENING_DTO));
 
         // Then
         Mockito.verify(movieRepository, Mockito.times(WANTED_NUMBER_OF_INVOCATIONS)).findByTitle(MOVIE_TITLE);
@@ -142,7 +148,7 @@ public class ScreeningServiceImplTest {
                 .thenReturn(java.util.Optional.of(deleted));
 
         // When
-        underTest.deleteScreening(MOVIE_TITLE, ROOM_NAME, DATE_AS_STRING);
+        underTest.deleteScreening(SCREENING_DTO);
 
         // Then
         Mockito.verify(screeningRepository).delete(deleted);
@@ -160,7 +166,7 @@ public class ScreeningServiceImplTest {
         Mockito.when(movieRepository.findByTitle(MOVIE_TITLE)).thenReturn(java.util.Optional.empty());
 
         // When
-        Assertions.assertThrows(MovieException.class, () -> underTest.deleteScreening(MOVIE_TITLE, ROOM_NAME, DATE_AS_STRING));
+        Assertions.assertThrows(MovieException.class, () -> underTest.deleteScreening(SCREENING_DTO));
 
         // Then
         Mockito.verify(movieRepository).findByTitle(MOVIE_TITLE);
@@ -175,7 +181,7 @@ public class ScreeningServiceImplTest {
         Mockito.when(roomRepository.findByName(ROOM_NAME)).thenReturn(java.util.Optional.empty());
 
         // When
-        Assertions.assertThrows(RoomException.class, () -> underTest.deleteScreening(MOVIE_TITLE, ROOM_NAME, DATE_AS_STRING));
+        Assertions.assertThrows(RoomException.class, () -> underTest.deleteScreening(SCREENING_DTO));
 
         // Then
         Mockito.verify(movieRepository, Mockito.times(WANTED_NUMBER_OF_INVOCATIONS)).findByTitle(MOVIE_TITLE);
@@ -195,7 +201,7 @@ public class ScreeningServiceImplTest {
                 .thenReturn(java.util.Optional.empty());
 
         // When
-        Assertions.assertThrows(ScreeningException.class, () -> underTest.deleteScreening(MOVIE_TITLE, ROOM_NAME, DATE_AS_STRING));
+        Assertions.assertThrows(ScreeningException.class, () -> underTest.deleteScreening(SCREENING_DTO));
 
         // Then
         Mockito.verify(movieRepository, Mockito.times(WANTED_NUMBER_OF_INVOCATIONS)).findByTitle(MOVIE_TITLE);
