@@ -6,12 +6,10 @@ public class AccountDto {
 
     private final String username;
     private final String password;
-    private final boolean isSigned;
 
-    private AccountDto(String username, String password, boolean isSigned) {
+    private AccountDto(String username, String password) {
         this.username = username;
         this.password = password;
-        this.isSigned = isSigned;
     }
 
     public String getUsername() {
@@ -20,10 +18,6 @@ public class AccountDto {
 
     public String getPassword() {
         return password;
-    }
-
-    public boolean isSigned() {
-        return isSigned;
     }
 
     @Override
@@ -35,26 +29,23 @@ public class AccountDto {
             return false;
         }
         AccountDto that = (AccountDto) o;
-        return isSigned() == that.isSigned() && getUsername().equals(that.getUsername())
-                && getPassword().equals(that.getPassword());
+        return getUsername().equals(that.getUsername()) && getPassword().equals(that.getPassword());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getUsername(), getPassword(), isSigned());
+        return Objects.hash(getUsername(), getPassword());
     }
 
     @Override
     public String toString() {
-        return "AccountDto{" + "username='" + username + '\'' + ", password='" + password + '\'' + ", isSigned="
-                + isSigned + '}';
+        return "AccountDto{" + "username='" + username + '\'' + ", password='" + password + '\'' + '}';
     }
 
     public static class Builder {
 
         private String username;
         private String password;
-        private boolean isSigned;
 
         public Builder withUsername(String username) {
             this.username = username;
@@ -66,13 +57,8 @@ public class AccountDto {
             return this;
         }
 
-        public Builder withIsSigned(boolean isSigned) {
-            this.isSigned = isSigned;
-            return this;
-        }
-
         public AccountDto build() {
-            return new AccountDto(username, password, isSigned);
+            return new AccountDto(username, password);
         }
 
     }
