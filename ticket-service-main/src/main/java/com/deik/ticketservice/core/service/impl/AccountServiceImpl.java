@@ -6,14 +6,11 @@ import com.deik.ticketservice.core.service.AccountService;
 import com.deik.ticketservice.core.service.exception.AccountException;
 import org.springframework.stereotype.Service;
 
-import javax.annotation.PostConstruct;
-
 @Service
 public class AccountServiceImpl implements AccountService {
 
     private static final String ADMIN_USERNAME = "admin";
     private static final String ADMIN_PASSWORD = "admin";
-    private static final Account ADMIN_ACCOUNT = new Account(null, ADMIN_USERNAME, ADMIN_PASSWORD, false);
     private static final String ADMIN_ACCOUNT_NOT_FOUND_MESSAGE = "Admin account not found in the repository";
     private static final String NO_SIGNED_IN_USERS_MESSAGE = "None of the users are signed in at the moment";
 
@@ -21,13 +18,6 @@ public class AccountServiceImpl implements AccountService {
 
     public AccountServiceImpl(AccountRepository accountRepository) {
         this.accountRepository = accountRepository;
-    }
-
-    @PostConstruct
-    public void init() {
-        if (accountRepository.findByUsernameAndPassword(ADMIN_USERNAME, ADMIN_PASSWORD).isEmpty()) {
-            accountRepository.save(ADMIN_ACCOUNT);
-        }
     }
 
     @Override

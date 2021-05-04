@@ -11,11 +11,11 @@ import java.util.List;
 
 public interface ScreeningService {
 
-    void createScreening(ScreeningDto screeningDto) throws ParseException,
-            MovieException, RoomException, ScreeningException;
+    void createScreening(ScreeningDto screeningDto) throws ParseException, MovieException, RoomException,
+            ScreeningException;
 
-    void deleteScreening(ScreeningDto screeningDto) throws ParseException,
-            MovieException, RoomException, ScreeningException;
+    void deleteScreening(ScreeningDto screeningDto) throws ParseException, MovieException, RoomException,
+            ScreeningException;
 
     List<ScreeningListDto> listScreenings();
 

@@ -7,6 +7,8 @@ import com.deik.ticketservice.core.service.exception.LoginException;
 import com.deik.ticketservice.core.service.model.AccountDto;
 import org.springframework.stereotype.Service;
 
+import java.util.Objects;
+
 @Service
 public class LoginServiceImpl implements LoginService {
 
@@ -24,6 +26,9 @@ public class LoginServiceImpl implements LoginService {
 
     @Override
     public void signInPrivileged(AccountDto accountDto) throws LoginException {
+        Objects.requireNonNull(accountDto, "Account cannot be null");
+        Objects.requireNonNull(accountDto.getUsername(), "Account username cannot be null");
+        Objects.requireNonNull(accountDto.getPassword(), "Account password cannot be null");
         if (!accountDto.getUsername().equals(ADMIN_USERNAME) || !accountDto.getPassword().equals(ADMIN_PASSWORD)) {
             throw new LoginException(INCORRECT_CREDENTIALS_MESSAGE);
         }

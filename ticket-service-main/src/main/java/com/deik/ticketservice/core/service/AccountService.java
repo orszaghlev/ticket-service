@@ -5,8 +5,6 @@ import com.deik.ticketservice.core.service.exception.AccountException;
 
 public interface AccountService {
 
-    void init();
-
     boolean isAdminSignedIn() throws AccountException;
 
     Account getSignedInAccount() throws AccountException;
