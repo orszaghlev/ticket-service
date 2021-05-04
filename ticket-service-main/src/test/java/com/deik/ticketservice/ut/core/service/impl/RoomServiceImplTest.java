@@ -4,6 +4,7 @@ import com.deik.ticketservice.core.persistence.entity.Room;
 import com.deik.ticketservice.core.persistence.repository.RoomRepository;
 import com.deik.ticketservice.core.service.exception.RoomException;
 import com.deik.ticketservice.core.service.impl.RoomServiceImpl;
+import com.deik.ticketservice.core.service.model.RoomDto;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -16,6 +17,16 @@ public class RoomServiceImplTest {
 
     private static final Room ROOM = new Room(null, "Pedersoli", 20, 10);
     private static final Room ROOM_TO_UPDATE = new Room(null, "Pedersoli", 20, 1);
+    private static final RoomDto ROOM_DTO = new RoomDto.Builder()
+            .withName(ROOM.getName())
+            .withNumberOfRows(ROOM.getNumberOfRows())
+            .withNumberOfCols(ROOM.getNumberOfCols())
+            .build();
+    private static final RoomDto ROOM_TO_UPDATE_DTO = new RoomDto.Builder()
+            .withName(ROOM.getName())
+            .withNumberOfRows(ROOM.getNumberOfRows())
+            .withNumberOfCols(ROOM.getNumberOfCols())
+            .build();
     private static final int WANTED_NUMBER_OF_INVOCATIONS = 2;
 
     private RoomServiceImpl underTest;
@@ -34,7 +45,7 @@ public class RoomServiceImplTest {
         Mockito.when(roomRepository.findByName(ROOM.getName())).thenReturn(java.util.Optional.empty());
 
         // When
-        underTest.createRoom(ROOM.getName(), ROOM.getNumberOfRows(), ROOM.getNumberOfCols());
+        underTest.createRoom(ROOM_DTO);
 
         // Then
         Mockito.verify(roomRepository).save(ROOM);
@@ -48,8 +59,7 @@ public class RoomServiceImplTest {
         Mockito.when(roomRepository.findByName(ROOM.getName())).thenReturn(java.util.Optional.of(ROOM));
 
         // When
-        Assertions.assertThrows(RoomException.class, () -> underTest.createRoom(ROOM.getName(), ROOM.getNumberOfRows(),
-                ROOM.getNumberOfCols()));
+        Assertions.assertThrows(RoomException.class, () -> underTest.createRoom(ROOM_DTO));
 
         // Then
         Mockito.verify(roomRepository).findByName(ROOM.getName());
@@ -64,7 +74,7 @@ public class RoomServiceImplTest {
         Mockito.when(roomRepository.save(ROOM_TO_UPDATE)).thenReturn(ROOM_TO_UPDATE);
 
         // When
-        underTest.updateRoom(ROOM.getName(), ROOM.getNumberOfRows(), ROOM.getNumberOfCols());
+        underTest.updateRoom(ROOM_TO_UPDATE_DTO);
 
         // Then
         Mockito.verify(roomRepository).save(ROOM_TO_UPDATE);
@@ -82,8 +92,7 @@ public class RoomServiceImplTest {
                 .thenReturn(java.util.Optional.empty());
 
         // When
-        Assertions.assertThrows(RoomException.class, () -> underTest.updateRoom(ROOM.getName(), ROOM.getNumberOfRows(),
-                ROOM.getNumberOfCols()));
+        Assertions.assertThrows(RoomException.class, () -> underTest.updateRoom(ROOM_TO_UPDATE_DTO));
 
         // Then
         Mockito.verify(roomRepository).findByName(ROOM_TO_UPDATE.getName());

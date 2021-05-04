@@ -1,10 +1,10 @@
 package com.deik.ticketservice.ui.command;
 
-import com.deik.ticketservice.core.persistence.entity.Room;
 import com.deik.ticketservice.core.service.AccountService;
 import com.deik.ticketservice.core.service.RoomService;
 import com.deik.ticketservice.core.service.exception.AccountException;
 import com.deik.ticketservice.core.service.exception.RoomException;
+import com.deik.ticketservice.core.service.model.RoomDto;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.shell.standard.ShellComponent;
@@ -34,7 +34,8 @@ public class RoomCommand {
     public void createRoom(@ShellOption String name, @ShellOption int numberOfRows, @ShellOption int numberOfCols) {
         try {
             if (accountService.isAdminSignedIn()) {
-                roomService.createRoom(name, numberOfRows, numberOfCols);
+                RoomDto roomDto = getRoomDto(name, numberOfRows, numberOfCols);
+                roomService.createRoom(roomDto);
             }
         } catch (AccountException | RoomException e) {
             LOGGER.error(e.getMessage());
@@ -45,7 +46,8 @@ public class RoomCommand {
     public void updateRoom(@ShellOption String name, @ShellOption int numberOfRows, @ShellOption int numberOfCols) {
         try {
             if (accountService.isAdminSignedIn()) {
-                roomService.updateRoom(name, numberOfRows, numberOfCols);
+                RoomDto roomDto = getRoomDto(name, numberOfRows, numberOfCols);
+                roomService.updateRoom(roomDto);
             }
         } catch (AccountException | RoomException e) {
             LOGGER.error(e.getMessage());
@@ -66,11 +68,11 @@ public class RoomCommand {
     @ShellMethod(value = "List rooms", key = "list rooms")
     public void listRooms() {
         try {
-            List<Room> rooms = roomService.listRooms();
+            List<RoomDto> rooms = roomService.listRooms();
             if (rooms.isEmpty()) {
                 System.out.println(LIST_ROOMS_FAILURE_MESSAGE);
             } else {
-                for (Room room : rooms) {
+                for (RoomDto room : rooms) {
                     System.out.printf(LIST_ROOMS_SUCCESS_MESSAGE, room.getName(), (room.getNumberOfRows()
                             * room.getNumberOfCols()), room.getNumberOfRows(), room.getNumberOfCols());
                 }
@@ -78,6 +80,14 @@ public class RoomCommand {
         } catch (Exception e) {
             LOGGER.error(LIST_ROOMS_ERROR_MESSAGE);
         }
+    }
+
+    private RoomDto getRoomDto(String name, int numberOfRows, int numberOfCols) {
+        return new RoomDto.Builder()
+                .withName(name)
+                .withNumberOfRows(numberOfRows)
+                .withNumberOfCols(numberOfCols)
+                .build();
     }
 
 }

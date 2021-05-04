@@ -8,7 +8,7 @@ public class RoomDto {
     private final int numberOfRows;
     private final int numberOfCols;
 
-    public RoomDto(String name, int numberOfRows, int numberOfCols) {
+    private RoomDto(String name, int numberOfRows, int numberOfCols) {
         this.name = name;
         this.numberOfRows = numberOfRows;
         this.numberOfCols = numberOfCols;
@@ -48,6 +48,33 @@ public class RoomDto {
     public String toString() {
         return "RoomDto{" + "name='" + name + '\'' + ", numberOfRows=" + numberOfRows + ", numberOfCols=" + numberOfCols
                 + '}';
+    }
+
+    public static class Builder {
+
+        private String name;
+        private int numberOfRows;
+        private int numberOfCols;
+
+        public Builder withName(String name) {
+            this.name = name;
+            return this;
+        }
+
+        public Builder withNumberOfRows(int numberOfRows) {
+            this.numberOfRows = numberOfRows;
+            return this;
+        }
+
+        public Builder withNumberOfCols(int numberOfCols) {
+            this.numberOfCols = numberOfCols;
+            return this;
+        }
+
+        public RoomDto build() {
+            return new RoomDto(name, numberOfRows, numberOfCols);
+        }
+
     }
 
 }

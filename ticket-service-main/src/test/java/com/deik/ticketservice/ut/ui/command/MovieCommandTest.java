@@ -5,6 +5,7 @@ import com.deik.ticketservice.core.service.AccountService;
 import com.deik.ticketservice.core.service.MovieService;
 import com.deik.ticketservice.core.service.exception.AccountException;
 import com.deik.ticketservice.core.service.exception.MovieException;
+import com.deik.ticketservice.core.service.model.MovieDto;
 import com.deik.ticketservice.ui.command.MovieCommand;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -13,6 +14,11 @@ import org.mockito.Mockito;
 public class MovieCommandTest {
 
     private static final Movie MOVIE = new Movie(null, "Sátántangó", "drama", 450);
+    private static final MovieDto MOVIE_DTO = new MovieDto.Builder()
+            .withTitle(MOVIE.getTitle())
+            .withGenre(MOVIE.getGenre())
+            .withRuntime(MOVIE.getRuntime())
+            .build();
 
     private MovieCommand underTest;
 
@@ -37,7 +43,7 @@ public class MovieCommandTest {
 
         // Then
         Mockito.verify(accountService).isAdminSignedIn();
-        Mockito.verify(movieService).createMovie(MOVIE.getTitle(), MOVIE.getGenre(), MOVIE.getRuntime());
+        Mockito.verify(movieService).createMovie(MOVIE_DTO);
         Mockito.verifyNoMoreInteractions(accountService, movieService);
     }
 
@@ -78,7 +84,7 @@ public class MovieCommandTest {
 
         // Then
         Mockito.verify(accountService).isAdminSignedIn();
-        Mockito.verify(movieService).updateMovie(MOVIE.getTitle(), MOVIE.getGenre(), MOVIE.getRuntime());
+        Mockito.verify(movieService).updateMovie(MOVIE_DTO);
         Mockito.verifyNoMoreInteractions(accountService, movieService);
     }
 

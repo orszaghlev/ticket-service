@@ -1,33 +1,29 @@
 package com.deik.ticketservice.core.service.model;
 
-import com.deik.ticketservice.core.persistence.entity.Movie;
-import com.deik.ticketservice.core.persistence.entity.Room;
-
-import java.util.Date;
 import java.util.Objects;
 
 public class ScreeningDto {
 
-    private final Movie movie;
-    private final Room room;
-    private final Date date;
+    private final String movieTitle;
+    private final String roomName;
+    private final String dateAsString;
 
-    public ScreeningDto(Movie movie, Room room, Date date) {
-        this.movie = movie;
-        this.room = room;
-        this.date = date;
+    public ScreeningDto(String movieTitle, String roomName, String dateAsString) {
+        this.movieTitle = movieTitle;
+        this.roomName = roomName;
+        this.dateAsString = dateAsString;
     }
 
-    public Movie getMovie() {
-        return movie;
+    public String getMovieTitle() {
+        return movieTitle;
     }
 
-    public Room getRoom() {
-        return room;
+    public String getRoomName() {
+        return roomName;
     }
 
-    public Date getDate() {
-        return date;
+    public String getDateAsString() {
+        return dateAsString;
     }
 
     @Override
@@ -39,18 +35,46 @@ public class ScreeningDto {
             return false;
         }
         ScreeningDto that = (ScreeningDto) o;
-        return getMovie().equals(that.getMovie()) && getRoom().equals(that.getRoom())
-                && getDate().equals(that.getDate());
+        return getMovieTitle().equals(that.getMovieTitle()) && getRoomName().equals(that.getRoomName())
+                && getDateAsString().equals(that.getDateAsString());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getMovie(), getRoom(), getDate());
+        return Objects.hash(getMovieTitle(), getRoomName(), getDateAsString());
     }
 
     @Override
     public String toString() {
-        return "ScreeningDto{" + "movie=" + movie + ", room=" + room + ", date=" + date + '}';
+        return "ScreeningDto{" + "movieTitle='" + movieTitle + '\'' + ", roomName='" + roomName + '\''
+                + ", dateAsString='" + dateAsString + '\'' + '}';
+    }
+
+    public static class Builder {
+
+        private String movieTitle;
+        private String roomName;
+        private String dateAsString;
+
+        public Builder withMovieTitle(String movieTitle) {
+            this.movieTitle = movieTitle;
+            return this;
+        }
+
+        public Builder withRoomName(String roomName) {
+            this.roomName = roomName;
+            return this;
+        }
+
+        public Builder withDateAsString(String dateAsString) {
+            this.dateAsString = dateAsString;
+            return this;
+        }
+
+        public ScreeningDto build() {
+            return new ScreeningDto(movieTitle, roomName, dateAsString);
+        }
+
     }
 
 }

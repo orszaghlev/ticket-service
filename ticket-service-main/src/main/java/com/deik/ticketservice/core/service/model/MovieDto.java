@@ -8,7 +8,7 @@ public class MovieDto {
     private final String genre;
     private final int runtime;
 
-    public MovieDto(String title, String genre, int runtime) {
+    private MovieDto(String title, String genre, int runtime) {
         this.title = title;
         this.genre = genre;
         this.runtime = runtime;
@@ -47,6 +47,33 @@ public class MovieDto {
     @Override
     public String toString() {
         return "MovieDto{" + "title='" + title + '\'' + ", genre='" + genre + '\'' + ", runtime=" + runtime + '}';
+    }
+
+    public static class Builder {
+
+        private String title;
+        private String genre;
+        private int runtime;
+
+        public Builder withTitle(String title) {
+            this.title = title;
+            return this;
+        }
+
+        public Builder withGenre(String genre) {
+            this.genre = genre;
+            return this;
+        }
+
+        public Builder withRuntime(int runtime) {
+            this.runtime = runtime;
+            return this;
+        }
+
+        public MovieDto build() {
+            return new MovieDto(title, genre, runtime);
+        }
+
     }
 
 }
