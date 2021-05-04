@@ -26,9 +26,7 @@ public class LoginServiceImpl implements LoginService {
 
     @Override
     public void signInPrivileged(AccountDto accountDto) throws LoginException {
-        Objects.requireNonNull(accountDto, "Account cannot be null");
-        Objects.requireNonNull(accountDto.getUsername(), "Account username cannot be null");
-        Objects.requireNonNull(accountDto.getPassword(), "Account password cannot be null");
+        requireNonNull(accountDto);
         if (!accountDto.getUsername().equals(ADMIN_USERNAME) || !accountDto.getPassword().equals(ADMIN_PASSWORD)) {
             throw new LoginException(INCORRECT_CREDENTIALS_MESSAGE);
         }
@@ -49,6 +47,12 @@ public class LoginServiceImpl implements LoginService {
         Account signedInAccount = accountRepository.findByIsSigned(true).get();
         signedInAccount.setIsSigned(false);
         accountRepository.save(signedInAccount);
+    }
+
+    private void requireNonNull(AccountDto accountDto) {
+        Objects.requireNonNull(accountDto, "Account cannot be null");
+        Objects.requireNonNull(accountDto.getUsername(), "Account username cannot be null");
+        Objects.requireNonNull(accountDto.getPassword(), "Account password cannot be null");
     }
 
 }
