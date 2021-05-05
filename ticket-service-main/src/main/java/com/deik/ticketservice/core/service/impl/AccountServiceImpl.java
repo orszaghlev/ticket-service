@@ -11,8 +11,10 @@ public class AccountServiceImpl implements AccountService {
 
     private static final String ADMIN_USERNAME = "admin";
     private static final String ADMIN_PASSWORD = "admin";
+    private static final Account.Role ADMIN_ROLE = Account.Role.ADMIN;
     private static final String ADMIN_ACCOUNT_NOT_FOUND_MESSAGE = "Admin account not found in the repository";
-    private static final String NO_SIGNED_IN_USERS_MESSAGE = "None of the users are signed in at the moment";
+    private static final String NO_SIGNED_IN_PRIVILEGED_USERS_MESSAGE =
+            "None of the privileged users are signed in at the moment";
 
     private final AccountRepository accountRepository;
 
@@ -25,16 +27,15 @@ public class AccountServiceImpl implements AccountService {
         if (accountRepository.findByUsernameAndPassword(ADMIN_USERNAME, ADMIN_PASSWORD).isEmpty()) {
             throw new AccountException(ADMIN_ACCOUNT_NOT_FOUND_MESSAGE);
         }
-        Account adminAccount = accountRepository.findByUsernameAndPassword(ADMIN_USERNAME, ADMIN_PASSWORD).get();
-        return adminAccount.isSigned();
+        return accountRepository.findByUsernameAndPassword(ADMIN_USERNAME, ADMIN_PASSWORD).get().isSigned();
     }
 
     @Override
-    public Account getSignedInAccount() throws AccountException {
-        if (accountRepository.findByIsSigned(true).isEmpty()) {
-            throw new AccountException(NO_SIGNED_IN_USERS_MESSAGE);
+    public String getUsernameOfSignedInPrivilegedAccount() throws AccountException {
+        if (accountRepository.findByRoleAndIsSigned(ADMIN_ROLE, true).isEmpty()) {
+            throw new AccountException(NO_SIGNED_IN_PRIVILEGED_USERS_MESSAGE);
         }
-        return accountRepository.findByIsSigned(true).get();
+        return accountRepository.findByRoleAndIsSigned(ADMIN_ROLE, true).get().getUsername();
     }
 
 }

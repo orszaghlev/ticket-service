@@ -11,7 +11,8 @@ public class InMemoryDbInitializerTest {
 
     private static final String ADMIN_USERNAME = "admin";
     private static final String ADMIN_PASSWORD = "admin";
-    private static final Account LOGGED_OUT_ADMIN_ACCOUNT = new Account(null, ADMIN_USERNAME, ADMIN_PASSWORD, false);
+    private static final Account.Role ADMIN_ROLE = Account.Role.ADMIN;
+    private static final Account LOGGED_OUT_ADMIN_ACCOUNT = new Account(null, ADMIN_USERNAME, ADMIN_PASSWORD, ADMIN_ROLE, false);
 
     private InMemoryDbInitializer underTest;
 

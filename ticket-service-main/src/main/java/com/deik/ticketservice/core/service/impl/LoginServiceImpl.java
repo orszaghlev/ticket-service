@@ -16,6 +16,7 @@ public class LoginServiceImpl implements LoginService {
     private static final String ADMIN_PASSWORD = "admin";
     private static final String INCORRECT_CREDENTIALS_MESSAGE = "Incorrect credentials";
     private static final String ADMIN_ACCOUNT_NOT_FOUND_MESSAGE = "Admin account not found in the repository";
+    private static final String ADMIN_SIGNED_IN_MESSAGE = "Admin already signed in";
     private static final String NO_SIGNED_IN_USERS_MESSAGE = "None of the users are signed in at the moment";
 
     private final AccountRepository accountRepository;
@@ -35,6 +36,9 @@ public class LoginServiceImpl implements LoginService {
         }
         Account adminAccount = accountRepository.findByUsernameAndPassword(accountDto.getUsername(),
                 accountDto.getPassword()).get();
+        if (adminAccount.isSigned()) {
+            throw new LoginException(ADMIN_SIGNED_IN_MESSAGE);
+        }
         adminAccount.setIsSigned(true);
         accountRepository.save(adminAccount);
     }

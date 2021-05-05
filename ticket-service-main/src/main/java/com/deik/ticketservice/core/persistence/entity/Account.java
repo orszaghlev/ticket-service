@@ -6,6 +6,8 @@ import javax.persistence.Id;
 import javax.persistence.Column;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
+import javax.persistence.Enumerated;
+import javax.persistence.EnumType;
 import java.util.Objects;
 
 @Entity
@@ -19,6 +21,8 @@ public class Account {
     private String username;
     @Column(name = "password")
     private String password;
+    @Enumerated(EnumType.STRING)
+    private Role role;
     @Column(name = "isSigned")
     private boolean isSigned;
 
@@ -26,10 +30,11 @@ public class Account {
 
     }
 
-    public Account(Integer id, String username, String password, boolean isSigned) {
+    public Account(Integer id, String username, String password, Role role, boolean isSigned) {
         this.id = id;
         this.username = username;
         this.password = password;
+        this.role = role;
         this.isSigned = isSigned;
     }
 
@@ -57,12 +62,20 @@ public class Account {
         this.password = password;
     }
 
+    public Role getRole() {
+        return role;
+    }
+
+    public void setRole(Role role) {
+        this.role = role;
+    }
+
     public boolean isSigned() {
         return isSigned;
     }
 
-    public void setIsSigned(boolean isSigned) {
-        this.isSigned = isSigned;
+    public void setIsSigned(boolean signed) {
+        isSigned = signed;
     }
 
     @Override
@@ -74,19 +87,25 @@ public class Account {
             return false;
         }
         Account account = (Account) o;
-        return isSigned() == account.isSigned() && Objects.equals(getId(), account.getId())
-                && getUsername().equals(account.getUsername()) && getPassword().equals(account.getPassword());
+        return isSigned() == account.isSigned() && getUsername().equals(account.getUsername())
+                && getPassword().equals(account.getPassword()) && getRole() == account.getRole();
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getId(), getUsername(), getPassword(), isSigned());
+        return Objects.hash(getUsername(), getPassword(), getRole(), isSigned());
     }
 
     @Override
     public String toString() {
         return "Account{" + "id=" + id + ", username='" + username + '\'' + ", password='" + password + '\''
-                + ", isSigned=" + isSigned + '}';
+                + ", role=" + role + ", isSigned=" + isSigned + '}';
+    }
+
+    public static enum Role {
+
+        ADMIN, USER
+
     }
 
 }

@@ -24,7 +24,8 @@ public class AccountCommand {
     public void describeAccount() {
         try {
             if (accountService.isAdminSignedIn()) {
-                System.out.printf(DESCRIBE_ACCOUNT_SUCCESS_MESSAGE, accountService.getSignedInAccount().getUsername());
+                System.out.printf(DESCRIBE_ACCOUNT_SUCCESS_MESSAGE,
+                        accountService.getUsernameOfSignedInPrivilegedAccount());
             } else {
                 System.out.println(DESCRIBE_ACCOUNT_FAILURE_MESSAGE);
             }

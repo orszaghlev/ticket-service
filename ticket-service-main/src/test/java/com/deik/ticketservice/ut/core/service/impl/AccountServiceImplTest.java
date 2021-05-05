@@ -13,7 +13,8 @@ public class AccountServiceImplTest {
 
     private static final String ADMIN_USERNAME = "admin";
     private static final String ADMIN_PASSWORD = "admin";
-    private static final Account LOGGED_IN_ADMIN_ACCOUNT = new Account(null, ADMIN_USERNAME, ADMIN_PASSWORD, true);
+    private static final Account.Role ADMIN_ROLE = Account.Role.ADMIN;
+    private static final Account LOGGED_IN_ADMIN_ACCOUNT = new Account(null, ADMIN_USERNAME, ADMIN_PASSWORD, ADMIN_ROLE, true);
     private static final int WANTED_NUMBER_OF_INVOCATIONS = 2;
 
     private AccountServiceImpl underTest;
@@ -58,29 +59,31 @@ public class AccountServiceImplTest {
     }
 
     @Test
-    public void testGetSignedInAccountShouldGetAdminAccountWhenTheAdminIsSignedIn() throws AccountException {
+    public void testGetUsernameOfSignedInPrivilegedAccountShouldGetUsernameOfAdminAccountWhenTheAdminIsSignedIn() throws
+            AccountException {
         // Given
-        Mockito.when(accountRepository.findByIsSigned(true)).thenReturn(java.util.Optional.of(LOGGED_IN_ADMIN_ACCOUNT));
+        Mockito.when(accountRepository.findByRoleAndIsSigned(ADMIN_ROLE, true))
+                .thenReturn(java.util.Optional.of(LOGGED_IN_ADMIN_ACCOUNT));
 
         // When
-        Account actual = underTest.getSignedInAccount();
+        String actual = underTest.getUsernameOfSignedInPrivilegedAccount();
 
         // Then
-        Assertions.assertEquals(LOGGED_IN_ADMIN_ACCOUNT, actual);
-        Mockito.verify(accountRepository, Mockito.times(WANTED_NUMBER_OF_INVOCATIONS)).findByIsSigned(true);
+        Assertions.assertEquals(ADMIN_USERNAME, actual);
+        Mockito.verify(accountRepository, Mockito.times(WANTED_NUMBER_OF_INVOCATIONS)).findByRoleAndIsSigned(ADMIN_ROLE, true);
         Mockito.verifyNoMoreInteractions(accountRepository);
     }
 
     @Test
-    public void testGetSignedInAccountShouldThrowAccountExceptionWhenNoneOfTheUsersAreSignedIn() {
+    public void testGetUsernameOfSignedInPrivilegedAccountShouldThrowAccountExceptionWhenNoneOfTheUsersAreSignedIn() {
         // Given
-        Mockito.when(accountRepository.findByIsSigned(true)).thenReturn(java.util.Optional.empty());
+        Mockito.when(accountRepository.findByRoleAndIsSigned(ADMIN_ROLE, true)).thenReturn(java.util.Optional.empty());
 
         // When
-        Assertions.assertThrows(AccountException.class, () -> underTest.getSignedInAccount());
+        Assertions.assertThrows(AccountException.class, () -> underTest.getUsernameOfSignedInPrivilegedAccount());
 
         // Then
-        Mockito.verify(accountRepository).findByIsSigned(true);
+        Mockito.verify(accountRepository).findByRoleAndIsSigned(ADMIN_ROLE, true);
         Mockito.verifyNoMoreInteractions(accountRepository);
     }
 

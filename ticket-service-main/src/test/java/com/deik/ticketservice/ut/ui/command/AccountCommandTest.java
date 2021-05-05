@@ -1,6 +1,5 @@
 package com.deik.ticketservice.ut.ui.command;
 
-import com.deik.ticketservice.core.persistence.entity.Account;
 import com.deik.ticketservice.core.service.AccountService;
 import com.deik.ticketservice.core.service.exception.AccountException;
 import com.deik.ticketservice.ui.command.AccountCommand;
@@ -9,6 +8,8 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
 public class AccountCommandTest {
+
+    private static final String ADMIN_USERNAME = "admin";
 
     private AccountCommand underTest;
 
@@ -24,15 +25,14 @@ public class AccountCommandTest {
     public void testDescribeAccountShouldDescribeAccountWhenTheAdminIsSignedIn() throws AccountException {
         // Given
         Mockito.when(accountService.isAdminSignedIn()).thenReturn(true);
-        Account account = Mockito.mock(Account.class);
-        Mockito.when(accountService.getSignedInAccount()).thenReturn(account);
+        Mockito.when(accountService.getUsernameOfSignedInPrivilegedAccount()).thenReturn(ADMIN_USERNAME);
 
         // When
         underTest.describeAccount();
 
         // Then
         Mockito.verify(accountService).isAdminSignedIn();
-        Mockito.verify(accountService).getSignedInAccount();
+        Mockito.verify(accountService).getUsernameOfSignedInPrivilegedAccount();
         Mockito.verifyNoMoreInteractions(accountService);
     }
 

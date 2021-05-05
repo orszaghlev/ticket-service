@@ -16,8 +16,9 @@ public class LoginServiceImplTest {
     private static final String ADMIN_PASSWORD = "admin";
     private static final String USER_USERNAME = "sanyi";
     private static final String USER_PASSWORD = "asdQWE123";
-    private static final Account LOGGED_IN_ADMIN_ACCOUNT = new Account(null, ADMIN_USERNAME, ADMIN_PASSWORD, true);
-    private static final Account LOGGED_OUT_ADMIN_ACCOUNT = new Account(null, ADMIN_USERNAME, ADMIN_PASSWORD, false);
+    private static final Account.Role ADMIN_ROLE = Account.Role.ADMIN;
+    private static final Account LOGGED_IN_ADMIN_ACCOUNT = new Account(null, ADMIN_USERNAME, ADMIN_PASSWORD, ADMIN_ROLE, true);
+    private static final Account LOGGED_OUT_ADMIN_ACCOUNT = new Account(null, ADMIN_USERNAME, ADMIN_PASSWORD, ADMIN_ROLE, false);
     private static final AccountDto ADMIN_ACCOUNT_DTO = new AccountDto.Builder()
             .withUsername(ADMIN_USERNAME)
             .withPassword(ADMIN_PASSWORD)
@@ -93,6 +94,21 @@ public class LoginServiceImplTest {
 
         // Then
         Mockito.verify(accountRepository).findByUsernameAndPassword(ADMIN_USERNAME, ADMIN_PASSWORD);
+        Mockito.verifyNoMoreInteractions(accountRepository);
+    }
+
+    @Test
+    public void testSignInPrivilegedShouldThrowLoginExceptionWhenTheAdminAlreadySignedIn() {
+        // Given
+        Mockito.when(accountRepository.findByUsernameAndPassword(ADMIN_USERNAME, ADMIN_PASSWORD))
+                .thenReturn(java.util.Optional.of(LOGGED_IN_ADMIN_ACCOUNT));
+
+        // When
+        Assertions.assertThrows(LoginException.class, () -> underTest.signInPrivileged(ADMIN_ACCOUNT_DTO));
+
+        // Then
+        Mockito.verify(accountRepository, Mockito.times(WANTED_NUMBER_OF_INVOCATIONS))
+                .findByUsernameAndPassword(ADMIN_USERNAME, ADMIN_PASSWORD);
         Mockito.verifyNoMoreInteractions(accountRepository);
     }
 
