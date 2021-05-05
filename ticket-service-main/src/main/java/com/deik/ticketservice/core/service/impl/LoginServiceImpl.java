@@ -36,7 +36,7 @@ public class LoginServiceImpl implements LoginService {
         }
         Account adminAccount = accountRepository.findByUsernameAndPassword(accountDto.getUsername(),
                 accountDto.getPassword()).get();
-        if (adminAccount.isSigned()) {
+        if (adminAccount.getIsSigned()) {
             throw new LoginException(ADMIN_SIGNED_IN_MESSAGE);
         }
         adminAccount.setIsSigned(true);

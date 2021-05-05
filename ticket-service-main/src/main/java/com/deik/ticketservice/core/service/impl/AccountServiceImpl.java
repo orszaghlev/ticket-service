@@ -27,7 +27,7 @@ public class AccountServiceImpl implements AccountService {
         if (accountRepository.findByUsernameAndPassword(ADMIN_USERNAME, ADMIN_PASSWORD).isEmpty()) {
             throw new AccountException(ADMIN_ACCOUNT_NOT_FOUND_MESSAGE);
         }
-        return accountRepository.findByUsernameAndPassword(ADMIN_USERNAME, ADMIN_PASSWORD).get().isSigned();
+        return accountRepository.findByUsernameAndPassword(ADMIN_USERNAME, ADMIN_PASSWORD).get().getIsSigned();
     }
 
     @Override

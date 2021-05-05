@@ -57,7 +57,7 @@ public class LoginServiceImplTest {
         Mockito.verify(accountRepository).save(LOGGED_OUT_ADMIN_ACCOUNT);
         Assertions.assertEquals(ADMIN_USERNAME, LOGGED_OUT_ADMIN_ACCOUNT.getUsername());
         Assertions.assertEquals(ADMIN_PASSWORD, LOGGED_OUT_ADMIN_ACCOUNT.getPassword());
-        Assertions.assertTrue(LOGGED_OUT_ADMIN_ACCOUNT.isSigned());
+        Assertions.assertTrue(LOGGED_OUT_ADMIN_ACCOUNT.getIsSigned());
         Mockito.verify(accountRepository, Mockito.times(WANTED_NUMBER_OF_INVOCATIONS))
                 .findByUsernameAndPassword(ADMIN_USERNAME, ADMIN_PASSWORD);
         Mockito.verifyNoMoreInteractions(accountRepository);
@@ -125,7 +125,7 @@ public class LoginServiceImplTest {
         Mockito.verify(accountRepository).save(LOGGED_IN_ADMIN_ACCOUNT);
         Assertions.assertEquals(ADMIN_USERNAME, LOGGED_IN_ADMIN_ACCOUNT.getUsername());
         Assertions.assertEquals(ADMIN_PASSWORD, LOGGED_IN_ADMIN_ACCOUNT.getPassword());
-        Assertions.assertFalse(LOGGED_IN_ADMIN_ACCOUNT.isSigned());
+        Assertions.assertFalse(LOGGED_IN_ADMIN_ACCOUNT.getIsSigned());
         Mockito.verify(accountRepository, Mockito.times(WANTED_NUMBER_OF_INVOCATIONS)).findByIsSigned(true);
         Mockito.verifyNoMoreInteractions(accountRepository);
     }

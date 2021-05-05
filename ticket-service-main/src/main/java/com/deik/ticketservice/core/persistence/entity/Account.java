@@ -22,6 +22,7 @@ public class Account {
     @Column(name = "password")
     private String password;
     @Enumerated(EnumType.STRING)
+    @Column(name = "role")
     private Role role;
     @Column(name = "isSigned")
     private boolean isSigned;
@@ -70,12 +71,12 @@ public class Account {
         this.role = role;
     }
 
-    public boolean isSigned() {
+    public boolean getIsSigned() {
         return isSigned;
     }
 
-    public void setIsSigned(boolean signed) {
-        isSigned = signed;
+    public void setIsSigned(boolean isSigned) {
+        this.isSigned = isSigned;
     }
 
     @Override
@@ -87,22 +88,17 @@ public class Account {
             return false;
         }
         Account account = (Account) o;
-        return isSigned() == account.isSigned() && getUsername().equals(account.getUsername())
-                && getPassword().equals(account.getPassword()) && getRole() == account.getRole();
+        return getIsSigned() == account.getIsSigned() && Objects.equals(getId(), account.getId())
+                && getUsername().equals(account.getUsername()) && getPassword().equals(account.getPassword())
+                && getRole() == account.getRole();
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getUsername(), getPassword(), getRole(), isSigned());
+        return Objects.hash(getId(), getUsername(), getPassword(), getRole(), getIsSigned());
     }
 
-    @Override
-    public String toString() {
-        return "Account{" + "id=" + id + ", username='" + username + '\'' + ", password='" + password + '\''
-                + ", role=" + role + ", isSigned=" + isSigned + '}';
-    }
-
-    public static enum Role {
+    public enum Role {
 
         ADMIN, USER
 

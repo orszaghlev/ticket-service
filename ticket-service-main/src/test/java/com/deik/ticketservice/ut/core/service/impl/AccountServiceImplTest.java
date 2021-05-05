@@ -32,7 +32,7 @@ public class AccountServiceImplTest {
         // Given
         Mockito.when(accountRepository.findByUsernameAndPassword(ADMIN_USERNAME, ADMIN_PASSWORD))
                 .thenReturn(java.util.Optional.of(LOGGED_IN_ADMIN_ACCOUNT));
-        boolean expected = LOGGED_IN_ADMIN_ACCOUNT.isSigned();
+        boolean expected = LOGGED_IN_ADMIN_ACCOUNT.getIsSigned();
 
         // When
         boolean actual = underTest.isAdminSignedIn();
