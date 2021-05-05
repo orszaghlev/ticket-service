@@ -98,6 +98,12 @@ public class Account {
         return Objects.hash(getId(), getUsername(), getPassword(), getRole(), getIsSigned());
     }
 
+    @Override
+    public String toString() {
+        return "Account{" + "id=" + id + ", username='" + username + '\'' + ", password='" + password + '\''
+                + ", role=" + role + ", isSigned=" + isSigned + '}';
+    }
+
     public enum Role {
 
         ADMIN, USER
