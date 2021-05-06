@@ -1,11 +1,11 @@
 package com.deik.ticketservice.ut.ui.command;
 
-import com.deik.ticketservice.core.persistence.entity.Room;
-import com.deik.ticketservice.core.service.AccountService;
-import com.deik.ticketservice.core.service.RoomService;
-import com.deik.ticketservice.core.service.exception.AccountException;
-import com.deik.ticketservice.core.service.exception.RoomException;
-import com.deik.ticketservice.core.service.model.RoomDto;
+import com.deik.ticketservice.core.room.persistence.entity.Room;
+import com.deik.ticketservice.core.account.AccountService;
+import com.deik.ticketservice.core.room.RoomService;
+import com.deik.ticketservice.core.account.exception.AccountException;
+import com.deik.ticketservice.core.room.exception.RoomException;
+import com.deik.ticketservice.core.room.model.RoomDto;
 import com.deik.ticketservice.ui.command.RoomCommand;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

@@ -1,10 +1,10 @@
 package com.deik.ticketservice.ui.command;
 
-import com.deik.ticketservice.core.service.AccountService;
-import com.deik.ticketservice.core.service.MovieService;
-import com.deik.ticketservice.core.service.exception.AccountException;
-import com.deik.ticketservice.core.service.exception.MovieException;
-import com.deik.ticketservice.core.service.model.MovieDto;
+import com.deik.ticketservice.core.account.AccountService;
+import com.deik.ticketservice.core.movie.MovieService;
+import com.deik.ticketservice.core.account.exception.AccountException;
+import com.deik.ticketservice.core.movie.exception.MovieException;
+import com.deik.ticketservice.core.movie.model.MovieDto;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.shell.standard.ShellComponent;

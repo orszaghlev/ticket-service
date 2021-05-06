@@ -1,11 +1,11 @@
 package com.deik.ticketservice.ut.ui.command;
 
-import com.deik.ticketservice.core.persistence.entity.Movie;
-import com.deik.ticketservice.core.service.AccountService;
-import com.deik.ticketservice.core.service.MovieService;
-import com.deik.ticketservice.core.service.exception.AccountException;
-import com.deik.ticketservice.core.service.exception.MovieException;
-import com.deik.ticketservice.core.service.model.MovieDto;
+import com.deik.ticketservice.core.movie.persistence.entity.Movie;
+import com.deik.ticketservice.core.account.AccountService;
+import com.deik.ticketservice.core.movie.MovieService;
+import com.deik.ticketservice.core.account.exception.AccountException;
+import com.deik.ticketservice.core.movie.exception.MovieException;
+import com.deik.ticketservice.core.movie.model.MovieDto;
 import com.deik.ticketservice.ui.command.MovieCommand;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

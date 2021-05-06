@@ -1,8 +1,8 @@
 package com.deik.ticketservice.ut.core.configuration;
 
 import com.deik.ticketservice.core.configuration.InMemoryDbInitializer;
-import com.deik.ticketservice.core.persistence.entity.Account;
-import com.deik.ticketservice.core.persistence.repository.AccountRepository;
+import com.deik.ticketservice.core.account.persistence.entity.Account;
+import com.deik.ticketservice.core.account.persistence.repository.AccountRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;

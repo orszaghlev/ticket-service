@@ -1,7 +1,7 @@
 package com.deik.ticketservice.core.configuration;
 
-import com.deik.ticketservice.core.persistence.entity.Account;
-import com.deik.ticketservice.core.persistence.repository.AccountRepository;
+import com.deik.ticketservice.core.account.persistence.entity.Account;
+import com.deik.ticketservice.core.account.persistence.repository.AccountRepository;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;

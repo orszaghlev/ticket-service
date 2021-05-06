@@ -1,8 +1,8 @@
 package com.deik.ticketservice.ut.ui.command;
 
-import com.deik.ticketservice.core.service.LoginService;
-import com.deik.ticketservice.core.service.exception.LoginException;
-import com.deik.ticketservice.core.service.model.AccountDto;
+import com.deik.ticketservice.core.account.LoginService;
+import com.deik.ticketservice.core.account.exception.LoginException;
+import com.deik.ticketservice.core.account.model.AccountDto;
 import com.deik.ticketservice.ui.command.LoginCommand;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

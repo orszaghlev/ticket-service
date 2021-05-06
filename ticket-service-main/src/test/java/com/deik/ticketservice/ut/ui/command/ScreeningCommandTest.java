@@ -1,13 +1,13 @@
 package com.deik.ticketservice.ut.ui.command;
 
-import com.deik.ticketservice.core.service.AccountService;
-import com.deik.ticketservice.core.service.MovieService;
-import com.deik.ticketservice.core.service.ScreeningService;
-import com.deik.ticketservice.core.service.exception.AccountException;
-import com.deik.ticketservice.core.service.exception.MovieException;
-import com.deik.ticketservice.core.service.exception.RoomException;
-import com.deik.ticketservice.core.service.exception.ScreeningException;
-import com.deik.ticketservice.core.service.model.ScreeningDto;
+import com.deik.ticketservice.core.account.AccountService;
+import com.deik.ticketservice.core.movie.MovieService;
+import com.deik.ticketservice.core.screening.ScreeningService;
+import com.deik.ticketservice.core.account.exception.AccountException;
+import com.deik.ticketservice.core.movie.exception.MovieException;
+import com.deik.ticketservice.core.room.exception.RoomException;
+import com.deik.ticketservice.core.screening.exception.ScreeningException;
+import com.deik.ticketservice.core.screening.model.ScreeningDto;
 import com.deik.ticketservice.ui.command.ScreeningCommand;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

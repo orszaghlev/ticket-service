@@ -1,7 +1,7 @@
 package com.deik.ticketservice.ui.command;
 
-import com.deik.ticketservice.core.service.AccountService;
-import com.deik.ticketservice.core.service.exception.AccountException;
+import com.deik.ticketservice.core.account.AccountService;
+import com.deik.ticketservice.core.account.exception.AccountException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.shell.standard.ShellComponent;

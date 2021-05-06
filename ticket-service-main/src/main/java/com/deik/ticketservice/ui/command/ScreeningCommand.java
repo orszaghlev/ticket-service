@@ -1,14 +1,14 @@
 package com.deik.ticketservice.ui.command;
 
-import com.deik.ticketservice.core.service.AccountService;
-import com.deik.ticketservice.core.service.MovieService;
-import com.deik.ticketservice.core.service.ScreeningService;
-import com.deik.ticketservice.core.service.exception.AccountException;
-import com.deik.ticketservice.core.service.exception.MovieException;
-import com.deik.ticketservice.core.service.exception.RoomException;
-import com.deik.ticketservice.core.service.exception.ScreeningException;
-import com.deik.ticketservice.core.service.model.ScreeningDto;
-import com.deik.ticketservice.core.service.model.ScreeningListDto;
+import com.deik.ticketservice.core.account.AccountService;
+import com.deik.ticketservice.core.movie.MovieService;
+import com.deik.ticketservice.core.screening.ScreeningService;
+import com.deik.ticketservice.core.account.exception.AccountException;
+import com.deik.ticketservice.core.movie.exception.MovieException;
+import com.deik.ticketservice.core.room.exception.RoomException;
+import com.deik.ticketservice.core.screening.exception.ScreeningException;
+import com.deik.ticketservice.core.screening.model.ScreeningDto;
+import com.deik.ticketservice.core.screening.model.ScreeningListDto;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.shell.standard.ShellComponent;
@@ -53,10 +53,8 @@ public class ScreeningCommand {
         try {
             if (accountService.isAdminSignedIn()) {
                 ScreeningDto screeningDto = getScreeningDto(movieTitle, roomName, dateAsString);
-                if (wouldScreeningsOverlapEachOther(screeningDto)) {
-                    System.out.println(SCREENING_OVERLAP_MESSAGE);
-                } else if (wouldScreeningOverlapBreak(screeningDto)) {
-                    System.out.println(BREAK_OVERLAP_MESSAGE);
+                if (!wouldOverlapOccur(screeningDto).equals("")) {
+                    System.out.println(wouldOverlapOccur(screeningDto));
                 } else {
                     screeningService.createScreening(screeningDto);
                 }
@@ -98,36 +96,31 @@ public class ScreeningCommand {
         }
     }
 
-    private boolean wouldScreeningsOverlapEachOther(ScreeningDto screeningDto) throws ParseException, MovieException {
+    private String wouldOverlapOccur(ScreeningDto screeningDto) throws ParseException, MovieException {
         List<ScreeningListDto> screenings = screeningService.listScreenings();
-        Date date = new SimpleDateFormat(DATE_PATTERN).parse(screeningDto.getDateAsString());
+        String newScreeningRoomName = screeningDto.getRoomName();
+        Date newScreeningStartDate = new SimpleDateFormat(DATE_PATTERN).parse(screeningDto.getDateAsString());
         for (ScreeningListDto screening : screenings) {
-            long existingScreeningSum = screening.getDate().getTime() + (screening.getMovie().getRuntime()
-                    * ONE_MINUTE_IN_MS);
-            long newScreeningSum = date.getTime() + (movieService.getRuntimeByTitle(screeningDto.getMovieTitle())
-                    * ONE_MINUTE_IN_MS);
-            if (screening.getRoom().getName().equals(screeningDto.getRoomName())
-                    && date.before(new Date(existingScreeningSum))
-                    && screening.getDate().before(new Date(newScreeningSum))) {
-                return true;
+            String existingScreeningRoomName = screening.getRoom().getName();
+            Date existingScreeningStartDate = screening.getDate();
+            long startOfExistingScreening = existingScreeningStartDate.getTime();
+            long runtimeOfExistingScreening = screening.getMovie().getRuntime() * ONE_MINUTE_IN_MS;
+            long endOfExistingScreening = startOfExistingScreening + runtimeOfExistingScreening;
+            long startOfNewScreening = newScreeningStartDate.getTime();
+            long runtimeOfNewScreening = movieService.getRuntimeByTitle(screeningDto.getMovieTitle())
+                    * ONE_MINUTE_IN_MS;
+            long endOfNewScreening = startOfNewScreening + runtimeOfNewScreening;
+            if (existingScreeningRoomName.equals(newScreeningRoomName)) {
+                if (newScreeningStartDate.before(new Date(endOfExistingScreening))
+                        && existingScreeningStartDate.before(new Date(endOfNewScreening))) {
+                    return SCREENING_OVERLAP_MESSAGE;
+                } else if (newScreeningStartDate.before(new Date(endOfExistingScreening + TEN_MINUTES_IN_MS))
+                    && newScreeningStartDate.after(new Date(endOfExistingScreening))) {
+                    return BREAK_OVERLAP_MESSAGE;
+                }
             }
         }
-        return false;
-    }
-
-    private boolean wouldScreeningOverlapBreak(ScreeningDto screeningDto) throws ParseException {
-        List<ScreeningListDto> screenings = screeningService.listScreenings();
-        Date date = new SimpleDateFormat(DATE_PATTERN).parse(screeningDto.getDateAsString());
-        for (ScreeningListDto screening : screenings) {
-            long existingScreeningSum = screening.getDate().getTime() + (screening.getMovie().getRuntime()
-                    * ONE_MINUTE_IN_MS);
-            if (screening.getRoom().getName().equals(screeningDto.getRoomName())
-                    && date.before(new Date(existingScreeningSum + TEN_MINUTES_IN_MS))
-                    && date.after(new Date(existingScreeningSum))) {
-                return true;
-            }
-        }
-        return false;
+        return "";
     }
 
     private ScreeningDto getScreeningDto(String movieTitle, String roomName, String dateAsString) {
