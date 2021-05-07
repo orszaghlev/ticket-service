@@ -83,7 +83,7 @@ public class LoginServiceImplTest {
     }
 
     @Test
-    public void testSignOutShouldSignOutAdminWhenTheAdminAccountIsInTheRepository() throws LoginException {
+    public void testSignOutShouldSignOutAdminWhenTheAdminIsSignedIn() throws LoginException {
         // Given
         Mockito.when(accountRepository.findByIsSigned(true)).thenReturn(java.util.Optional.of(LOGGED_IN_ADMIN_ACCOUNT));
         Mockito.when(accountRepository.save(LOGGED_IN_ADMIN_ACCOUNT)).thenReturn(LOGGED_IN_ADMIN_ACCOUNT);
@@ -101,7 +101,7 @@ public class LoginServiceImplTest {
     }
 
     @Test
-    public void testSignOutShouldThrowLoginExceptionWhenTheAdminAccountIsNotInTheRepository() {
+    public void testSignOutShouldThrowLoginExceptionWhenTheAdminIsNotSignedIn() {
         // Given
         Mockito.when(accountRepository.findByIsSigned(true)).thenReturn(java.util.Optional.empty());
 

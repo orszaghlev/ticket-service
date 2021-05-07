@@ -42,7 +42,7 @@ public class LoginCommandTest {
     }
 
     @Test
-    public void testSignInPrivilegedShouldNotSignInAdminWhenTheCredentialsAreNotCorrect() {
+    public void testSignInPrivilegedShouldNotSignInAdminWhenTheCredentialsAreIncorrect() {
         // Given
 
         // When
@@ -53,7 +53,7 @@ public class LoginCommandTest {
     }
 
     @Test
-    public void testSignOutShouldSignOutUser() throws LoginException {
+    public void testSignOutShouldSignOutUserWhenTheUserIsSignedIn() throws LoginException {
         // Given
 
         // When

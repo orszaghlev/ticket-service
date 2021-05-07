@@ -72,7 +72,7 @@ public class AccountServiceImplTest {
     }
 
     @Test
-    public void testGetUsernameOfSignedInPrivilegedAccountShouldThrowAccountExceptionWhenNoneOfTheUsersAreSignedIn() {
+    public void testGetUsernameOfSignedInPrivilegedAccountShouldThrowAccountExceptionWhenNoneOfThePrivilegedUsersAreSignedIn() {
         // Given
         Mockito.when(accountRepository.findByRoleAndIsSigned(ADMIN_ROLE, true)).thenReturn(java.util.Optional.empty());
 
